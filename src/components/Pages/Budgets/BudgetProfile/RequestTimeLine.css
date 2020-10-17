@@ -1,0 +1,15 @@
+.timeliness ::-webkit-scrollbar {
+    width: 5px;
+}
+
+.timeliness ::-webkit-scrollbar-track {
+    width: 5px;
+    background: #f5f5f5;
+}
+
+.timeliness ::-webkit-scrollbar-thumb {
+    width: 1em;
+    background-color: #ddd;
+    outline: 1px solid slategrey;
+    border-radius: 1rem;
+}
