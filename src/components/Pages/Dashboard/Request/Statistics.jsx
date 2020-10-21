@@ -103,19 +103,6 @@ export default function Statistics() {
     return (
         <React.Fragment>
             <div className="card-box">
-                {/* <span className=''>
-                    <h3 className="card-title">Statistics</h3>
-                    <div class="btn-group float-right mt-n4">
-                        <button class="btn btn-white shadow-sm rounded-lg pb-0 pt-0 btn-sm dropdown-toggle text-muted" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Last 6 Months &nbsp;&nbsp;
-                        </button>
-                        <div class="dropdown-menu">
-                            <a class="dropdown-item" href="#">June 20 - August 20</a>
-                            <a class="dropdown-item" href="#">Another action</a>
-                            <a class="dropdown-item" href="#">Something else here</a>
-                        </div>
-                    </div>
-                </span> */}
                 <span className='d-inline-block pl-3'>
                     <h3 className="card-title text-muted">Statistics</h3>
                 </span>
@@ -129,14 +116,13 @@ export default function Statistics() {
                             style={{ cursor: 'not-allowed' }}>
                             Last 6 Months &nbsp;&nbsp;
                         </button>
-                        {/* <div class="dropdown-menu">
-                            <a class="dropdown-item" href="#">June 20 - August 20</a>
-                            <a class="dropdown-item" href="#">Another action</a>
-                            <a class="dropdown-item" href="#">Something else here</a>
-                        </div> */}
                     </div>
                 </span>
-                <Chart options={options} series={series} type="area" width='100%' height='300px' />
+                {allRequests.length === 0 ?
+                    <h5 className="card-title text-mute">No data to show. Ask fund requesters to request funds or change filters</h5>
+                    :
+                    <Chart options={options} series={series} type="area" width='100%' height='300px' />
+                }
             </div>
 
         </React.Fragment>

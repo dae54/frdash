@@ -28,17 +28,21 @@ export default function Reports() {
 
     return (
         <React.Fragment>
-            <div className="card shadow pb-4" style={{height:'48vh'}}>
-                <div className="card-header">
-                    <h3 className="card-title text-muted">Reports</h3>
-                </div>
-                <div className="card-body p-0 mt-n5">
-                    <BootstrapTable condensed bordered={false} trStyle={{ cursor: 'pointer' }} data={budgets} dataField='requests' hover version='4' search>
-                        <TableHeaderColumn dataField='name' dataSort={true}>NAME</TableHeaderColumn>
-                        <TableHeaderColumn dataField='createdAt' isKey dataFormat={(cell) => moment(cell).format('MMM DD, YYYY')} filterFormatted>CREATED AT</TableHeaderColumn>
-                        <TableHeaderColumn dataField='_id' filterFormatted dataFormat={(cell) => <Report id={cell} />}>REPORT</TableHeaderColumn>
-                    </BootstrapTable>
-                </div>
+            <div className="card-box">
+                <h3 className="card-title text-muted pl-3">Reports</h3>
+                {budgets.length === 0 ?
+                    <h5 className="card-title text-default pl-">
+                        No budgets created. <Link to={'/budgets/create'}>Create New budget</Link>
+                    </h5>
+                    :
+                    <div className="mt-n5">
+                        <BootstrapTable condensed bordered={false} trStyle={{ cursor: 'pointer' }} data={budgets} dataField='requests' hover version='4' search>
+                            <TableHeaderColumn dataField='name' dataSort={true}>NAME</TableHeaderColumn>
+                            <TableHeaderColumn dataField='createdAt' isKey dataFormat={(cell) => moment(cell).format('MMM DD, YYYY')} filterFormatted>CREATED AT</TableHeaderColumn>
+                            <TableHeaderColumn dataField='_id' filterFormatted dataFormat={(cell) => <Report id={cell} />}>REPORT</TableHeaderColumn>
+                        </BootstrapTable>
+                    </div>
+                }
             </div>
         </React.Fragment>
     )
@@ -51,7 +55,7 @@ const Report = (props) => {
         <span className="badge badge-primary rounded-pill pt-2 pb-2 pl-3 pr-3"
             style={{ cursor: 'pointer' }}
             onClick={() => hist.push('report/', { budgetId: props })}
-            >
+        >
             <i className="fa fa-eye"></i> VIEW REPORT
         </span>
     )

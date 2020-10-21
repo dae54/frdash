@@ -32,25 +32,17 @@ export default function List() {
 
     return (
         <React.Fragment>
-            <div className="card-box shadow pl-0 pr-0 pb-0" style={{ maxHeight: '393px' }}>
+            <div className="card-box pl-0 pr-0 pb-0" style={{ maxHeight: '393px' }}>
                 <span className='d-inline-block pl-3'>
-                    <h3 className="card-title text-muted">Pending Requests</h3>
+                    <h3 className="card-title text-muted pl-3">Pending Requests</h3>
                 </span>
                 <span className="d-inline-block float-right pr-3">
                     <div className="btn-group float-right pr-3">
                         <button className="btn btn-white shadow-sm rounded-lg pb-0 pt-0 btn-sm dropdown-toggle text-muted"
-                            type="button"
-                            data-toggle="dropdown"
-                            aria-haspopup="true"
-                            aria-expanded="false"
-                            style={{ cursor: 'not-allowed' }}>
-                            Test Budget &nbsp;&nbsp;
-                            </button>
-                        {/* <div className="dropdown-menu">
-                                <a className="dropdown-item" href="#">June 20 - August 20</a>
-                                <a className="dropdown-item" href="#">Another action</a>
-                                <a className="dropdown-item" href="#">Something else here</a>
-                            </div> */}
+                            type="button" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false"
+                            style={{ cursor: 'not-allowed' }}>Test Budget &nbsp;&nbsp;
+                        </button>
                     </div>
                 </span>
                 <div className="card-body p-0 mt-n2">
@@ -78,14 +70,16 @@ export default function List() {
                             </tbody>
                         </table>
                         :
-                        <div className='jumbotron bg-light text-center h4 mb-0'>Sorry No Pending Requests</div>
+                        <h5 className="card-title text-mute p-3">No data to show. Ask fund requesters to request funds or change filters</h5>
                     }
                 </div>
-                <div className="card-footer text-center bg-light mt-n3">
-                    <Link to='/requests' className="card-footer text-center bg-transparent">
-                        See More
+                {requests.length !== 0 &&
+                    <div className="card-footer text-center bg-light mt-n3">
+                        <Link to='/requests' className="card-footer text-center bg-transparent">
+                            See More
                     </Link>
-                </div>
+                    </div>
+                }
             </div>
         </React.Fragment>
     )
