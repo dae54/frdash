@@ -26,7 +26,10 @@ export default function BudgetInformation(props) {
      * the amount Requested
      * @param b
      * the amount Available
-     * @returns the ratio of requested amount to amount available
+     * @returns the integer ratio of requested amount to amount available in range of {0 to 1}
+     * result < 1, Requested amount is less than available amount can be disbursed
+     * result > 1 result, Requested amount is greater than available amount, cant be disbursed
+     * result = 1, Requested amount is equal to available amount, can be disbursed
      */
     function suggestDisburse(a, b) {
         return Math.round(a / b)
