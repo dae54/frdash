@@ -4,38 +4,39 @@ import { useHistory } from 'react-router-dom'
 import StatusFormatter from '../../../Gadgets/StatusFormatter';
 
 export default function RequestStatusController(props) {
-    let request = props.request
+    let { request, setRequest, setRefreshRemarks } = props
     const hist = useHistory()
-    // console.log(hist.location)
-    // let request = hist.location.state
     const [isLoading, setIsLoading] = useState(false)
     const [action, setAction] = useState()
     const [statusChanged, setStatusChanged] = useState(false)
 
     async function handleStatusChange(status, remarks = '') {
+        setIsLoading(true)
         console.log(status, remarks)
         await axios.patch(`/requests/${request._id}/changeStatus/${status}`, {
             remarks
         })
             .then(response => {
+                setIsLoading(false)
                 setStatusChanged(true)
-                // request.status = response.data.data.status
-                // request.remarks.push(response.data.data.remarks)
-                console.log(response.data.data.request)
-                request = response.data.data.request 
-                hist.replace({ request })
+                setRequest(response.data.data)
+                setRefreshRemarks(true)
             }).catch(error => {
+                setIsLoading(false)
                 console.log(error.response)
             })
     }
 
     async function handleRequestAprove() {
+        setIsLoading(true)
         await axios.patch(`/requests/aprove/${request._id}`)
             .then(response => {
+                setIsLoading(false)
                 console.log(response.data.data)
                 request.status = response.data.data.status
                 hist.replace({ state: request })
             }).catch(error => {
+                setIsLoading(false)
                 console.log(error.response)
             })
     }
@@ -49,17 +50,17 @@ export default function RequestStatusController(props) {
                 <StatusFormatter status={request.status} />
                 <RemarksController action={action} handleStatusChange={handleStatusChange} statusChanged={statusChanged} />
 
-                {!isLoading &&
+                {!isLoading ?
                     <>
-                        {request.status === 0 && //Pending
+                        {request.status === 0 && //IF REQUEST IS PENDING
                             <li className="dropdown has-arrow mt-n1" style={{ listStyleType: 'none' }}>
                                 <span className="btn btn-sm btn-success ml-3 dropdown-toggle" data-toggle="dropdown">
                                     CHANGE STATUS
-                                    </span>
+                                </span>
                                 <div className="dropdown-menu">
-                                    {props.disburseAlert <= 1 &&
-                                        <button className="btn btn-sm btn-success btn-block rounded-pill" onClick={handleRequestAprove} disabled={props.disburseAlert > 1}><i className='fa fa-check mr-1'></i> APROVE</button>
-                                    }
+                                    {/* {props.disburseAlert <= 1 &&  // IF  */}
+                                    <button className="btn btn-sm btn-success btn-block rounded-pill" onClick={handleRequestAprove} disabled={props.disburseAlert > 1}><i className='fa fa-check mr-1'></i> APROVE</button>
+                                    {/* } */}
                                     <button className="btn btn-sm btn-warning btn-block rounded-pill" data-toggle="modal" data-target="#remarksModal" onClick={() => setAction(1)}><i className='fa fa-history mr-1'></i> HOLD</button>
                                     <button className="btn btn-sm btn-dark btn-block rounded-pill" data-toggle="modal" data-target="#remarksModal" onClick={() => setAction(3)}><i className='fa fa-trash mr-1'></i> REJECT</button>
                                 </div>
@@ -98,8 +99,7 @@ export default function RequestStatusController(props) {
                             </li>
                         }
                     </>
-                }
-                {isLoading &&
+                    :
                     <div className="dash-widget-info">
                         <button className="widget-title1 btn btn-info mt-2 ml-5" disabled>
                             <div>
@@ -110,8 +110,11 @@ export default function RequestStatusController(props) {
                             </div>
                         </button>
                     </div>
-                    // <span className="btn btn-sm btn-warning btn-block rounded-pill mt-2 ml-4"><i className='fa fa-trash mr-1'></i> DELETE</span>
                 }
+                {/* {isLoading &&
+                    
+                    // <span className="btn btn-sm btn-warning btn-block rounded-pill mt-2 ml-4"><i className='fa fa-trash mr-1'></i> DELETE</span>
+                } */}
             </div>
         </React.Fragment >
     )
@@ -121,16 +124,25 @@ export default function RequestStatusController(props) {
 
 const RemarksController = ({ action, handleStatusChange, statusChanged }) => {
     const [remark, setRemark] = useState()
-    function handleSubmit() {
+
+    function handleSubmit(e) {
+        e.preventDefault()
         handleStatusChange(action, remark)
         setRemark('')
     }
+    // switch(action){
+    //     case 1:
+    //         setActionString('HOLD')
+    // }
     return (
         <div class="modal fade" id="remarksModal" tabindex="-1" role="dialog">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">Add Remarks</h5>
+                        {/* <h5 class="modal-title">Add Remarks</h5> */}
+                        <h5 class="modal-title">
+                            Change status to <StatusFormatter status={action} />
+                        </h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -142,11 +154,17 @@ const RemarksController = ({ action, handleStatusChange, statusChanged }) => {
                         </div>
                         :
                         <div class="modal-body">
-                            <textarea type="text" className="form-control" rows='5' value={remark} onChange={(e) => setRemark(e.target.value)} style={{ resize: 'none' }} autoFocus={true}></textarea>
-                            <hr />
-                            <div class="float-right">
-                                <button type="button" class="btn btn-primary btn-sm" onClick={handleSubmit}>Confirm </button>
-                            </div>
+                            <form onSubmit={(e) => handleSubmit(e)}>
+                                <h5 class="modal-titl">
+                                    {/* Change status to <StatusFormatter status={action} /> */}
+                                Remarks
+                                </h5>
+                                <textarea type="text" placeholder='Type a remark' className="form-control" rows='5' value={remark} onChange={(e) => setRemark(e.target.value)} style={{ resize: 'none' }} autoFocus={true} required></textarea>
+                                <hr />
+                                <div class="float-right">
+                                    <button type="submit" class="btn btn-primary btn-sm">Confirm </button>
+                                </div>
+                            </form>
                         </div>
                     }
                 </div>
