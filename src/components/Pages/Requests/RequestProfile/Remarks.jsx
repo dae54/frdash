@@ -3,6 +3,8 @@ import axios from 'axios'
 import moment from 'moment'
 
 export default function Remarks(props) {
+    let { refreshRemarks, setRefreshRemarks } = props
+
     const [newRemark, setNewRemark] = useState('')
     const [newRemarkStatus, setNewRemarkStatus] = useState({ error: '', isLoading: false })
     const [remarks, setRemarks] = useState([])
@@ -10,11 +12,12 @@ export default function Remarks(props) {
 
     async function fetchRemarks() {
         setRemarkInitStatus({ error: '', isLoading: true })
-        await axios.get('requests/remark', {
+        await axios.get('requests/remarks/', {
             params: {
                 requestId: props.requestId,
             }
         }).then(response => {
+            console.log(response)
             setRemarkInitStatus({ error: '', isLoading: false })
             setRemarks(response.data.data.remarks)
         }).catch(error => {
@@ -26,12 +29,12 @@ export default function Remarks(props) {
     async function handleSubmitRemark(e) {
         setNewRemarkStatus({ error: '', isLoading: true })
         e.preventDefault();
-        await axios.put('requests/remark', {
+        await axios.put('requests/remarks', {
             requestId: props.requestId,
             remark: newRemark
         }).then(() => {
             setNewRemarkStatus({ error: '', isLoading: false })
-            setNewRemark('') //clear remark text field
+            setNewRemark() //clear remark text field
             fetchRemarks()   //refresh remark list
         }).catch(error => {
             console.log(error.response)
@@ -61,11 +64,20 @@ export default function Remarks(props) {
             console.log('cleaning')
         }
     }, [])
+
+    useEffect(() => {
+        if (refreshRemarks) {
+            fetchRemarks()
+            setRefreshRemarks(false)
+        }
+    }, [refreshRemarks])
+
     return (
         <React.Fragment>
             <div className="card">
                 <div className="card-header pb-2">
                     <h4 className='text-dark'>Remarks</h4>
+                    <div className="btn btn-info" onClick={fetchRemarks}><i className="fa fa-user"></i></div>
                 </div>
                 <div className="card-body pt-0">
                     <p className="text-uppercase text-muted">Comments from the admins</p>

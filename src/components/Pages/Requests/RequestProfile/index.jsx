@@ -18,6 +18,8 @@ export default function RequestProfile(props) {
     const hist = useHistory();
     const [request, setRequest] = useState()
     const [disburseAlert, setDisburseAlert] = useState('')
+    const [refreshRemarks, setRefreshRemarks] = useState(false)
+
     async function fetchRequestById() {
         await axios.get(`/requests/${props.location.state.requestId}`, {
         }).then(response => {
@@ -61,12 +63,22 @@ export default function RequestProfile(props) {
                                         </p>
                                         <p className="text-monospace">{moment(request.createdAt).format('DD/MM/YYYY HH:MM a').toUpperCase()} &nbsp; {moment(request.createdAt).fromNow()}</p>
                                         <hr />
-                                        <RequestStatusController request={request} disburseAlert={disburseAlert} />
+                                        <RequestStatusController
+                                            request={request}
+                                            disburseAlert={disburseAlert}
+                                            setRequest={setRequest}
+                                            // refreshRemarks={refreshRemarks}
+                                            setRefreshRemarks={setRefreshRemarks}
+                                        />
                                     </div>
                                 </div>
                             </div>
                             <div className="col">
-                                <Remarks requestId={request._id} />
+                                <Remarks
+                                    requestId={request._id}
+                                    refreshRemarks={refreshRemarks}
+                                    setRefreshRemarks={setRefreshRemarks}
+                                />
                             </div>
                         </div>
                     </div>
