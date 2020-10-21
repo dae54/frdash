@@ -45,7 +45,7 @@ export default function List() {
                         </button>
                     </div>
                 </span>
-                <div className="card-body p-0 mt-n2">
+                <div className="card-body p-0 mt-n2" style={{ height: '310px' }}>
                     {requests.length ?
                         <table className="table table-s table-borderless border-0 table-striped">
                             <thead>
@@ -61,7 +61,7 @@ export default function List() {
                                     return (
                                         <tr>
                                             <td>{`${request.userId.firstName} ${request.userId.lastName}`}</td>
-                                            <td>{request.amount}</td>
+                                            <td>{request.amount.toLocaleString()}</td>
                                             <td>{moment(request.createdAt).format('MMM DD, YYYY')}</td>
                                             <td className='pt-1'><StatusFormatter status={request.status} /></td>
                                         </tr>
@@ -74,10 +74,10 @@ export default function List() {
                     }
                 </div>
                 {requests.length !== 0 &&
-                    <div className="card-footer text-center bg-light mt-n3">
-                        <Link to='/requests' className="card-footer text-center bg-transparent">
+                    <div className="card-footer text-center bg-transparent mt-n3">
+                        <Link to='/requests'>
                             See More
-                    </Link>
+                        </Link>
                     </div>
                 }
             </div>
