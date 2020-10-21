@@ -55,9 +55,9 @@ export default function RequestProfile(props) {
                                     <div className="card-body pt-0">
                                         <p className="text-monospace">
                                             <Link to={{ pathname: '../../user/profile', state: request.userId._id }} className="text-inf h5">${request.userId.firstName + ' ' + request.userId.lastName}</Link>&nbsp;
-                                            requested {request.amount}Tsh from
-                                            <span className='text-info h5' style={{ cursor: 'pointer' }}>${request.budgetItemId.name}</span></p>
-                                        <p className='text-dark' style={{ height: '12vh' }}>Reasons: {request.description}
+                                            requested {request.amount.toLocaleString()}
+                                            Tsh from <span className='text-info h5' style={{ cursor: 'pointer' }}>${request.budgetItemId.name}</span></p>
+                                        <p className='text-dark pt-2 pb-2' styl={{ height: '12vh' }}>Reasons: {request.description}
                                         </p>
                                         <p className="text-monospace">{moment(request.createdAt).format('DD/MM/YYYY HH:MM a').toUpperCase()} &nbsp; {moment(request.createdAt).fromNow()}</p>
                                         <hr />

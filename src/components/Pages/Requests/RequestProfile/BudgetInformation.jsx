@@ -29,7 +29,7 @@ export default function BudgetInformation(props) {
      * @returns the ratio of requested amount to amount available
      */
     function suggestDisburse(a, b) {
-        return Math.round(a/b)
+        return Math.round(a / b)
     }
 
     props.setDisburseAlert(suggestDisburse(props.request.amount, budgetItemInfo.availableBudgetItemBalance))
@@ -58,42 +58,52 @@ export default function BudgetInformation(props) {
                             </tr>
                             <tr>
                                 <td>Amount Available</td>
-                                <td className='float-right'>{budgetItemInfo.availableBudgetItemBalance}</td>
+                                <td className='float-right'>
+                                    {budgetItemInfo.availableBudgetItemBalance ? budgetItemInfo.availableBudgetItemBalance.toLocaleString() : ''}
+                                </td>
                             </tr>
                             <tr>
                                 <td>
                                     Amount Aproved <br />
                                     <small className='text-dark'>Amount waiting to be disbursed</small>
                                 </td>
-                                <td className='float-right'>{budgetItemInfo.amountAproved}</td>
+                                <td className='float-right'>
+                                    {budgetItemInfo.amountAproved ? budgetItemInfo.amountAproved.toLocaleString() : ''}
+                                </td>
                             </tr>
                             <tr className='shadow-sm'>
                                 <td>
                                     New Amount Available<br />
                                     <small className='text-dark'>amount available - amount aproved</small>
                                 </td>
-                                <td className='border-to float-right'>{budgetItemInfo.availableBudgetItemBalance - budgetItemInfo.amountAproved}</td>
+                                <td className='border-to float-right'>
+                                    {(budgetItemInfo.availableBudgetItemBalance - budgetItemInfo.amountAproved).toLocaleString()}
+                                </td>
                             </tr>
                             <tr>
                                 <td>Amount Requested</td>
-                                <td className='float-right'>{request.amount}</td>
+                                <td className='float-right'>{request.amount.toLocaleString()}</td>
                             </tr>
                             <tr className='shadow-sm'>
                                 <td>
                                     Amount remaining if Disbursing All<br />
                                     <small className='text-dark'>New Amount Available - Amount Requested</small>
                                 </td>
-                                <td className='border-to float-right'>{budgetItemInfo.availableBudgetItemBalance - (budgetItemInfo.amountAproved+request.amount)}</td>
+                                <td className='border-to float-right'>
+                                    {(budgetItemInfo.availableBudgetItemBalance - (budgetItemInfo.amountAproved + request.amount)).toLocaleString()}
+                                </td>
                             </tr>
                             <tr className='shadow-sm'>
                                 <td>
                                     Amount remaining Excluding Aproved Amounts<br />
                                     <small className='text-dark'>Amount Available - Amount Requested</small>
                                 </td>
-                                <td className='border-to float-right'>{budgetItemInfo.availableBudgetItemBalance - request.amount}</td>
+                                <td className='border-to float-right'>
+                                    {(budgetItemInfo.availableBudgetItemBalance - request.amount).toLocaleString()}
+                                </td>
                             </tr>
-                            <hr/>
-                            
+                            <hr />
+
                             <tr>
                                 {/* <td>Remarks</td> */}
                                 <td className='float-righ'>
@@ -104,7 +114,7 @@ export default function BudgetInformation(props) {
                                         <span className="bg-warning p-2 text-white">NOT SAFE TO DISBURSE</span>
                                     }
                                     {disburseAlert < 0.8 &&
-                                        <span className="bg-success p-2 text-white">SAFE TO DISBURSE</span>
+                                        <span className="btn btn-success pl-4 pr-4" style={{ cursor: 'auto' }}>SAFE TO DISBURSE</span>
                                     }
                                 </td>
                             </tr>
