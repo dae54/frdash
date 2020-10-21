@@ -134,10 +134,8 @@ export default function Distribution() {
                                 <Chart options={options} series={series} type="donut" height={280} />
                             </div>
                             <div className="col-5">
-                                {budgetItems && budgetOnFocus.id ?
+                                {budgetItems && budgetOnFocus.id &&
                                     <StatusRadial budgetItems={budgetItems} budgetOnFocus={budgetOnFocus} />
-                                    :
-                                    <div className="jumbotron">help here</div>
                                 }
                             </div>
                         </>
