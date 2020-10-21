@@ -140,12 +140,14 @@ export default function Distribution() {
                                     <div className="jumbotron">help here</div>
                                 }
                             </div>
-                            <div className="card-footer bg-transparent text-center">
-                                <Link to={'#'}>See More</Link>
-                            </div>
                         </>
                     }
                 </div>
+                {budgets.length !== 0 &&
+                    <div className="card-footer bg-transparent text-center">
+                        <Link to={'#'}>See More</Link>
+                    </div>
+                }
             </div>
         </React.Fragment>
 
