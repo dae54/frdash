@@ -29,6 +29,20 @@ export default function RequestProfile(props) {
         })
     }
 
+    const deleteRequest = async () => {
+        let confirmDelete = window.confirm('You are about to delete a request, Bare in mind that its an irreversible action. Proceed with care')
+        if (confirmDelete) {
+            await axios.delete(`requests/${request._id}`)
+            .then(res=>{
+                console.log(res)
+                hist.goBack()
+            }).catch(error=>{
+                console.log(error)
+                alert(error)
+            })
+        }
+    }
+
     useEffect(() => {
         props.location.state.requestId ? fetchRequestById() : setRequest(props.location.state)
     }, [])
@@ -52,7 +66,10 @@ export default function RequestProfile(props) {
                             <div className="col">
                                 <div className="card">
                                     <div className="card-header pb-2">
-                                        <h4 className='text-dark'>Request Information</h4>
+                                        <span className='text-dark h4'>Request Information</span>
+                                        <span className="bt btn-secondar p-1 pull-right" style={{ cursor: 'pointer' }} onClick={deleteRequest}>
+                                            <i className="fa fa-trash"></i>
+                                        </span>
                                     </div>
                                     <div className="card-body pt-0">
                                         <p className="text-monospace">
@@ -83,7 +100,13 @@ export default function RequestProfile(props) {
                         </div>
                     </div>
                     <div className="col">
-                        <BudgetInformation budgetItem={request.budgetItemId} budgetId={request.budgetId} request={request} setDisburseAlert={setDisburseAlert} disburseAlert={disburseAlert} />
+                        <BudgetInformation
+                            budgetItem={request.budgetItemId}
+                            budgetId={request.budgetId}
+                            request={request}
+                            setDisburseAlert={setDisburseAlert}
+                            disburseAlert={disburseAlert}
+                        />
                     </div>
                 </div>
                 ////////////////////////////////////////////////
