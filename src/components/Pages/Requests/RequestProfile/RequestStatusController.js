@@ -100,18 +100,18 @@ export default function RequestStatusController(props) {
                         }
                     </>
                     :
-                    <div className="dash-widget-info">
-                        <button className="widget-title1 btn btn-info mt-2 ml-5" disabled>
-                            <div>
-                                <div className="spinner-border text-light spinner-border-sm " role="status">
-                                    <span className="sr-only">Please Wait...</span>
-                                </div>
+            <div className="dash-widget-info">
+                <button className="widget-title1 btn btn-info mt-2 ml-5" disabled>
+                    <div>
+                        <div className="spinner-border text-light spinner-border-sm " role="status">
+                            <span className="sr-only">Please Wait...</span>
+                        </div>
                                 &nbsp;Please Wait...
                             </div>
-                        </button>
-                    </div>
+                </button>
+            </div>
                 }
-                {/* {isLoading &&
+            {/* {isLoading &&
                     
                     // <span className="btn btn-sm btn-warning btn-block rounded-pill mt-2 ml-4"><i className='fa fa-trash mr-1'></i> DELETE</span>
                 } */}
