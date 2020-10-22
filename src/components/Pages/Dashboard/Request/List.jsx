@@ -45,7 +45,7 @@ export default function List() {
                         </button>
                     </div>
                 </span>
-                <div className="card-body p-0 mt-n2" style={{ height: '310px' }}>
+                <div className="card-body p-0 mt-n2" style={{ height: requests.length ? '310px':'' }}>
                     {requests.length ?
                         <table className="table table-s table-borderless border-0 table-striped">
                             <thead>
@@ -70,7 +70,7 @@ export default function List() {
                             </tbody>
                         </table>
                         :
-                        <h5 className="card-title text-mute p-3">No data to show. Ask fund requesters to request funds or change filters</h5>
+                        <h5 className="card-title text-mute p-4">No data to show.</h5>
                     }
                 </div>
                 {requests.length !== 0 &&
