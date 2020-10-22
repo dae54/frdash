@@ -99,7 +99,7 @@ export default function Remarks(props) {
                     </form>
                     {remarkInitStatus.isLoading ?
                         <div>
-                            {Array.from({ length: 2 }, () => {
+                            {Array.from({ length: 1 }, () => {
                                 return (
                                     <div className="card p-2 text-dark blink_me">
                                         <h5 className='text-dark blur'>
