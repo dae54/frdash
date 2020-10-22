@@ -43,88 +43,93 @@ export default function BudgetInformation(props) {
 
     return (
         <React.Fragment>
-            <div className="card">
-                <div className="card-header pb-2">
-                    <h4 className='text-dark'>Budget Information</h4>
-                </div>
-                <div className="card-body pt-0">
-                    <p className="text-monospace mb-1">From&nbsp;
-                        <span className="text-info text-uppercas h5">
-                            ${request.budgetId.name}
-                        </span>
-                    </p>
-                    <table class="table table-borderless text-muted border-0">
-                        <tbody>
-                            <tr>
-                                <td>Item Requested</td>
-                                <td className='float-right'>{request.budgetItemId.name}</td>
-                            </tr>
-                            <tr>
-                                <td>Amount Available</td>
-                                <td className='float-right'>
-                                    {budgetItemInfo.availableBudgetItemBalance ? budgetItemInfo.availableBudgetItemBalance.toLocaleString() : ''}
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    Amount Aproved <br />
-                                    <small className='text-dark'>Amount waiting to be disbursed</small>
-                                </td>
-                                <td className='float-right'>
-                                    {budgetItemInfo.amountAproved ? budgetItemInfo.amountAproved.toLocaleString() : ''}
-                                </td>
-                            </tr>
-                            <tr className='shadow-sm'>
-                                <td>
-                                    New Amount Available<br />
-                                    <small className='text-dark'>amount available - amount aproved</small>
-                                </td>
-                                <td className='border-to float-right'>
-                                    {(budgetItemInfo.availableBudgetItemBalance - budgetItemInfo.amountAproved).toLocaleString()}
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Amount Requested</td>
-                                <td className='float-right'>{request.amount.toLocaleString()}</td>
-                            </tr>
-                            <tr className='shadow-sm'>
-                                <td>
-                                    Amount remaining if Disbursing All<br />
-                                    <small className='text-dark'>New Amount Available - Amount Requested</small>
-                                </td>
-                                <td className='border-to float-right'>
-                                    {(budgetItemInfo.availableBudgetItemBalance - (budgetItemInfo.amountAproved + request.amount)).toLocaleString()}
-                                </td>
-                            </tr>
-                            <tr className='shadow-sm'>
-                                <td>
-                                    Amount remaining Excluding Aproved Amounts<br />
-                                    <small className='text-dark'>Amount Available - Amount Requested</small>
-                                </td>
-                                <td className='border-to float-right'>
-                                    {(budgetItemInfo.availableBudgetItemBalance - request.amount).toLocaleString()}
-                                </td>
-                            </tr>
-                            <hr />
+            {request.status !== 4 ?
+                <div className="card">
+                    <div className="card-header pb-2">
+                        <h4 className='text-dark'>Budget Information</h4>
+                    </div>
+                    <div className="card-body pt-0">
+                        <p className="text-monospace mb-1">From&nbsp;
+                    <span className="text-info text-uppercas h5">
+                                ${request.budgetId.name}
+                            </span>
+                        </p>
+                        <table class="table table-borderless text-muted border-0">
+                            <tbody>
+                                <tr>
+                                    <td>Item Requested</td>
+                                    <td className='float-right'>{request.budgetItemId.name}</td>
+                                </tr>
+                                <tr>
+                                    <td>Amount Available</td>
+                                    <td className='float-right'>
+                                        {budgetItemInfo.availableBudgetItemBalance ? budgetItemInfo.availableBudgetItemBalance.toLocaleString() : ''}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        Amount Aproved <br />
+                                        <small className='text-dark'>Amount waiting to be disbursed</small>
+                                    </td>
+                                    <td className='float-right'>
+                                        {budgetItemInfo.amountAproved ? budgetItemInfo.amountAproved.toLocaleString() : ''}
+                                    </td>
+                                </tr>
+                                <tr className='shadow-sm'>
+                                    <td>
+                                        New Amount Available<br />
+                                        <small className='text-dark'>amount available - amount aproved</small>
+                                    </td>
+                                    <td className='border-to float-right'>
+                                        {(budgetItemInfo.availableBudgetItemBalance - budgetItemInfo.amountAproved).toLocaleString()}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Amount Requested</td>
+                                    <td className='float-right'>{request.amount.toLocaleString()}</td>
+                                </tr>
+                                <tr className='shadow-sm'>
+                                    <td>
+                                        Amount remaining if Disbursing All<br />
+                                        <small className='text-dark'>New Amount Available - Amount Requested</small>
+                                    </td>
+                                    <td className='border-to float-right'>
+                                        {(budgetItemInfo.availableBudgetItemBalance - (budgetItemInfo.amountAproved + request.amount)).toLocaleString()}
+                                    </td>
+                                </tr>
+                                <tr className='shadow-sm'>
+                                    <td>
+                                        Amount remaining Excluding Aproved Amounts<br />
+                                        <small className='text-dark'>Amount Available - Amount Requested</small>
+                                    </td>
+                                    <td className='border-to float-right'>
+                                        {(budgetItemInfo.availableBudgetItemBalance - request.amount).toLocaleString()}
+                                    </td>
+                                </tr>
+                                <hr />
 
-                            <tr>
-                                {/* <td>Remarks</td> */}
-                                <td className='float-righ'>
-                                    {disburseAlert > 1 &&
-                                        <span className="bg-danger p-2 text-white">CAN'T BE DISBURSED</span>
-                                    }
-                                    {disburseAlert > 0.8 && disburseAlert <= 1 &&
-                                        <span className="bg-warning p-2 text-white">NOT SAFE TO DISBURSE</span>
-                                    }
-                                    {disburseAlert < 0.8 &&
-                                        <span className="btn btn-success pl-4 pr-4" style={{ cursor: 'auto' }}>SAFE TO DISBURSE</span>
-                                    }
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                                <tr>
+                                    {/* <td>Remarks</td> */}
+                                    <td className='float-righ'>
+                                        {disburseAlert > 1 &&
+                                            <span className="bg-danger p-2 text-white">CAN'T BE DISBURSED</span>
+                                        }
+                                        {disburseAlert > 0.8 && disburseAlert <= 1 &&
+                                            <span className="bg-warning p-2 text-white">NOT SAFE TO DISBURSE</span>
+                                        }
+                                        {disburseAlert < 0.8 &&
+                                            <span className="btn btn-success pl-4 pr-4" style={{ cursor: 'auto' }}>SAFE TO DISBURSE</span>
+                                        }
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
-            </div>
+                :
+                <></>
+            }
+
             {/* <div className="">
                 <div className="card">
                     <div className="card-header text-uppercase pb-0">Budget Information</div>
