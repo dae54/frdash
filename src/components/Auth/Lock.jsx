@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import URL from '../../URL'
-import { NavLink } from 'react-router-dom'
+import { NavLink, useHistory } from 'react-router-dom'
 import SocketIOClient from 'socket.io-client'
 
 export default function Lock() {
+    const hist = useHistory()
     const [password, setPassword] = useState('')
     const [error, setError] = useState('')
     const [notificationCount, setNotificationCount] = useState(0)
@@ -16,7 +17,10 @@ export default function Lock() {
             email, password
         }).then((response) => {
             localStorage.setItem('token', response.data.data.token)
-            return window.location.replace('/')
+            hist.replace(sessionStorage.getItem('pathname'), JSON.parse(sessionStorage.getItem('state')))
+            sessionStorage.removeItem('pathname')
+            sessionStorage.removeItem('state')
+            return hist.go(0)
         }).catch((error) => {
             if (error.message === 'Network Error') {
                 console.log('Network Error')

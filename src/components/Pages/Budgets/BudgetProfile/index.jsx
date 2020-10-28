@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { NavLink } from 'react-router-dom'
+import { NavLink, useHistory } from 'react-router-dom'
 
 import BudgetInformation from './BudgetInformation'
 import BudgetItems from './BudgetItems'
@@ -12,6 +12,8 @@ import BudgetItemUsageStatus from './BudgetItemUsageStatus'
 import RealocateBudget from './RealocateBudget'
 
 export default function Index(props) {
+    const hist = useHistory()
+    console.log(hist)   
     const [requests, setRequests] = useState([])
     const [deleteBudget, setDeleteBudget] = useState(false)
     const [requestEditBudget, setRequestEditBudget] = useState(false)

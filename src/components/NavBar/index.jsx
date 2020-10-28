@@ -1,10 +1,11 @@
 import React, { useState } from 'react'
 import { AuthContext } from '../Auth/AuthContext'
-
+import { useHistory } from 'react-router-dom'
 import Notifications from './Notifications'
 // import { tokenParams, removeToken } from '../Auth/sessionControl'
 import { setAvatar } from '../AccessoryFunctions/avatarGenerator'
 export default function Index() {
+    const hist = useHistory()
     console.log('object')
     const { state, dispatch } = React.useContext(AuthContext)
     const [notificationCount, setNotificationCount] = useState(0)
@@ -22,8 +23,11 @@ export default function Index() {
     }
 
     function lock() {
+        sessionStorage.setItem('pathname',hist.location.pathname)
+        sessionStorage.setItem('state',JSON.stringify(hist.location.state))
         setIsLocked(true)
-        localStorage.removeItem('token')
+
+        // localStorage.removeItem('token')
         // window.location.replace('/lock')
 
         // const tp = tokenParams()
