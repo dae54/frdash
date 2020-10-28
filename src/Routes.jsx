@@ -6,6 +6,7 @@ import NewUser from './components/Pages/Users/NewUser'
 import EditUser from './components/Pages/Users/EditUser'
 import Requests from './components/Pages/Requests'
 import RequestProfile from './components/Pages/Requests/RequestProfile/'
+import RequestAproves from './components/Pages/Requests/RequestAproves'
 import UserProfile from './components/Pages/Users/UserProfile'
 // import UserProfile from './components/Pages/Users/UserProfile'
 import Budgets from './components/Pages/Budgets/index'
@@ -62,6 +63,11 @@ const routes = [
         name: 'request profile',
         link: '/request/profile',
         component: RequestProfile
+    },
+    {
+        name: 'request route',
+        link: '/request/aproves',
+        component: RequestAproves
     },
     {
         name: 'new request',

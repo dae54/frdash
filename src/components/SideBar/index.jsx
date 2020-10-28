@@ -43,6 +43,12 @@ const menu = [
                 icon: 'user-md',
                 name: 'New Request'
             },
+            {
+                status: '',
+                link: '/request/aproves',
+                icon: 'user-md',
+                name: 'Request Aproves'
+            },
         ]
     },
     {
