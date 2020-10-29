@@ -3,8 +3,19 @@ import { Link, useHistory } from 'react-router-dom'
 import { sortArray } from '../../../AccessoryFunctions/helperfunctions'
 import axios from 'axios'
 import StatusFormatter from '../../../Gadgets/StatusFormatter'
+import { AppContext } from '../../../services/AppContext'
 
 export default function RequestAproves() {
+    const { state, dispatch } = React.useContext(AppContext)
+    let setBreadcrumbPath = path => dispatch({ type: 'breadcrumbPath', payload: path })
+
+    useEffect(() => {
+        setBreadcrumbPath([
+            { name: 'Requests', url: '/requests' },
+            { name: 'Aproves' },
+        ])
+    }, [])
+    
     const hist = useHistory()
     const [requestAproves, setRequestsAproves] = useState({ loading: false, error: '', data: [] })
 
@@ -81,12 +92,12 @@ export default function RequestAproves() {
                                     <thead className='bg-ligh'>
                                         <tr>
                                             <th scope="col">Requester Name</th>
-                                            <th scope="col">Item Requested</th>
-                                            <th scope="col">Request At  Budget</th>
+                                            {/* <th scope="col">Item Requested</th> */}
+                                            {/* <th scope="col">Request At  Budget</th> */}
                                             <th scope="col">Request At</th>
                                             <th scope="col">Request Status</th>
 
-                                            <th scope="col">Aprove Counts</th>
+                                            <th scope="col">Aprove #</th>
                                             <th scope="col">Aproved By</th>
 
                                             <th scope="col">Action</th>
@@ -101,8 +112,8 @@ export default function RequestAproves() {
                                                             {`${requestAprove[0].requestId.userId.firstName} ${requestAprove[0].requestId.userId.lastName} `}
                                                         </Link>
                                                     </td>
-                                                    <td className='text-muted'>{`${requestAprove[0].requestId.budgetItemId.name}(${requestAprove[0].requestId.budgetItemId.code})`}</td>
-                                                    <td className='text-muted'>{requestAprove[0].requestId.budgetId.name}</td>
+                                                    {/* <td className='text-muted'>{`${requestAprove[0].requestId.budgetItemId.name}(${requestAprove[0].requestId.budgetItemId.code})`}</td> */}
+                                                    {/* <td className='text-muted'>{requestAprove[0].requestId.budgetId.name}</td> */}
                                                     <td className='text-muted'>{new Date(requestAprove[0].requestId.createdAt).toDateString()}</td>
                                                     <td><StatusFormatter status={requestAprove[0].requestId.status} /></td>
                                                     <td className='text-muted'>{requestAprove.length}</td>

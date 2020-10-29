@@ -5,9 +5,19 @@ import InfoCard from '../../Gadgets/InfoCard'
 import BudgetDataTable from './BudgetDatatable'
 import Statistics from './Statistics'
 import URL from '../../../URL'
+import { AppContext } from '../../services/AppContext'
 
 
 export default function Budgets() {
+    const { dispatch } = React.useContext(AppContext)
+    let setBreadcrumbPath = path => dispatch({ type: 'breadcrumbPath', payload: path })
+
+    useEffect(() => {
+        setBreadcrumbPath([
+            { name: 'Budgets' },
+        ])
+    }, [])
+
     // const [budgetStats, setBudgetStats] = useState([])
     const [budgets, setBudgets] = useState([])
     const [activeBudget, setActiveBudget] = useState()

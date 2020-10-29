@@ -1,10 +1,19 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Roles from './Roles'
 import ModuleAccess from './ModuleAccess'
 import ModulePermission from './ModulePermission'
 import { RolePermissionContextProvider } from './RoleContext'
+import { AppContext } from '../../../services/AppContext'
 
-export default function index() {
+export default function Index() {
+    const { dispatch } = React.useContext(AppContext)
+    let setBreadcrumbPath = path => dispatch({ type: 'breadcrumbPath', payload: path })
+
+    useEffect(() => {
+        setBreadcrumbPath([
+            { name: 'Settings' },
+        ])
+    }, [])
     return (
         <React.Fragment>
             <RolePermissionContextProvider>

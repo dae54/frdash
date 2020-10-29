@@ -5,8 +5,15 @@ import Statistics from './Request/Statistics';
 import List from './Request/List';
 import Distribution from './Budgets/Distribution';
 import Reports from './Budgets/Reports'
+import { AppContext } from '../../services/AppContext';
 
 export default function Dashboard() {
+    const { dispatch } = React.useContext(AppContext)
+    let setBreadcrumbPath = path => dispatch({ type: 'breadcrumbPath', payload: path })
+
+    useEffect(() => {
+        setBreadcrumbPath([])
+    }, [])
 
     const info = [
         {

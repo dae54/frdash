@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { NavLink, useHistory } from 'react-router-dom'
 
 import BudgetInformation from './BudgetInformation'
@@ -10,10 +10,21 @@ import EditBudget from '../EditBudget'
 import DeleteBudget from './DeleteBudget'
 import BudgetItemUsageStatus from './BudgetItemUsageStatus'
 import RealocateBudget from './RealocateBudget'
+import { AppContext } from '../../../services/AppContext'
 
 export default function Index(props) {
+    const { dispatch } = React.useContext(AppContext)
+    let setBreadcrumbPath = path => dispatch({ type: 'breadcrumbPath', payload: path })
+
+    useEffect(() => {
+        setBreadcrumbPath([
+            { name: 'Budgets', url: '/budgets' },
+            { name: 'Profile'},
+        ])
+    }, [])
+
     const hist = useHistory()
-    console.log(hist)   
+    console.log(hist)
     const [requests, setRequests] = useState([])
     const [deleteBudget, setDeleteBudget] = useState(false)
     const [requestEditBudget, setRequestEditBudget] = useState(false)

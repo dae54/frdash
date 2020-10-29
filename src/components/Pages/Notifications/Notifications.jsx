@@ -5,8 +5,18 @@ import axios from 'axios'
 import { useHistory } from 'react-router-dom'
 import URL from '../../../URL'
 import { NavLink } from 'react-router-dom';
+import { AppContext } from '../../services/AppContext';
 
 export default function Notifications() {
+    const { dispatch } = React.useContext(AppContext)
+    let setBreadcrumbPath = path => dispatch({ type: 'breadcrumbPath', payload: path })
+
+    useEffect(() => {
+        setBreadcrumbPath([
+            { name: 'Notifications' }
+        ])
+    }, [])
+    
     const hist = useHistory()
     const [notifications, setNotifications] = useState([])
     const [notificationAutoDeleteTime, setNotificationAutoDeleteTime] = useState()

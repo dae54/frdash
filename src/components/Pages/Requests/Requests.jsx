@@ -5,8 +5,18 @@ import axios from 'axios'
 // import InfoCard from '../../Gadgets/InfoCard'
 import RequestDataTable from './RequestDataTable'
 import Statistics from './Statistics'
+import { AppContext } from '../../services/AppContext'
 
 export default function Requests() {
+    const { state, dispatch } = React.useContext(AppContext)
+    let setBreadcrumbPath = path => dispatch({ type: 'breadcrumbPath', payload: path })
+
+    useEffect(() => {
+        setBreadcrumbPath([
+            { name: 'Requests List', url: '/requests' },
+        ])
+    }, [])
+    
     const [requestStats, setRequestStats] = useState({})
     const [requests, setRequests] = useState({})
     const [requestsLoaded, setRequestsLoaded] = useState(false)

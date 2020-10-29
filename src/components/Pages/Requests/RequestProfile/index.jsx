@@ -12,9 +12,20 @@ import BudgetInformation from './BudgetInformation'
 // import { setAvatar } from '../../../AccessoryFunctions/avatarGenerator';
 import RequestStatusController from './RequestStatusController'
 import Remarks from './Remarks'
+import { AppContext } from '../../../services/AppContext'
 // import StatusFormatter from '../../../Gadgets/StatusFormatter'
 
 export default function RequestProfile(props) {
+    const { state, dispatch } = React.useContext(AppContext)
+    let setBreadcrumbPath = path => dispatch({ type: 'breadcrumbPath', payload: path })
+
+    useEffect(() => {
+        setBreadcrumbPath([
+            { name: 'Requests', url: '/requests' },
+            { name: 'Profile' },
+        ])
+    }, [])
+    
     const hist = useHistory();
     const [request, setRequest] = useState()
     const [disburseAlert, setDisburseAlert] = useState('')

@@ -2,9 +2,20 @@ import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import SweetAlert from 'react-bootstrap-sweetalert'
 import URL from '../../../URL'
+import { AppContext } from '../../services/AppContext'
 
 
 export default function NewUser() {
+    const { state, dispatch } = React.useContext(AppContext)
+    let setBreadcrumbPath = path => dispatch({ type: 'breadcrumbPath', payload: path })
+
+    useEffect(() => {
+        setBreadcrumbPath([
+            { name: 'Users', url: '/users' },
+            { name: 'Add New User' },
+        ])
+    }, [])
+    
     const [firstName, setFirstName] = useState('')
     const [lastName, setLastName] = useState('')
     const [email, setEmail] = useState('')

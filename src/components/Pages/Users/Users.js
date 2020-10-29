@@ -1,10 +1,20 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useHistory } from 'react-router-dom';
 import SweetAlert from 'react-bootstrap-sweetalert'
 import axios from 'axios'
 import { setAvatar } from '../../AccessoryFunctions/avatarGenerator'
+import { AppContext } from '../../services/AppContext';
 
 export default function Users(props) {
+    const { state, dispatch } = React.useContext(AppContext)
+    let setBreadcrumbPath = path => dispatch({ type: 'breadcrumbPath', payload: path })
+
+    useEffect(() => {
+        setBreadcrumbPath([
+            { name: 'Users', url: '/users' },
+        ])
+    }, [])
+
     console.log(props)
     const hist = useHistory();
 

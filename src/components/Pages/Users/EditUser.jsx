@@ -4,7 +4,18 @@ import URL from '../../../URL'
 import {NavLink, useHistory} from 'react-router-dom'
 
 import MessagesHandler from '../../Gadgets/MessagesHandler';
+import { AppContext } from '../../services/AppContext';
 export default function UpdateUser() {
+    const { state, dispatch } = React.useContext(AppContext)
+    let setBreadcrumbPath = path => dispatch({ type: 'breadcrumbPath', payload: path })
+
+    useEffect(() => {
+        setBreadcrumbPath([
+            { name: 'Users', url: '/users' },
+            { name: 'Edit User' },
+        ])
+    }, [])
+    
     const hist = useHistory();
     // hook to use when edit user is fired from edit dropdown in user list
     // const [editUser, setEditUser] = useState({})

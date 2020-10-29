@@ -7,8 +7,19 @@ import StatusFormatter from '../../Gadgets/StatusFormatter'
 // import { setAvatar } from '../../AccessoryFunctions/avatarGenerator'
 // import userImg from './user.jpg'
 import userImg from '../../Assets/images/user.jpg'
+import { AppContext } from '../../services/AppContext'
 
 export default function UserProfile(props) {
+    const { state, dispatch } = React.useContext(AppContext)
+    let setBreadcrumbPath = path => dispatch({ type: 'breadcrumbPath', payload: path })
+
+    useEffect(() => {
+        setBreadcrumbPath([
+            { name: 'Users', url: '/users' },
+            { name: 'Profile' },
+        ])
+    }, [])
+
     var imgStyle = {
         height: '39vh',
         width: '100%',

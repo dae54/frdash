@@ -3,7 +3,10 @@ import { AuthContext } from '../Auth/AuthContext'
 import { useHistory } from 'react-router-dom'
 import Notifications from './Notifications'
 // import { tokenParams, removeToken } from '../Auth/sessionControl'
+import logo from '../Assets/images/radial.png'
+
 import { setAvatar } from '../AccessoryFunctions/avatarGenerator'
+import Breadcrumb from '../Gadgets/Breadcrumb'
 export default function Index() {
     const hist = useHistory()
     console.log('object')
@@ -23,8 +26,8 @@ export default function Index() {
     }
 
     function lock() {
-        sessionStorage.setItem('pathname',hist.location.pathname)
-        sessionStorage.setItem('state',JSON.stringify(hist.location.state))
+        sessionStorage.setItem('pathname', hist.location.pathname)
+        sessionStorage.setItem('state', JSON.stringify(hist.location.state))
         setIsLocked(true)
 
         // localStorage.removeItem('token')
@@ -35,7 +38,7 @@ export default function Index() {
         //     const { displayName, email, id } = tp
         //     sessionStorage.setItem('ttp', JSON.stringify({ displayName, email, id }))
         //     removeToken()
-            // window.location.replace('/lock')
+        // window.location.replace('/lock')
         // }
     }
     return (
@@ -43,12 +46,16 @@ export default function Index() {
             <div className="header">
                 <div className="header-left">
                     <a href="index-2.html" className="logo">
-                        <img src="assets/img/logo.png" width="35" height="35" alt="" />
+                        <img src={logo} width="35" height="35" alt="" />
                         <span>Fund Request</span>
                     </a>
                 </div>
                 <a id="toggle_btn" href=""><i className="fa fa-bars"></i></a>
                 <a id="mobile_btn" className="mobile_btn float-left" href="#sidebar"><i className="fa fa-bars"></i></a>
+                <div>
+                    <Breadcrumb />
+                </div>
+
                 <ul className="nav user-menu float-right">
                     <li className="nav-item dropdown d-none d-sm-block">
                         <a href="#" className="dropdown-toggle nav-link" data-toggle="dropdown"><i className="fa fa-bell-o"></i> <span className="badge badge-pill bg-danger float-right">{notificationCount}</span></a>
