@@ -70,16 +70,16 @@ export default function StatusFormatter(props) {
             )
         case 10:
             return (
-                <span className="">
-                    <span className="text-white bg-warning p-2">INACTIVE
-                    </span>
-                </span>
+                // <span className="">
+                //     <span className="text-white bg-warning p-2">INACTIVE
+                //     </span>
+                // </span>
+                <span className="badge badge-warning rounded-sm pt-2 pb-2 pl-3 pr-3">INACTIVE</span>
+
             )
         case 11:
             return (
-                <span className="">
-                    <span className="text-white bg-success p-2">ACTIVE <i className="fa fa-check" aria-hidden="true"></i></span>
-                </span>
+                <span className="badge badge-success rounded-sm pt-2 pb-2 pl-3 pr-3">ACTIVE</span>
             )
         default:
             return (
