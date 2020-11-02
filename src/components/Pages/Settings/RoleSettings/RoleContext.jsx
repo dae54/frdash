@@ -1,7 +1,7 @@
 import React, { useReducer } from "react";
 
 let initialState = {
-    roles: [], permissions: [], rolesPermission: []
+    roles: [], permissions: [], rolesPermission: [], activeRole: ''
 }
 let reducer = (state, action) => {
     switch (action.type) {
@@ -9,6 +9,8 @@ let reducer = (state, action) => {
             return { ...state, roles: state.roles = action.payload }
         case 'newRole':
             return { ...state, roles: state.roles.concat(action.payload) }
+        case 'activeRole':
+            return { ...state, activeRole: state.activeRole = action.payload }
         case 'permissions':
             return { ...state, permissions: state.permissions = action.payload }
     }
