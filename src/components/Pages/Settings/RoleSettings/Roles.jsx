@@ -8,11 +8,11 @@ export default function Roles() {
 
     let setRoles = roles => dispatch({ type: 'roles', payload: roles })
     let setNewRole = role => dispatch({ type: 'newRole', payload: role })
+    let setActiveRole = role => dispatch({ type: 'activeRole', payload: role })
 
     const [name, setName] = useState('')
     const [description, setDescription] = useState('')
     const [isLoading, setIsLoading] = useState(false)
-    const [activeRole, setActiveRole] = useState()
     const [error, setError] = useState('')
 
     async function createRole(e) {
@@ -111,12 +111,18 @@ export default function Roles() {
                         {state.roles.length ?
                             state.roles.map((item, index) => {
                                 return (
-                                    <RoleList key={item._id} index={index} item={item} deleteRole={deleteRole} activeRole={activeRole} setActiveRole={setActiveRole} />
+                                    <RoleList
+                                        key={item._id}
+                                        index={index}
+                                        item={item}
+                                        deleteRole={deleteRole}
+                                        activeRole={state.activeRole}
+                                        setActiveRole={setActiveRole} />
                                 )
                             })
                             :
                             <li className="">
-                                <a>>No Entry</a>
+                                <a>No Entry</a>
                             </li>
                         }
                     </ul>
