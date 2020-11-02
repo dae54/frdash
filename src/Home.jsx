@@ -10,6 +10,9 @@ import Sidebar from './components/SideBar/Sidebar'
 import Navbar from './components/NavBar'
 import Error404 from './components/Error404'
 
+import { transitions, positions, Provider as AlertProvider } from 'react-alert'
+import AlertTemplate from 'react-alert-template-basic'
+
 export default function Home() {
     const hist = useHistory()
     const { state, dispatch } = React.useContext(AuthContext)
@@ -47,8 +50,18 @@ export default function Home() {
         getIdleTime()
     }, [])
 
+    const options = {
+        // you can also just use 'bottom center'
+        position: positions.BOTTOM_RIGHT,
+        timeout: 5000,
+        offset: '30px',
+        // you can also just use 'scale'
+        transition: transitions.SCALE
+    }
+
     return (
         // <React.Fragment>
+        <AlertProvider template={AlertTemplate} {...options}>
             <AppContextProvider>
                 {state.idleTimeDuration &&
                     <IdleTimer
@@ -73,6 +86,7 @@ export default function Home() {
                     </div>
                 </div>
             </AppContextProvider>
+        </AlertProvider >
         // </React.Fragment>
     )
 }
