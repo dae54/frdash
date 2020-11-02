@@ -13,7 +13,7 @@ export default function Requests() {
 
     useEffect(() => {
         setBreadcrumbPath([
-            { name: 'Requests List', url: '/requests' },
+            { name: 'All Requests', url: '/requests' },
         ])
     }, [])
     
