@@ -23,7 +23,7 @@ export default function Home() {
         setIsLocked(true)
         // sessionStorage.setItem('hist',JSON.stringify(hist))
         sessionStorage.setItem('pathname', hist.location.pathname)
-        sessionStorage.setItem('state', JSON.stringify(hist.location.state))
+        sessionStorage.setItem('state', JSON.stringify(hist.location.state || ''))
         localStorage.removeItem('token')
     }
 
