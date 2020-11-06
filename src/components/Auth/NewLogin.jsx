@@ -21,19 +21,20 @@ export default function NewLogin() {
     const [password, setPassword] = useState('')
     const [loading, setLoading] = useState(false);
     let setIsAuthorized = isAuthorized => dispatch({ type: 'isAuthorized', payload: isAuthorized })
-    let setUserDetails = userDetails => dispatch({ type: 'userDetails', payload: userDetails })
-    
+    // let setUserDetails = userDetails => dispatch({ type: 'userDetails', payload: userDetails })
+
     function submitForm(e) {
         e.preventDefault();
         const data = { email, password }
         setLoading(true)
-        axios.post(`${URL}/user/login`, {
+        axios.post(`/user/login`, {
             email, password
         }).then((response) => {
             setLoading(false)
             localStorage.setItem('token', response.data.data.token)
+            // localStorage.setItem('userDetails', JSON.stringify(response.data.data.user))
             localStorage.setItem('userDetails', JSON.stringify(jwt_decode(localStorage.getItem('token'))))
-            setUserDetails(jwt_decode(localStorage.getItem('token')))
+            // setUserDetails(response.data.data.user)
             setIsAuthorized(true)
             return window.location.replace('/')
         }).catch((error) => {
@@ -49,7 +50,7 @@ export default function NewLogin() {
     useEffect(() => {
         if (state.isAuthorized) {
             window.location.replace('/')
-        }else{
+        } else {
             localStorage.removeItem('userDetails')
         }
     }, [])
