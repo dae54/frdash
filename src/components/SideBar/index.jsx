@@ -1,6 +1,6 @@
 const menu = [
     {
-        status: 'active',
+        status: '',
         link: '/',
         icon: 'dashboard',
         name: 'Dashboard'
@@ -10,18 +10,27 @@ const menu = [
         link: '/users',
         icon: 'user-md',
         name: 'Users',
+        permission: ['view_all_users', 'create_user'],//have either of the permission to be able to view the component
         submenu: [
             {
-                status: 'active',
+                status: '',
                 link: '/users',
                 icon: 'user-md',
-                name: 'User List'
+                name: 'User List',
+                permission: {
+                    genericName: 'view_all_users',
+                    moduleName: 'users'
+                }
             },
             {
                 status: '',
                 link: '/users/add',
                 icon: 'user-md',
-                name: 'Add New User'
+                name: 'Add New User',
+                permission: {
+                    genericName: 'create_user',
+                    moduleName: 'users'
+                }
             }
         ]
     },
@@ -30,24 +39,37 @@ const menu = [
         link: '/requests',
         icon: 'dollar',
         name: 'Requests',
+        permission: ['view_all_requests', 'create_request','approve_requests'],//have either of the permission to be able to view the component
         submenu: [
             {
                 status: 'active',
                 link: '/requests',
                 icon: 'user-md',
-                name: 'All Requests'
+                name: 'All Requests',
+                permission: {
+                    genericName: 'view_all_requests',
+                    moduleName: 'requests'
+                }
             },
             {
                 status: '',
                 link: '/request/create',
                 icon: 'user-md',
-                name: 'New Request'
+                name: 'New Request',
+                permission: {
+                    genericName: 'create_request',
+                    moduleName: 'requests'
+                }
             },
             {
                 status: '',
                 link: '/request/aproves',
                 icon: 'user-md',
-                name: 'Request Aproves'
+                name: 'Request Aproves',
+                permission: {
+                    genericName: 'approve_requests',
+                    moduleName: 'requests'
+                }
             },
         ]
     },
@@ -56,18 +78,27 @@ const menu = [
         link: '/budgets',
         icon: 'align-justify',
         name: 'Budgets',
+        permission: ['view_all_budgets', 'create_budget'],//have either of the permission to be able to view the component
         submenu: [
             {
                 status: 'active',
                 link: '/budgets',
                 icon: 'user-md',
-                name: 'All Budgets'
+                name: 'All Budgets',
+                permission: {
+                    genericName: 'view_all_budgets',
+                    moduleName: 'budgets'
+                }
             },
             {
                 status: 'active',
                 link: '/budgets/create',
                 icon: 'user-md',
-                name: 'Create New Budget'
+                name: 'Create New Budget',
+                permission: {
+                    genericName: 'create_budget',
+                    moduleName: 'budgets'
+                }
             },
         ]
     },
@@ -101,7 +132,11 @@ const menu = [
                 status: 'inactive',
                 link: '/settings/role',
                 icon: 'key',
-                name: 'Role'
+                name: 'Role',
+                permission: {
+                    genericName: 'create_role',
+                    moduleName: 'settings'
+                }
             },
             {
                 status: 'inactive',
@@ -117,55 +152,5 @@ const menu = [
             },
         ]
     },
-    // {
-    //     status: '',
-    //     link: '/stuff',
-    //     icon: 'user-md',
-    //     name: 'stuff',
-    //     submenu: [
-    //         {
-    //             status: 'active',
-    //             link: '/stuff',
-    //             icon: 'user-md',
-    //             name: 'staff names'
-    //         }, {
-    //             status: '',
-    //             link: '/contact',
-    //             icon: 'user-md',
-    //             name: 'contacts'
-    //         }
-    //     ]
-    // },
-    // {
-    //     status: '',
-    //     link: '/contact',
-    //     icon: 'user-md',
-    //     name: 'contacts'
-    // },
-    // {
-    //     status: '',
-    //     link: '/contact',
-    //     icon: 'user-md',
-    //     name: 'contacts'
-    // },
-    // {
-    //     status: '',
-    //     link: '/stuff',
-    //     icon: 'user-md',
-    //     name: 'stuff',
-    //     submenu: [
-    //         {
-    //             status: 'active',
-    //             link: '/stuff',
-    //             icon: 'user-md',
-    //             name: 'staff names'
-    //         }, {
-    //             status: '',
-    //             link: '/contact',
-    //             icon: 'user-md',
-    //             name: 'contacts'
-    //         }
-    //     ]
-    // },
 ]
 export default menu
