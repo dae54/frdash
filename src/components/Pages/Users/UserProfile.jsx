@@ -76,7 +76,7 @@ export default function UserProfile(props) {
 
     return (
         <React.Fragment>
-            <h4 class="page-title">User Profile</h4>
+            <h4 className="page-title">User Profile</h4>
             <div className="row">
                 <div className="col-3">
                     <div className="card shadow-sm">
@@ -85,15 +85,23 @@ export default function UserProfile(props) {
                         </div>
                         <div className="top d-inline pt-3 ml-3">
                             <span className="text-dark p-0" style={{ fontSize: '20px' }}> {user.firstName + ' ' + user.lastName}</span> <br />
-                            <span className="text-dark mt--5" >{user.roleName}</span>
+                            <span className="text-dark mt--5" >{user.role ? user.role.name : ''}</span>
                             <div className="float-right mr-1">
                                 <span className="badge badge-primary rounded-pill pt-2 pb-2 pl-3 pr-3" style={{ cursor: 'pointer' }} onClick={() => hist.push('edit', { user: user })}>
                                     <i className="fa fa-pencil"></i> EDIT</span>
-                                <span className="badge badge-warning rounded-pill pt-2 pb-2 pl-3 pr-3 text-white ml-2" style={{cursor:'not-allowed'}}>
+                                <span className="badge badge-warning rounded-pill pt-2 pb-2 pl-3 pr-3 text-white ml-2" style={{ cursor: 'not-allowed' }}>
                                     <i className="fa fa-trash"></i> DELETE</span>
                             </div>
                         </div>
-                        <div className="mt-5 ml-3">
+                        {!user.invitationEmail &&
+                            <div className="ml-3 mt-3 mr-1 text-danger">
+                                Invitation Email not sent
+                                <span className="badge badge-primary rounded-pill pt-2 pb-2 pl-3 pr-3 ml-4" style={{ cursor: 'pointer' }} onClick={() => { }}>
+                                    <i className="fa fa-inbox"></i> SEND NOW
+                                </span>
+                            </div>
+                        }
+                        <div className="mt-4 ml-3">
                             <p className='' >
                                 <i className="fa fa-phone"></i>
                                 <span className="border-bottom ml-3 pr-5 d-inline-block" style={{ fontSize: '15px', width: '80%' }}>
@@ -175,7 +183,7 @@ export default function UserProfile(props) {
                                                         requestSummary.map((item, index) => {
                                                             console.log(item)
                                                             return (
-                                                                <div className="card-box pt-1 pb-1">
+                                                                <div className="card-box pt-1 pb-1" key={index}>
                                                                     <div className="d-flex justify-content-between">
                                                                         <span className='text-dark' style={{ fontSize: '15px' }}>{item.amount.toLocaleString()} {item.budgetItem.name + ' ' + item.budgetItem.code}</span>
                                                                         {/* <div className="badge badge-primary rounded-0 pt-2 pb-1">PENDING</div> */}
