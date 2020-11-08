@@ -17,7 +17,7 @@ export default function NewUser() {
             { name: 'Add New User' },
         ])
     }, [])
-    
+
     const [firstName, setFirstName] = useState('')
     const [lastName, setLastName] = useState('')
     const [email, setEmail] = useState('')
@@ -28,16 +28,18 @@ export default function NewUser() {
     const [ward, setWard] = useState('')
     const [gender, setGender] = useState('')
     const [role, setRole] = useState('')
+
     const [isLoading, setIsLoading] = useState(false)
     const [error, setError] = useState('')
     const [message, setMessage] = useState({})
 
-    const [roles, setRoles] = useState([])
+    const [roles, setRoles] = useState({ loading: true, data: [] })
 
     function handleSubmit(e) {
         e.preventDefault()
         if (role === '0') {
-            return setError('Assign role to user')
+            return alert.error('Please assign ROLE to user')
+            // return setError('Assign role to user')
         }
         setIsLoading(true)
         setError('')
@@ -53,26 +55,20 @@ export default function NewUser() {
         }).then((response) => {
             setIsLoading(false)
             alert.success(response.data.message)
-
-            // setMessage({ title: 'success', text: response.data.message })
-            // window.location.replace('/user')
         }).catch((error) => {
             setIsLoading(false)
             console.log(error)
-            setError(error.response.data.userMessage)
+            alert.error(error.response.data.userMessage)
         })
     }
     // FETCH ROLES
     async function fetchRoles() {
-        setIsLoading(true)
         axios.get(`${URL}/accessControl/roles`, {
         }).then((response) => {
-            setRoles(response.data.data)
-            setIsLoading(false)
+            setRoles({ loading: false, data: response.data.data })
         }).catch((error) => {
-            setIsLoading(false)
+            setRoles({ loading: false, data: [] })
             console.log(error.response)
-            // setError(error.response.data.userMessage)
         })
     }
     useEffect(() => {
@@ -143,8 +139,8 @@ export default function NewUser() {
                                     <div className="col-lg-9">
                                         <select className='form-control' value={role} onChange={(e) => setRole(e.target.value)} required>
                                             <option value={0}>...</option>
-                                            {roles.length &&
-                                                roles.map(item => {
+                                            {roles.data.length &&
+                                                roles.data.map(item => {
                                                     return (
                                                         <option value={item._id}>{item.name} ({item.description})</option>
                                                     )
@@ -185,12 +181,7 @@ export default function NewUser() {
                                 </div>
                             </div>
                         </div>
-                        {!isLoading &&
-                            <div className="text-right">
-                                <button type="submit" className="btn btn-primary">Submit</button>
-                            </div>
-                        }
-                        {isLoading &&
+                        {roles.loading || isLoading ?
                             <div className="text-right">
                                 <button className="btn btn-primary" disabled>
                                     <div>
@@ -201,8 +192,11 @@ export default function NewUser() {
                                         </div>
                                 </button>
                             </div>
+                            :
+                            <div className="text-right">
+                                <button type="submit" className="btn btn-primary">Submit</button>
+                            </div>
                         }
-                        {/* </div> */}
                     </form>
                 </div>
             </div>
