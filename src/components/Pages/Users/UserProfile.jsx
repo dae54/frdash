@@ -28,44 +28,37 @@ export default function UserProfile(props) {
 
     const hist = useHistory()
 
-    const [user, setUser] = useState({})
-    const [requestSummary, setRequestSummary] = useState([])
-    const [loadingRequestsHist, setLoadingRequestHist] = useState(false)
-    const [loadingUser, setLoadingUser] = useState(true)
+    const [user, setUser] = useState({ loading: true, data: {} })
+    const [requestSummary, setRequestSummary] = useState({ loading: true, data: [] })
 
     const userId = props.location.state;
     // const userId = props.location.userId || props.location.state;
     async function fetchUserById() {
-        // setLoadingUser(true)
         await axios.get(`/user/${userId}`)
             .then(response => {
-                // setLoadingUser(false)
-                setUser(response.data.data)
+                setUser({ loading: false, data: response.data.data })
             }).catch(error => {
-                // setLoadingUser(false)
+                setUser({ loading: false, data: {} })
                 console.log('error', error.response)
             })
     }
     async function fetchRequestsByUserId() {
-        setLoadingRequestHist(true)
         await axios.get(`/requests/user/${userId}`)
             .then(response => {
-                setLoadingRequestHist(false)
                 let summary = [];
                 response.data.data.forEach(usrRequest => {
                     let { amount, description, createdAt, _id } = usrRequest;
                     let budgetItem = usrRequest.budgetItemId;
-                    // const color = StatusColorFormatter(usrRequest.status)
                     const status = usrRequest.status
                     const finalData = {
                         amount, description, createdAt, budgetItem, status, _id
                     }
                     summary.push(finalData)
                 })
-                setRequestSummary(summary)
+                setRequestSummary({ loading: false, data: summary })
             })
             .catch(error => {
-                setLoadingRequestHist(false)
+                setRequestSummary({ loading: false, data: [] })
                 console.log('error', error.response)
             })
     }
@@ -83,57 +76,67 @@ export default function UserProfile(props) {
                         <div className="card-body p-0" style={{ height: '39vh' }}>
                             <img style={imgStyle} className='' srcSet={`${userImg} 1.5x`} alt="userimg" />
                         </div>
-                        <div className="top d-inline pt-3 ml-3">
-                            <span className="text-dark p-0" style={{ fontSize: '20px' }}> {user.firstName + ' ' + user.lastName}</span> <br />
-                            <span className="text-dark mt--5" >{user.role ? user.role.name : ''}</span>
-                            <div className="float-right mr-1">
-                                <span className="badge badge-primary rounded-pill pt-2 pb-2 pl-3 pr-3" style={{ cursor: 'pointer' }} onClick={() => hist.push('edit', { user: user })}>
-                                    <i className="fa fa-pencil"></i> EDIT</span>
-                                <span className="badge badge-warning rounded-pill pt-2 pb-2 pl-3 pr-3 text-white ml-2" style={{ cursor: 'not-allowed' }}>
-                                    <i className="fa fa-trash"></i> DELETE</span>
+
+                        {user.loading ?
+                            <div className='pt-4 pb-4 pl-1 text-default'>
+                                <div className="spinner-border spinner-border-sm"></div> Please Wait...
                             </div>
-                        </div>
-                        {!user.invitationEmail &&
-                            <div className="ml-3 mt-3 mr-1 text-danger">
-                                Invitation Email not sent
+                            :
+                            <>
+                                <div className="top d-inline pt-3 ml-3">
+                                    <span className="text-dark p-0" style={{ fontSize: '20px' }}> {user.data.firstName + ' ' + user.data.lastName}</span> <br />
+                                    <span className="text-dark mt--5" >{user.data.role.name}</span>
+                                    <div className="float-right mr-1">
+                                        <span className="badge badge-primary rounded-pill pt-2 pb-2 pl-3 pr-3" style={{ cursor: 'pointer' }} onClick={() => hist.push('edit', { user: user.data })}>
+                                            <i className="fa fa-pencil"></i> EDIT</span>
+                                        <span className="badge badge-warning rounded-pill pt-2 pb-2 pl-3 pr-3 text-white ml-2" style={{ cursor: 'not-allowed' }}>
+                                            <i className="fa fa-trash"></i> DELETE</span>
+                                    </div>
+                                </div>
+                                {!user.invitationEmail &&
+                                    <div className="ml-3 mt-3 mr-1 text-danger">
+                                        Invitation Email not sent
                                 <span className="badge badge-primary rounded-pill pt-2 pb-2 pl-3 pr-3 ml-4" style={{ cursor: 'pointer' }} onClick={() => { }}>
-                                    <i className="fa fa-inbox"></i> SEND NOW
+                                            <i className="fa fa-inbox"></i> SEND NOW
                                 </span>
-                            </div>
+                                    </div>
+                                }
+                                <div className="mt-4 ml-3">
+                                    <p className='' >
+                                        <i className="fa fa-phone"></i>
+                                        <span className="border-bottom ml-3 pr-5 d-inline-block" style={{ fontSize: '15px', width: '80%' }}>
+                                            <a href={`tell:${user.data.phoneNumber}`}>{user.data.phoneNumber}</a>
+                                        </span>
+                                    </p>
+                                    <p className='' >
+                                        <i className="fa fa-envelope-o"></i>
+                                        <span className="border-bottom ml-3 pr-5 d-inline-block" style={{ fontSize: '15px', width: '80%' }}>
+                                            <a href={`mailto:${user.data.email}`}>{user.data.email}</a>
+                                        </span>
+                                    </p>
+                                    <p className='' >
+                                        <i className="fa fa-address-card-o"></i>
+                                        <span className="border-bottom ml-3 pr-5 d-inline-block" style={{ fontSize: '15px', width: '80%' }}>
+                                            {user.data.country + ',  ' + user.data.region}
+                                        </span>
+                                    </p>
+                                    <p className='' >
+                                        <i className="fa fa-female"></i>
+                                        <span className="border-bottom ml-3 pr-5 d-inline-block" style={{ fontSize: '15px', width: '80%' }}>
+                                            {user.data.gender}
+                                        </span>
+                                    </p>
+                                    <p className='' >
+                                        <i className="fa fa-user-plus"></i>
+                                        <span className="border-bottom ml-3 pr-5 d-inline-block" style={{ fontSize: '15px', width: '80%' }}>{user.data.createdAt}</span>
+                                    </p>
+                                </div>
+
+                                <span className="text-center mt-4 pb-2">
+                                    last seen 7 days ago
+                                </span>
+                            </>
                         }
-                        <div className="mt-4 ml-3">
-                            <p className='' >
-                                <i className="fa fa-phone"></i>
-                                <span className="border-bottom ml-3 pr-5 d-inline-block" style={{ fontSize: '15px', width: '80%' }}>
-                                    <a href={`tell:${user.phoneNumber}`}>{user.phoneNumber}</a>
-                                </span>
-                            </p>
-                            <p className='' >
-                                <i className="fa fa-envelope-o"></i>
-                                <span className="border-bottom ml-3 pr-5 d-inline-block" style={{ fontSize: '15px', width: '80%' }}>
-                                    <a href={`mailto:${user.email}`}>{user.email}</a>
-                                </span>
-                            </p>
-                            <p className='' >
-                                <i className="fa fa-address-card-o"></i>
-                                <span className="border-bottom ml-3 pr-5 d-inline-block" style={{ fontSize: '15px', width: '80%' }}>
-                                    {user.country + ',  ' + user.region}
-                                </span>
-                            </p>
-                            <p className='' >
-                                <i className="fa fa-female"></i>
-                                <span className="border-bottom ml-3 pr-5 d-inline-block" style={{ fontSize: '15px', width: '80%' }}>
-                                    {user.gender}
-                                </span>
-                            </p>
-                            <p className='' >
-                                <i className="fa fa-user-plus"></i>
-                                <span className="border-bottom ml-3 pr-5 d-inline-block" style={{ fontSize: '15px', width: '80%' }}>{user.createdAt}</span>
-                            </p>
-                        </div>
-                        <span className="text-center mt-4 pb-2">
-                            last seen 7 days ago
-                        </span>
                     </div>
                 </div>
                 <div className="col-6">
@@ -175,12 +178,16 @@ export default function UserProfile(props) {
 
                                         <div className="tab-pane show active" id="history-tab" style={{ maxHeight: '60vh', overflowX: 'hidden', overflowY: 'auto' }}>
 
-                                            {!loadingRequestsHist ?
+                                            {requestSummary.loading ?
                                                 <>
-                                                    {requestSummary.length == 0 ?
+                                                    <div className="spinner-border spinner-border-sm"></div> Please Wait...
+                                                </>
+                                                :
+                                                <>
+                                                    {requestSummary.data.length == 0 ?
                                                         <div className='pl-3 pt-3 pb-1 text-uppercase'>No record found</div>
                                                         :
-                                                        requestSummary.map((item, index) => {
+                                                        requestSummary.data.map((item, index) => {
                                                             console.log(item)
                                                             return (
                                                                 <div className="card-box pt-1 pb-1" key={index}>
@@ -202,10 +209,12 @@ export default function UserProfile(props) {
                                                             )
                                                         })}
                                                 </>
-                                                :
-                                                <>
-                                                    loading
-                                                </>
+                                                // :
+                                                // <div className="btn btn-default text-white  pl-5 pr-5 pt-3 pb-3">
+                                                // <>
+                                                //     <div className="spinner-border spinner-border-sm"></div> Please Wait...
+                                                // </>
+                                                // {/* </div> */}
                                             }
                                             {/* {Array.from({ length: 5 }, () => {
                                                 return (
