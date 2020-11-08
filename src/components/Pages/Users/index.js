@@ -39,7 +39,7 @@ export default function Index() {
             </div>
             {isLoading ?
                 <div className='row'>
-                    {Array.from({ length: 8 }, () => {
+                    {Array.from({ length: 2 }, () => {
                         return (
                             <div className='col-3'>
                                 <div className='jumbotron blink_me'></div>
