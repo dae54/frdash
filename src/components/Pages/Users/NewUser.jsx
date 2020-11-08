@@ -3,11 +3,13 @@ import axios from 'axios'
 import SweetAlert from 'react-bootstrap-sweetalert'
 import URL from '../../../URL'
 import { AppContext } from '../../services/AppContext'
+import { useAlert } from 'react-alert'
 
 
 export default function NewUser() {
     const { state, dispatch } = React.useContext(AppContext)
     let setBreadcrumbPath = path => dispatch({ type: 'breadcrumbPath', payload: path })
+    const alert = useAlert()
 
     useEffect(() => {
         setBreadcrumbPath([
@@ -25,7 +27,7 @@ export default function NewUser() {
     const [district, setDistrict] = useState('')
     const [ward, setWard] = useState('')
     const [gender, setGender] = useState('')
-    const [roleId, setRoleId] = useState('')
+    const [role, setRole] = useState('')
     const [isLoading, setIsLoading] = useState(false)
     const [error, setError] = useState('')
     const [message, setMessage] = useState({})
@@ -34,14 +36,14 @@ export default function NewUser() {
 
     function handleSubmit(e) {
         e.preventDefault()
-        if (roleId === '0') {
+        if (role === '0') {
             return setError('Assign role to user')
         }
         setIsLoading(true)
         setError('')
-        console.log(roleId)
+        console.log(role)
 
-        const newUser = { firstName, lastName, email, phoneNumber, country, region, district, ward, gender, roleId }
+        const newUser = { firstName, lastName, email, phoneNumber, country, region, district, ward, gender, role }
         axios.post(`${URL}/user/register`, {
             headers: {
                 'Content-Type': 'application/json',
@@ -50,7 +52,9 @@ export default function NewUser() {
             newUser
         }).then((response) => {
             setIsLoading(false)
-            setMessage({ title: 'success', text: response.data.message })
+            alert.success(response.data.message)
+
+            // setMessage({ title: 'success', text: response.data.message })
             // window.location.replace('/user')
         }).catch((error) => {
             setIsLoading(false)
@@ -74,17 +78,17 @@ export default function NewUser() {
     useEffect(() => {
         fetchRoles();
     }, [])
-    const MessagePrompt = () => {
-        return (
-            <SweetAlert
-                success
-                title="Woot!"
-                onConfirm={() => setMessage('')}
-            >
-                I did it!
-            </SweetAlert>
-        )
-    }
+    // const MessagePrompt = () => {
+    //     return (
+    //         <SweetAlert
+    //             success
+    //             title="Woot!"
+    //             onConfirm={() => setMessage('')}
+    //         >
+    //             I did it!
+    //         </SweetAlert>
+    //     )
+    // }
     return (
         <React.Fragment>
             <div className="row">
@@ -137,7 +141,7 @@ export default function NewUser() {
                                 <div className="form-group row">
                                     <label className="col-lg-3 col-form-label">Role:</label>
                                     <div className="col-lg-9">
-                                        <select className='form-control' value={roleId} onChange={(e) => setRoleId(e.target.value)} required>
+                                        <select className='form-control' value={role} onChange={(e) => setRole(e.target.value)} required>
                                             <option value={0}>...</option>
                                             {roles.length &&
                                                 roles.map(item => {
