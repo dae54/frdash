@@ -46,11 +46,11 @@ export default function Preview({ setFeedback }) {
         axios.post('/budgets/', {
             newBudget
         }).then(response => {
-            setFeedback({category:'success', message:response.data.message})
+            setFeedback({ category: 'success', message: response.data.message })
             //TODO reset budget context to initial state
             //TODO 
         }).catch(error => {
-            setFeedback({category:'danger', message:error.response.data.developerMessage})
+            setFeedback({ category: 'danger', message: error.response.data.developerMessage })
             console.log(error.response)
         })
     }
@@ -59,7 +59,7 @@ export default function Preview({ setFeedback }) {
             <div className="card shadow-sm">
                 <div className="card-header bg-light">
                     <span>Preview</span>
-                    <button className="btn btn-outline-success float-right" onClick={handleSubmit}>Submit</button>
+                    {/* <button className="btn btn-outline-success float-right" onClick={handleSubmit}>Submit</button> */}
                 </div>
                 <div className="card-body">
                     {/* Budget Identity */}
@@ -88,6 +88,9 @@ export default function Preview({ setFeedback }) {
                         }
                     </div>
                 </div>
+                <div className="card-footer">
+                    <button className="btn btn-outline-success float-right" onClick={handleSubmit}>Submit</button>
+                </div>
             </div>
         </React.Fragment>
     )
@@ -101,7 +104,7 @@ const BudgetItemAmount = (props) => {
             <div className="form-group row">
                 <label className="col-lg-3 col-form-label">{name}</label>
                 <div className="col-9">
-                    <input type="number" value={amount} placeholder="Budget Name" className="form-control" disabled />
+                    <input type="text" value={Number(amount).toLocaleString()} placeholder="Budget Name" className="form-control" disabled />
                 </div>
             </div>
         </div>
