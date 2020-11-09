@@ -6,15 +6,16 @@ import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 
 
 export default function Reports() {
-    const [budgets, setBudgets] = useState([])
+    const [budgets, setBudgets] = useState({ loading: true, data: [] })
     async function fetchBudgets() {
         await axios.get('budgets', {
             params: {
                 select: ['name', 'createdAt'],
             }
         }).then(response => {
-            setBudgets(response.data.data)
+            setBudgets({ loading: false, data: response.data.data })
         }).catch(error => {
+            setBudgets({ loading: false, data: [] })
             console.log(error.response)
         })
     }
@@ -30,18 +31,26 @@ export default function Reports() {
         <React.Fragment>
             <div className="card-box">
                 <h3 className="card-title text-muted pl-3">Reports</h3>
-                {budgets.length === 0 ?
-                    <h5 className="card-title text-default pl-">
-                        No budgets created. <Link to={'/budgets/create'}>Create New budget</Link>
-                    </h5>
+                {budgets.loading ?
+                    <p>
+                        <div className="spinner-border spinner-border-sm" role="status">
+                            <span className="sr-only">Loading...</span>
+                        </div> &nbsp; Contacting server. Please wait
+                    </p>
                     :
-                    <div className="mt-n5">
-                        <BootstrapTable condensed bordered={false} trStyle={{ cursor: 'pointer' }} data={budgets} dataField='requests' hover version='4' search>
-                            <TableHeaderColumn dataField='name' dataSort={true}>NAME</TableHeaderColumn>
-                            <TableHeaderColumn dataField='createdAt' isKey dataFormat={(cell) => moment(cell).format('MMM DD, YYYY')} filterFormatted>CREATED AT</TableHeaderColumn>
-                            <TableHeaderColumn dataField='_id' filterFormatted dataFormat={(cell) => <Report id={cell} />}>REPORT</TableHeaderColumn>
-                        </BootstrapTable>
-                    </div>
+                    budgets.data.length === 0 ?
+                        <h5 className="card-title text-default pl-">
+                            No budgets created. <Link to={'/budgets/create'}>Create New budget</Link>
+                        </h5>
+                        :
+                        <div className="mt-n5">
+                            <BootstrapTable condensed bordered={false} trStyle={{ cursor: 'pointer' }} data={budgets.data} dataField='requests' hover version='4' search>
+                                <TableHeaderColumn dataField='name' dataSort={true}>NAME</TableHeaderColumn>
+                                <TableHeaderColumn dataField='createdAt' isKey dataFormat={(cell) => moment(cell).format('MMM DD, YYYY')} filterFormatted>CREATED AT</TableHeaderColumn>
+                                <TableHeaderColumn dataField='_id' filterFormatted dataFormat={(cell) => <Report id={cell} />}>REPORT</TableHeaderColumn>
+                            </BootstrapTable>
+                        </div>
+
                 }
             </div>
         </React.Fragment>

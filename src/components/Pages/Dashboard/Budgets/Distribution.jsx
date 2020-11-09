@@ -6,7 +6,7 @@ import StatusRadial from './StatusRadial'
 import { Link } from 'react-router-dom'
 
 export default function Distribution() {
-    const [budgets, setBudgets] = useState([])
+    const [budgets, setBudgets] = useState({ loading: true, data: [] })
     const [budgetOnFocus, setBudgetOnFocus] = useState({ value: '', id: '' })
     const [budgetItems, setBudgetItems] = useState([])
 
@@ -41,12 +41,12 @@ export default function Distribution() {
             }
         }).then(response => {
             // console.log(response.data.data)
-            setBudgets(response.data.data)
-
+            setBudgets({ loading: false, data: response.data.data })
             //set the first value of budget as budget on focus
             setBudgetOnFocus({ value: response.data.data[0].name, id: response.data.data[0]._id })
 
         }).catch(error => {
+            setBudgets({ loading: false, data: [] })
             console.log(error.response)
         })
     }
@@ -103,48 +103,58 @@ export default function Distribution() {
                 <span className='d-inline-block pl-3'>
                     <h3 className="card-title text-muted">Budget Distribution</h3>
                 </span>
-                {budgets.length !== 0 &&
-                    <span className="d-inline-block float-right">
-                        <div className="btn-group float-right">
-                            <button className="btn btn-white shadow-sm rounded-lg pb-0 pt-0 btn-sm dropdown-toggle text-muted" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                {budgetOnFocus.value} &nbsp;&nbsp;
-                        </button>
-                            <div className="dropdown-menu" style={{ maxHeight: '30vh', overflowY: 'auto' }}>
-                                {budgets.map(item =>
-                                    <span className="dropdown-item pt-0 pb-0"
-                                        key={item._id}
-                                        style={{ cursor: 'pointer' }}
-                                        id={item._id}
-                                        onClick={handleBudgetChange}>
-                                        {item.name}
-                                    </span>
-                                )}
-                            </div>
+                {budgets.loading ?
+                    <p>
+                        <div className="spinner-border spinner-border-sm" role="status">
+                            <span className="sr-only">Loading...</span>
+                        </div> &nbsp; Contacting server. Please wait
+                    </p>
+                    :
+                    <>
+                        {budgets.data.length !== 0 &&
+                            <span className="d-inline-block float-right">
+                                <div className="btn-group float-right">
+                                    <button className="btn btn-white shadow-sm rounded-lg pb-0 pt-0 btn-sm dropdown-toggle text-muted" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        {budgetOnFocus.value} &nbsp;&nbsp;
+                                    </button>
+                                    <div className="dropdown-menu" style={{ maxHeight: '30vh', overflowY: 'auto' }}>
+                                        {budgets.data.map(item =>
+                                            <span className="dropdown-item pt-0 pb-1"
+                                                key={item._id}
+                                                style={{ cursor: 'pointer' }}
+                                                id={item._id}
+                                                onClick={handleBudgetChange}>
+                                                {item.name}
+                                            </span>
+                                        )}
+                                    </div>
+                                </div>
+                            </span>
+                        }
+                        <div className="row">
+                            {budgets.data.length === 0 ?
+                                <h5 className="card-title text-default pl-3">
+                                    No budgets created. <Link to={'/budgets/create'}>Create New budget</Link>
+                                </h5>
+                                :
+                                <>
+                                    <div className="col-7">
+                                        <Chart options={options} series={series} type="donut" height={280} />
+                                    </div>
+                                    <div className="col-5">
+                                        {budgetItems && budgetOnFocus.id &&
+                                            <StatusRadial budgetItems={budgetItems} budgetOnFocus={budgetOnFocus} />
+                                        }
+                                    </div>
+                                </>
+                            }
                         </div>
-                    </span>
-                }
-                <div className="row">
-                    {budgets.length === 0 ?
-                        <h5 className="card-title text-default pl-3">
-                            No budgets created. <Link to={'/budgets/create'}>Create New budget</Link>
-                        </h5>
-                        :
-                        <>
-                            <div className="col-7">
-                                <Chart options={options} series={series} type="donut" height={280} />
+                        {budgets.data.length !== 0 &&
+                            <div className="card-footer bg-transparent text-center">
+                                <Link to={'#'}>See More</Link>
                             </div>
-                            <div className="col-5">
-                                {budgetItems && budgetOnFocus.id &&
-                                    <StatusRadial budgetItems={budgetItems} budgetOnFocus={budgetOnFocus} />
-                                }
-                            </div>
-                        </>
-                    }
-                </div>
-                {budgets.length !== 0 &&
-                    <div className="card-footer bg-transparent text-center">
-                        <Link to={'#'}>See More</Link>
-                    </div>
+                        }
+                    </>
                 }
             </div>
         </React.Fragment>

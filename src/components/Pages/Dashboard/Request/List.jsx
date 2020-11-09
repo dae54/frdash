@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom'
 import StatusFormatter from '../../../Gadgets/StatusFormatter'
 
 export default function List() {
-    const [requests, setRequests] = useState([])
+    const [requests, setRequests] = useState({ loading: true, data: [] })
     async function fetchRequests() {
         await axios.get('requests', {
             params: {
@@ -17,8 +17,9 @@ export default function List() {
             }
         }).then(response => {
             // console.log(response.data.data)
-            setRequests(response.data.data)
+            setRequests({ loading: false, data: response.data.data })
         }).catch(error => {
+            setRequests({ loading: false, data: [] })
             console.log(error.response)
         })
     }
@@ -45,35 +46,42 @@ export default function List() {
                         </button>
                     </div>
                 </span>
-                <div className="card-body p-0 mt-n2" style={{ height: requests.length ? '310px':'' }}>
-                    {requests.length ?
-                        <table className="table table-s table-borderless border-0 table-striped">
-                            <thead>
-                                <tr>
-                                    <th scope="col">USER</th>
-                                    <th scope="col">AMOUNT</th>
-                                    <th scope="col">REQUEST DATE</th>
-                                    <th scope="col">STATUS</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {requests.map(request => {
-                                    return (
-                                        <tr>
-                                            <td>{`${request.userId.firstName} ${request.userId.lastName}`}</td>
-                                            <td>{request.amount.toLocaleString()}</td>
-                                            <td>{moment(request.createdAt).format('MMM DD, YYYY')}</td>
-                                            <td className='pt-1'><StatusFormatter status={request.status} /></td>
-                                        </tr>
-                                    )
-                                })}
-                            </tbody>
-                        </table>
+                <div className="card-body pb-1 mt-n2" style={{ height: requests.data.length ? '310px' : '' }}>
+                    {requests.loading ?
+                        <p>
+                            <div className="spinner-border spinner-border-sm" role="status">
+                                <span className="sr-only">Loading...</span>
+                            </div> &nbsp; Contacting server. Please wait
+                        </p>
                         :
-                        <h5 className="card-title text-mute p-4">No data to show.</h5>
+                        requests.data.length ?
+                            <table className="table table-s table-borderless border-0 table-striped">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">USER</th>
+                                        <th scope="col">AMOUNT</th>
+                                        <th scope="col">REQUEST DATE</th>
+                                        <th scope="col">STATUS</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {requests.data.map(request => {
+                                        return (
+                                            <tr>
+                                                <td>{`${request.userId.firstName} ${request.userId.lastName}`}</td>
+                                                <td>{request.amount.toLocaleString()}</td>
+                                                <td>{moment(request.createdAt).format('MMM DD, YYYY')}</td>
+                                                <td className='pt-1'><StatusFormatter status={request.status} /></td>
+                                            </tr>
+                                        )
+                                    })}
+                                </tbody>
+                            </table>
+                            :
+                            <h5 className="card-title text-mute">No data to show.</h5>
                     }
                 </div>
-                {requests.length !== 0 &&
+                {requests.data.length !== 0 &&
                     <div className="card-footer text-center bg-transparent mt-n3">
                         <Link to='/requests'>
                             See More

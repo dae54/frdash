@@ -4,7 +4,7 @@ import axios from 'axios'
 // import moment from 'moment'
 
 export default function Statistics() {
-    const [allRequests, setAllRequests] = useState([])
+    const [allRequests, setAllRequests] = useState({ loading: true, data: [] })
 
 
     /**
@@ -19,11 +19,14 @@ export default function Statistics() {
             }
         }).then(response => {
             console.log(response.data.data)
-            setAllRequests(response.data.data)
+            setAllRequests({ loading: false, data: response.data.data })
+        }).catch(error => {
+            setAllRequests({ loading: false, data: [] })
+            console.log(error)
         })
     }
 
-    let x_axis = allRequests.map(request => {
+    let x_axis = allRequests.data.map(request => {
         return request.createdAt
     })
 
@@ -33,7 +36,7 @@ export default function Statistics() {
 
     let series = [{
         name: 'Requests',
-        data: allRequests.map(request => {
+        data: allRequests.data.map(request => {
             return request.amount
         })
     }
@@ -118,11 +121,19 @@ export default function Statistics() {
                         </button>
                     </div>
                 </span>
-                {allRequests.length === 0 ?
-                    <h5 className="card-title text-mute">No data to show. Ask fund requesters to request funds or change filters</h5>
+                {allRequests.loading ?
+                    <p>
+                        <div className="spinner-border spinner-border-sm" role="status">
+                            <span className="sr-only">Loading...</span>
+                        </div> &nbsp; Contacting server. Please wait
+                    </p>
                     :
-                    <Chart options={options} series={series} type="area" width='100%' height='300px' />
+                    allRequests.data.length === 0 ?
+                        <h5 className="card-title text-mute">No requests to show.</h5>
+                        :
+                        <Chart options={options} series={series} type="area" width='100%' height='300px' />
                 }
+
             </div>
 
         </React.Fragment>
