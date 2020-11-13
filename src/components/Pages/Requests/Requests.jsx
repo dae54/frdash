@@ -8,7 +8,7 @@ import Statistics from './Statistics'
 import { AppContext } from '../../services/AppContext'
 
 export default function Requests() {
-    const { state, dispatch } = React.useContext(AppContext)
+    const { dispatch } = React.useContext(AppContext)
     let setBreadcrumbPath = path => dispatch({ type: 'breadcrumbPath', payload: path })
 
     useEffect(() => {
@@ -16,10 +16,10 @@ export default function Requests() {
             { name: 'All Requests', url: '/requests' },
         ])
     }, [])
-    
+
     const [requestStats, setRequestStats] = useState({})
-    const [requests, setRequests] = useState({})
-    const [requestsLoaded, setRequestsLoaded] = useState(false)
+    const [requests, setRequests] = useState({ loading: true, data: {} })
+    // const [requestsLoaded, setRequestsLoaded] = useState(false)
 
     async function fetchRequestStats() {
         await axios.get(`${URL}/requests/stats/`, {
@@ -33,9 +33,10 @@ export default function Requests() {
     async function fetchRequests() {
         await axios.get('/requests', {
         }).then(response => {
-            setRequests(response.data.data);
-            setRequestsLoaded(true);
+            setRequests({ loading: false, data: response.data.data });
+            // setRequestsLoaded(true);
         }).catch(error => {
+            setRequests({ loading: false, data: [] });
             console.log(error)
         })
     }
@@ -62,12 +63,15 @@ export default function Requests() {
                 }
             </div>
             <div className='row'>
-                {requestsLoaded &&
-                    <RequestDataTable requests={requests} />
+                {requests.loading ?
+                    <p>
+                        <div className="spinner-border spinner-border-sm" role="status">
+                            <span className="sr-only">Loading...</span>
+                        </div> &nbsp; Contacting server. Please wait
+                    </p>
+                    :
+                    <RequestDataTable requests={requests.data} />
                 }
-                {/* {!requestsLoaded &&
-                
-                } */}
             </div>
         </React.Fragment>
     )

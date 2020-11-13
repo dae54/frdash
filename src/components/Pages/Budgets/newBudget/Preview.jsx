@@ -7,6 +7,7 @@ export default function Preview({ setFeedback }) {
 
     // const [total, setTotal] = useState()
     const { state } = React.useContext(BudgetContext)
+
     // var total = 0;
 
     // useEffect(() => {
@@ -89,7 +90,11 @@ export default function Preview({ setFeedback }) {
                     </div>
                 </div>
                 <div className="card-footer">
-                    <button className="btn btn-outline-success float-right" onClick={handleSubmit}>Submit</button>
+                    {state.budgetName && state.budgetDescription ?
+                        <button className="btn btn-outline-success float-right" onClick={handleSubmit}>Submit</button>
+                        :
+                        <button className="btn btn-outline-success float-right" disabled>Fill all required Data</button>
+                    }
                 </div>
             </div>
         </React.Fragment>

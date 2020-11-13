@@ -16,9 +16,11 @@ export default function Notifications(props) {
                 userID: `${id}`
             }
         })
-        // console.log(socket)
+        console.log(socket)
         socket.emit('subscribe', { token: sessionStorage.getItem('token') })
         socket.on('notifications', data => {
+            console.log(data)
+
             setNotifs(data)
             props.setNotificationCount(data.length)
         })

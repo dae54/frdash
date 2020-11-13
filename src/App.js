@@ -13,7 +13,8 @@ import PrivateArea from './components/PrivateArea';
 // import validateToken from './components/services/sessionManager'
 // start of axios config
 axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('token')}`;
-axios.defaults.timeout = 5400000
+// axios.defaults.timeout = 540000
+axios.defaults.timeout = 20000
 axios.defaults.baseURL = URL
 
 // axios.interceptors.request.use(config => {

@@ -50,7 +50,15 @@ export default function RequestStatusController(props) {
                 <StatusFormatter status={request.status} />
                 <RemarksController action={action} handleStatusChange={handleStatusChange} statusChanged={statusChanged} />
 
-                {!isLoading ?
+                {isLoading ?
+                    <button className="btn btn-info mt- ml-2" disabled>
+                        <div>
+                            <div className="spinner-border text-light spinner-border-sm">
+                                <span className="sr-only">Please Wait...</span>
+                            </div>&nbsp;Please Wait...
+                        </div>
+                    </button>
+                    :
                     <>
                         {request.status === 0 && //IF REQUEST IS PENDING
                             <li className="dropdown has-arrow mt-n1" style={{ listStyleType: 'none' }}>
@@ -99,22 +107,7 @@ export default function RequestStatusController(props) {
                             </li>
                         }
                     </>
-                    :
-            <div className="dash-widget-info">
-                <button className="widget-title1 btn btn-info mt-2 ml-5" disabled>
-                    <div>
-                        <div className="spinner-border text-light spinner-border-sm " role="status">
-                            <span className="sr-only">Please Wait...</span>
-                        </div>
-                                &nbsp;Please Wait...
-                            </div>
-                </button>
-            </div>
                 }
-            {/* {isLoading &&
-                    
-                    // <span className="btn btn-sm btn-warning btn-block rounded-pill mt-2 ml-4"><i className='fa fa-trash mr-1'></i> DELETE</span>
-                } */}
             </div>
         </React.Fragment >
     )

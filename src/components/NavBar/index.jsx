@@ -27,7 +27,9 @@ export default function Index() {
 
     function lock() {
         sessionStorage.setItem('pathname', hist.location.pathname)
-        sessionStorage.setItem('state', JSON.stringify(hist.location.state))
+        sessionStorage.setItem('state', JSON.stringify(hist.location.state || ''))
+        localStorage.removeItem('token')
+
         setIsLocked(true)
 
         // localStorage.removeItem('token')
@@ -73,20 +75,38 @@ export default function Index() {
                             </div>
                         </div>
                     </li>
+                    {/* {state.userDetails === '' ?
+                        // 'wait'
+                        <li className="nav-item dropdown">
+                            <a href="#">Initializing...</a>
+                        </li>
+                        : */}
                     <li className="nav-item dropdown has-arrow">
                         <a href="#" className="dropdown-toggle nav-link user-link" data-toggle="dropdown">
-                            <span className="user-img">
-                                <span className="avatar">{setAvatar(state.userDetails.displayName.split(' ')[0], state.userDetails.displayName.split(' ')[1])}</span>
+                            {state.userDetails === '' ?
+                                <span className="">Initializing...</span>
+                                :
+                                <>
+                                    <span className="user-img">
+                                        <span className="avatar">{setAvatar(state.userDetails.firstName, state.userDetails.lastName)}</span>
+                                        {/* <span className="avatar">{setAvatar(JSON.parse(localStorage.getItem('userDetails')).displayName.split(' ')[0], localStorage.getItem('userDetails')).displayName.split(' ')[1]}</span> */}
 
-                                {/* <img className="rounded-circle" src="assets/img/user.jpg" width="24" alt="Admin" /> */}
-                                {/* <span className="status online"></span> */}
-                            </span>
-                            <span>{state.userDetails.displayName.toUpperCase()}</span>
+                                        {/* <img className="rounded-circle" src="assets/img/user.jpg" width="24" alt="Admin" /> */}
+                                        {/* <span className="status online"></span> */}
+                                    </span>
+                                    <span className='text-uppercase'>{`${state.userDetails.firstName} ${state.userDetails.lastName}`}
+                                        <small>
+                                            ({state.userDetails.role.name})
+                                    </small>
+                                    </span>
+                                </>
+                            }
+                            {/* <p><small>asdf</small></p> */}
                         </a>
                         <div className="dropdown-menu text-center">
                             <div className="row pl-5 pr-5">
                                 <div className="col">
-                                    <span className="avatar">{state.userDetails.displayName.slice(0, 1).toUpperCase()}</span>
+                                    {/* <span className="avatar">{state.userDetails.displayName.slice(0, 1).toUpperCase()}</span> */}
                                     <div className='row'>
                                         <i className="fa fa-key rounded-circle shadow-sm p-3 mr-3" style={{ cursor: 'pointer' }} onClick={logout}></i>
                                         <i className="fa fa-lock rounded-circle shadow-sm p-3" style={{ cursor: 'pointer' }} onClick={lock}></i>
@@ -98,6 +118,9 @@ export default function Index() {
                             <a className="dropdown-item" data-toggle="modal" data-target="#logoOutModal">Logout</a> */}
                         </div>
                     </li>
+                    {/* } */}
+
+
                 </ul>
                 <div className="dropdown mobile-user-menu float-right">
                     <a href="#" className="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i className="fa fa-ellipsis-v"></i></a>
