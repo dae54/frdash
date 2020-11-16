@@ -91,6 +91,10 @@ body ::-webkit-scrollbar-thumb {
 .bg-default{
 	background-color: #43425D !important; 
 }
+.badge-default{
+	background-color: #43425D !important; 
+	color:white !important
+}
 .text-default{
 	color: #43425D !important;
 }
