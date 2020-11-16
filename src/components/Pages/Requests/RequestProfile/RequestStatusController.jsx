@@ -2,13 +2,20 @@ import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import { useHistory } from 'react-router-dom'
 import StatusFormatter from '../../../Gadgets/StatusFormatter';
-
+import { useAlert } from 'react-alert'
+import { Modal, Button, Form } from 'react-bootstrap'
 export default function RequestStatusController(props) {
     let { request, setRequest, setRefreshRemarks } = props
     const hist = useHistory()
     const [isLoading, setIsLoading] = useState(false)
     const [action, setAction] = useState()
     const [statusChanged, setStatusChanged] = useState(false)
+    const [revertReason, setRevertReason] = useState('')
+    const alert = useAlert()
+
+    const [show, setShow] = useState(false);
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
 
     async function handleStatusChange(status, remarks = '') {
         setIsLoading(true)
@@ -40,6 +47,31 @@ export default function RequestStatusController(props) {
                 console.log(error.response)
             })
     }
+
+    const [validated, setValidated] = useState(false);
+
+    const revertRequest = async (event) => {
+        event.preventDefault();
+        const form = event.currentTarget;
+        if (form.checkValidity() === false) {
+            event.stopPropagation();
+        }
+        setValidated(true);
+        setIsLoading(true)
+        await axios.patch(`/requests/revertAprove/${request._id}`, {
+            remarks: revertReason
+        }).then(response => {
+            setRequest(response.data.data)
+            setRefreshRemarks(true)
+            setIsLoading(false)
+            alert.success(response.data.message)
+            handleClose()
+        }).catch(error => {
+            setIsLoading(false)
+            // alert.error(error.response.userMessage)
+            console.log(error.response)
+        })
+    };
     useEffect(() => {
         setStatusChanged(false)
     }, [action, setStatusChanged])
@@ -106,9 +138,53 @@ export default function RequestStatusController(props) {
                                 </div>
                             </li>
                         }
+                        {request.status === 4 && //Disbursed
+                            <span className="badge badge-success rounded-sm pt-2 pb-2 pl-3 pr-3 ml-3" style={{ cursor: 'pointer' }} onClick={handleShow}>REVERT CHANGES</span>
+                        }
                     </>
                 }
             </div>
+            <Modal show={show} onHide={handleClose} centered>
+                <Modal.Header closeButton>
+                    <span class="modal-title" id="exampleModalLabel">
+                        <div>
+                            <small>Revert Request</small>
+                        </div>
+                        <StatusFormatter status={4} /> <i className="fa fa-arrow-right"></i> <StatusFormatter status={0} />
+                    </span>
+                </Modal.Header>
+                <Form noValidate validated={validated} onSubmit={revertRequest}>
+                    <Modal.Body>
+                        <Form.Group controlId="exampleForm.ControlTextarea1">
+                            <Form.Label>Tell us why you want to revert</Form.Label>
+                            <Form.Group controlId="validationCustom04">
+                                <Form.Control as="textarea" rows={3} style={{ resize: 'none' }} value={revertReason} onChange={(e) => setRevertReason(e.target.value)} required />
+                                <Form.Control.Feedback type="invalid">
+                                    Please provide description.
+                                </Form.Control.Feedback>
+                            </Form.Group>
+                        </Form.Group>
+                    </Modal.Body>
+                    <Modal.Footer>
+                        {isLoading ?
+                            <button className='btn btn-default btn-sm'>
+                                <div className="spinner-border spinner-border-sm" role="status">
+                                    <span className="sr-only">Loading...</span>
+                                </div> &nbsp; Reverting
+                            </button>
+                            :
+                            <>
+                                <Button variant="secondary" onClick={handleClose}>
+                                    Close
+                                </Button>
+                                <Button variant="primary" type='submit'>
+                                    Confirm Revert
+                                </Button>
+                            </>
+                        }
+                    </Modal.Footer>
+                </Form>
+            </Modal>
         </React.Fragment >
     )
 
