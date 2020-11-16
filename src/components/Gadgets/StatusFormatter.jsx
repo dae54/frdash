@@ -46,7 +46,7 @@ export default function StatusFormatter(props) {
             )
         case 4:
             return (
-                <span className="badge badge-primary rounded-sm pt-2 pb-2 pl-3 pr-3">DISBURSED</span>
+                <span className="badge badge-default rounded-sm pt-2 pb-2 pl-3 pr-3">DISBURSED</span>
 
                 // <div className="dash-widget-info text-righ">
                 //     <span className="widget-title1 bg-primary">DISBURSED <i className="fa fa-check" aria-hidden="true"></i></span>
