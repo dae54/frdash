@@ -17,16 +17,17 @@ export default function Requests() {
         ])
     }, [])
 
-    const [requestStats, setRequestStats] = useState({})
-    const [requests, setRequests] = useState({ loading: true, data: {} })
+    const [requestStats, setRequestStats] = useState({ loading: true, data: {} })
+    const [requests, setRequests] = useState({ loading: true, data: [] })
     // const [requestsLoaded, setRequestsLoaded] = useState(false)
 
     async function fetchRequestStats() {
         await axios.get(`${URL}/requests/stats/`, {
         }).then(response => {
             // console.log('response.data.data');
-            setRequestStats(response.data.data);
+            setRequestStats({ loading: false, data: response.data.data });
         }).catch(error => {
+            setRequestStats({ loading: false, data: {} });
             console.log(error)
         })
     }
@@ -58,8 +59,20 @@ export default function Requests() {
                 </div>
             </div>
             <div className="row">
-                {requestStats.pendingRequests &&
-                    <Statistics stats={requestStats} />
+                {requestStats.loading ?
+                    Array.from({ length: 3 }, () => {
+                        return (
+                            <div className='col-3'>
+                                <div className='jumbotron blink_me pt-5 pb-4'>
+                                    <div className="spinner-border spinner-border-sm p-0" role="status">
+                                        <span className="sr-only">Loading...</span>
+                                    </div>
+                                </div>
+                            </div>
+                        )
+                    })
+                    :
+                    <Statistics statistics={requestStats.data} />
                 }
             </div>
             <div className='row'>
