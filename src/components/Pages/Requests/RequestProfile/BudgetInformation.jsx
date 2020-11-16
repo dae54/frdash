@@ -4,7 +4,7 @@ import URL from '../../../../URL'
 import StatusFormatter from '../../../Gadgets/StatusFormatter'
 
 export default function BudgetInformation(props) {
-    const [budgetItemInfo, setBudgetItemInfo] = useState({})
+    const [budgetItemInfo, setBudgetItemInfo] = useState({ loading: true, data: {} })
     // const [budgetInfo, setBudgetInfo] = useState({})
     const request = props.request
     const disburseAlert = props.disburseAlert
@@ -14,10 +14,10 @@ export default function BudgetInformation(props) {
             params: { budgetId: props.budgetId._id }
         }).then(response => {
             console.log(response.data.data)
-            setBudgetItemInfo(response.data.data);
+            setBudgetItemInfo({ loading: false, data: response.data.data });
             // setBudgetInfo(response.data.budget);
         }).catch(error => {
-            console.log('error')
+            setBudgetItemInfo({ loading: false, data: {} });
             console.log(error)
         })
     }
@@ -35,7 +35,7 @@ export default function BudgetInformation(props) {
         return Math.round(a / b)
     }
 
-    props.setDisburseAlert(suggestDisburse(props.request.amount, budgetItemInfo.availableBudgetItemBalance))
+    props.setDisburseAlert(suggestDisburse(props.request.amount, budgetItemInfo.data.availableBudgetItemBalance))
 
     useEffect(() => {
         fetchBudgetItemInfo();
@@ -45,8 +45,13 @@ export default function BudgetInformation(props) {
         <React.Fragment>
             {request.status !== 4 ?
                 <div className="card">
-                    <div className="card-header pb-2">
+                    <div className="card-header pb-2 d-flex justify-content-between">
                         <h4 className='text-dark'>Budget Information</h4>
+                        {budgetItemInfo.loading &&
+                            <div className="spinner-border spinner-border-sm" role="status">
+                                <span className="sr-only">Loading...</span>
+                            </div>
+                        }
                     </div>
                     <div className="card-body pt-0">
                         <p className="text-monospace mb-1">From&nbsp;
@@ -63,7 +68,9 @@ export default function BudgetInformation(props) {
                                 <tr>
                                     <td>Amount Available</td>
                                     <td className='float-right'>
-                                        {budgetItemInfo.availableBudgetItemBalance ? budgetItemInfo.availableBudgetItemBalance.toLocaleString() : ''}
+                                        {budgetItemInfo.loading ? "-"
+                                            : budgetItemInfo.data.availableBudgetItemBalance.toLocaleString()
+                                        }
                                     </td>
                                 </tr>
                                 <tr>
@@ -72,7 +79,9 @@ export default function BudgetInformation(props) {
                                         <small className='text-dark'>Amount waiting to be disbursed</small>
                                     </td>
                                     <td className='float-right'>
-                                        {budgetItemInfo.amountAproved ? budgetItemInfo.amountAproved.toLocaleString() : ''}
+                                        {budgetItemInfo.loading ? "-"
+                                            : budgetItemInfo.data.amountAproved.toLocaleString()
+                                        }
                                     </td>
                                 </tr>
                                 <tr className='shadow-sm'>
@@ -81,7 +90,9 @@ export default function BudgetInformation(props) {
                                         <small className='text-dark'>amount available - amount aproved</small>
                                     </td>
                                     <td className='border-to float-right'>
-                                        {(budgetItemInfo.availableBudgetItemBalance - budgetItemInfo.amountAproved).toLocaleString()}
+                                        {budgetItemInfo.loading ? "-"
+                                            : (budgetItemInfo.data.availableBudgetItemBalance - budgetItemInfo.data.amountAproved).toLocaleString()
+                                        }
                                     </td>
                                 </tr>
                                 <tr>
@@ -94,7 +105,9 @@ export default function BudgetInformation(props) {
                                         <small className='text-dark'>New Amount Available - Amount Requested</small>
                                     </td>
                                     <td className='border-to float-right'>
-                                        {(budgetItemInfo.availableBudgetItemBalance - (budgetItemInfo.amountAproved + request.amount)).toLocaleString()}
+                                        {budgetItemInfo.loading ? '-'
+                                            : (budgetItemInfo.data.availableBudgetItemBalance - (budgetItemInfo.data.amountAproved + request.amount)).toLocaleString()
+                                        }
                                     </td>
                                 </tr>
                                 <tr className='shadow-sm'>
@@ -103,14 +116,21 @@ export default function BudgetInformation(props) {
                                         <small className='text-dark'>Amount Available - Amount Requested</small>
                                     </td>
                                     <td className='border-to float-right'>
-                                        {(budgetItemInfo.availableBudgetItemBalance - request.amount).toLocaleString()}
+                                        {budgetItemInfo.loading ? '-'
+                                            : (budgetItemInfo.data.availableBudgetItemBalance - request.amount).toLocaleString()
+                                        }
                                     </td>
                                 </tr>
                                 <hr />
-
                                 <tr>
-                                    {/* <td>Remarks</td> */}
                                     <td className='float-righ'>
+                                        {budgetItemInfo.loading &&
+                                            <span className="bg-default p-2 text-white">
+                                                <div className="spinner-border spinner-border-sm" role="status">
+                                                    <span className="sr-only">Loading...</span>
+                                                </div> &nbsp; Analyzing ...
+                                            </span>
+                                        }
                                         {disburseAlert > 1 &&
                                             <span className="bg-danger p-2 text-white">CAN'T BE DISBURSED</span>
                                         }
