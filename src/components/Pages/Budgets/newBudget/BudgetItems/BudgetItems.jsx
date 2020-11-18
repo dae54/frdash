@@ -1,14 +1,13 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 
 import AddNewBudgetItem from './AddNewBudgetItem'
 import { BudgetContext } from '../NewBudgetContext'
+import ExcelImport from './ExcelImport'
 
 export default function BudgetItems() {
     const { state, dispatch } = React.useContext(BudgetContext)
     let setBudgetItems = budgetItems => dispatch({ type: 'budgetItems', payload: budgetItems })
-
-
     function fetchBudgetItems() {
         axios.get('/budgetItems/', {
         }).then(response => {
@@ -41,10 +40,11 @@ export default function BudgetItems() {
             <div className="card shadow-sm">
                 <div className="card-header bg-light">
                     <span>Budget Items</span>
-                    <button className="btn btn-outline-info float-right">
+                    <button className="btn btn-outline-info float-right" data-toggle="modal" data-target="#excelFileInput">
                         <i className="fa fa-plus"></i> &nbsp;
                         Import From Excel
-                        </button>
+                    </button>
+                    <ExcelImport />
                 </div>
                 <div className="card-body">
                     <div className="row" style={{ maxHeight: '60vh', overflowY: 'auto', overflowX: 'none' }}>
@@ -69,10 +69,13 @@ const BudgetItemAmount = (props) => {
 
     return (
         <div className="col-12">
-            <div className="form-group row">
-                <label className="col-lg-3 col-form-label">{name}</label>
+            <div className={`form-group row bg-secondar ${amount ? 'shadow-s bg-ligh' : ''}`} >
+                <label className="col-lg-4 col-form-label">{name}</label>
+                {amount &&
+                    <i className="fa fa-check"></i>
+                }
                 <div className="col">
-                    <input type="number" value={amount} placeholder="Amount" className="form-control" onChange={e => props.onSetItemAmount(e.target.value)}/>
+                    <input type="number" value={amount} placeholder="Amount" className="form-control" onChange={e => props.onSetItemAmount(e.target.value)} />
                 </div>
             </div>
         </div>
