@@ -24,7 +24,7 @@ export default function AddNewBudgetItem() {
 
     function createNewBudgetItem(name, code, description) {
         axios.post(`${URL}/budgetItems/create`, {
-            name, code, description
+            budgetItems: [{ name: name, code: code, description: description }]
         }).then(response => {
             setIsLoading(false)
             //renaming _id field to budgetItemId
