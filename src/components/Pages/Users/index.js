@@ -2,8 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { NavLink } from 'react-router-dom';
 import axios from 'axios'
 
-// import URL from '../../../URL'
-import Users from './Users'
+import Users from './UserList'
 
 export default function Index() {
     const [userList, setUserList] = useState([])
