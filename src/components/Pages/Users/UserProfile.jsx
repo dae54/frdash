@@ -3,22 +3,36 @@ import axios from 'axios'
 import moment from 'moment'
 import { useHistory, Link } from 'react-router-dom'
 import StatusFormatter from '../../Gadgets/StatusFormatter'
+import { useAlert } from 'react-alert'
+import Switch from '@material-ui/core/Switch';
 
 // import { setAvatar } from '../../AccessoryFunctions/avatarGenerator'
 // import userImg from './user.jpg'
 import userImg from '../../Assets/images/user.jpg'
 import { AppContext } from '../../services/AppContext'
+import DeleteUser from './DeleteUser'
 
 export default function UserProfile(props) {
     const { state, dispatch } = React.useContext(AppContext)
     let setBreadcrumbPath = path => dispatch({ type: 'breadcrumbPath', payload: path })
-
+    const [loading, setLoading] = useState(false)
     useEffect(() => {
         setBreadcrumbPath([
             { name: 'Users', url: '/users' },
             { name: 'Profile' },
         ])
     }, [])
+    const alert = useAlert()
+
+    const [show, setShow] = useState(false);
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
+    const [userToDelete, setUserToDelete] = useState()
+
+    function promptUserDelete(e) {
+        setUserToDelete(e.target)
+        handleShow()
+    }
 
     var imgStyle = {
         height: '39vh',
@@ -47,6 +61,7 @@ export default function UserProfile(props) {
             .then(response => {
                 let summary = [];
                 response.data.data.forEach(usrRequest => {
+                    console.log(usrRequest)
                     let { amount, description, createdAt, _id } = usrRequest;
                     let budgetItem = usrRequest.budgetItemId;
                     const status = usrRequest.status
@@ -55,12 +70,49 @@ export default function UserProfile(props) {
                     }
                     summary.push(finalData)
                 })
+                console.log(summary)
                 setRequestSummary({ loading: false, data: summary })
             })
             .catch(error => {
                 setRequestSummary({ loading: false, data: [] })
                 console.log('error', error.response)
             })
+    }
+    async function sendUserInvitation() {
+        setLoading(true)
+        await axios.patch(`user/invite`, {
+            firstName: user.data.firstName,
+            lastName: user.data.firstName,
+            email: user.data.email
+        }).then(response => {
+            setLoading(false)
+            console.log(response.data.data)
+            alert.info(response.data.data.message)
+        }).catch(error => {
+            setLoading(false)
+            // alert.error(error.response.message)
+            console.log(error.response)
+        })
+
+    }
+
+    async function toggleUserAprovalStatus() {
+        let status = user.data.aproved === 0 ? 1 : 0
+
+        // setLoading(true)
+        await axios.patch(`user/aprovalStatus/${user.data._id}/${status}`)
+            .then(response => {
+                // setLoading(false)
+                console.log(response.data.data)
+                alert.info(response.data.message)
+                user.data.aproved = response.data.data
+                setUser({ loading: false, data: user.data })
+            }).catch(error => {
+                setLoading(false)
+                // alert.error(error.response.message)
+                console.log(error.response)
+            })
+
     }
     useEffect(() => {
         fetchUserById();
@@ -84,21 +136,32 @@ export default function UserProfile(props) {
                             :
                             <>
                                 <div className="top d-inline pt-3 ml-3">
-                                    <span className="text-dark p-0" style={{ fontSize: '20px' }}> {user.data.firstName + ' ' + user.data.lastName}</span> <br />
-                                    <span className="text-dark mt--5" >{user.data.role.name}</span>
+                                    <span className="text-dark p-0" style={{ fontSize: '20px' }}> {user.data.firstName + ' ' + user.data.lastName}</span>
                                     <div className="float-right mr-1">
+                                        <StatusFormatter status={user.data.aproved + 20} />
+                                    </div><br />
+                                    <span className="text-dark mt--5" >{user.data.role.name}</span>
+                                    {/* <div className="float-right mr-1">
                                         <span className="badge badge-primary rounded-pill pt-2 pb-2 pl-3 pr-3" style={{ cursor: 'pointer' }} onClick={() => hist.push('edit', { user: user.data })}>
                                             <i className="fa fa-pencil"></i> EDIT</span>
                                         <span className="badge badge-warning rounded-pill pt-2 pb-2 pl-3 pr-3 text-white ml-2" style={{ cursor: 'not-allowed' }}>
                                             <i className="fa fa-trash"></i> DELETE</span>
-                                    </div>
+                                    </div> */}
                                 </div>
-                                {!user.invitationEmail &&
+                                {console.log(user.data.invited)}
+                                {!user.data.invited &&
                                     <div className="ml-3 mt-3 mr-1 text-danger">
                                         Invitation Email not sent
-                                <span className="badge badge-primary rounded-pill pt-2 pb-2 pl-3 pr-3 ml-4" style={{ cursor: 'pointer' }} onClick={() => { }}>
-                                            <i className="fa fa-inbox"></i> SEND NOW
-                                </span>
+                                        {loading ?
+                                            <span className="badge badge-primary rounded-pill pt-2 pb-2 pl-3 pr-3 ml-4" style={{ cursor: 'pointer' }} onClick={sendUserInvitation}>
+                                                <span className="spinner-border spinner-border-sm"></span>
+                                                &nbsp; Sending ...
+                                            </span>
+                                            :
+                                            <span className="badge badge-primary rounded-pill pt-2 pb-2 pl-3 pr-3 ml-4" style={{ cursor: 'pointer' }} onClick={sendUserInvitation}>
+                                                <i className="fa fa-inbox"></i> SEND NOW
+                                            </span>
+                                        }
                                     </div>
                                 }
                                 <div className="mt-4 ml-3">
@@ -142,26 +205,23 @@ export default function UserProfile(props) {
                 <div className="col-6">
                     <div className="row">
                         <div className="col-6">
-                            {/* <div className="col-md-6 col-sm-6 col-lg-6 col-xl-3"> */}
                             <div className="dash-widget shadow-sm">
                                 <span className={`dash-widget-bg1 bg-info`}><i className={`fa fa-money`} aria-hidden="true"></i></span>
                                 <div className="dash-widget-info text-right">
-                                    <h3 className=''>
-                                        20
-                                </h3>
-                                10 aproved 5 pending 5 disbursed
-                            </div>
+                                    <h3 className=''>{requestSummary.data.length}</h3>
+                                    Total Requests
+                                </div>
                             </div>
                         </div>
                         <div className="col-6">
                             <div className="dash-widget shadow-sm">
-                                <span className={`dash-widget-bg1 bg-info`}><i className={`fa fa-money`} aria-hidden="true"></i></span>
+                                <span className={`dash-widget-bg1 bg-info`}><i className={`fa fa-dollar`} aria-hidden="true"></i></span>
                                 <div className="dash-widget-info text-right">
                                     <h3 className=''>
-                                        20
-                                </h3>
-                                10 aproved 5 pending 5 disbursed
-                            </div>
+                                        Tsh {requestSummary.data.length !== 0 && requestSummary.data.reduce((a, b) => a + b.amount, 0).toLocaleString() || 0}
+                                    </h3>
+                                    Total Amount
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -172,12 +232,11 @@ export default function UserProfile(props) {
                                     <ul className="nav nav-tabs nav-tabs-bottom">
                                         <li className="nav-item"><a className="nav-link active" href="#history-tab" data-toggle="tab">REQUEST HISTORY</a></li>
                                         {/* <li className="nav-item"><a className="nav-link" href="#statistics-tab" data-toggle="tab">STATISTICS</a></li> */}
-                                        <li className="nav-item"><a className="nav-link" href="#activity-tab" data-toggle="tab">ACTIVITY</a></li>
+                                        <li className="nav-item"><a className="nav-link" href="#activity-tab" data-toggle="tab">ACTIVITY / LOGS</a></li>
+                                        <li className="nav-item"><a className="nav-link" href="#settings-tab" data-toggle="tab">MANAGE USER</a></li>
                                     </ul>
                                     <div className="tab-content histt">
-
                                         <div className="tab-pane show active" id="history-tab" style={{ maxHeight: '60vh', overflowX: 'hidden', overflowY: 'auto' }}>
-
                                             {requestSummary.loading ?
                                                 <>
                                                     <div className="spinner-border spinner-border-sm"></div> Please Wait...
@@ -193,7 +252,6 @@ export default function UserProfile(props) {
                                                                 <div className="card-box pt-1 pb-1" key={index}>
                                                                     <div className="d-flex justify-content-between">
                                                                         <span className='text-dark' style={{ fontSize: '15px' }}>{item.amount.toLocaleString()} {item.budgetItem.name + ' ' + item.budgetItem.code}</span>
-                                                                        {/* <div className="badge badge-primary rounded-0 pt-2 pb-1">PENDING</div> */}
                                                                         <StatusFormatter status={item.status} />
                                                                     </div>
                                                                     <p className="text-truncate text-muted pt-1">
@@ -209,35 +267,52 @@ export default function UserProfile(props) {
                                                             )
                                                         })}
                                                 </>
-                                                // :
-                                                // <div className="btn btn-default text-white  pl-5 pr-5 pt-3 pb-3">
-                                                // <>
-                                                //     <div className="spinner-border spinner-border-sm"></div> Please Wait...
-                                                // </>
-                                                // {/* </div> */}
                                             }
-                                            {/* {Array.from({ length: 5 }, () => {
-                                                return (
-                                                    <div className="card-box pt-1 pb-1">
-                                                        <div className="d-flex justify-content-between">
-                                                            <span className='text-dark' style={{ fontSize: '15px' }}>15000 Shelter SH112</span>
-                                                            <div className="badge badge-primary rounded-0 pt-2 pb-1">PENDING</div>
-                                                        </div>
-                                                        <p className="text-truncate text-muted pt-1">Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                                                        Nostrum voluptates iusto libero nesciunt ducimus, alias voluptas, esse exercitationem,
-                                                        </p>
-                                                        <span className="badge badge-primary rounded-pill pt-2 pb-2 pl-4 pr-4" style={{ cursor: 'pointer' }}>
-                                                            VIEW</span>
-                                                        <span className="badge badge-warning rounded-pill pt-2 pb-2 pl-4 pr-4 text-white ml-2" style={{ cursor: 'pointer' }}>
-                                                            DELETE</span>
+                                        </div>
+                                        <div className="tab-pane" id="settings-tab">
+                                            Edit User:
+                                            <span className="badge badge-primary rounded-pill pt-2 pb-2 pl-3 pr-3 mb-1" style={{ cursor: 'pointer' }} onClick={() => hist.push('edit', { user: user.data })}>
+                                                <i className="fa fa-pencil"></i> EDIT
+                                            </span><br />
+                                            Delete User:
+                                            <span
+                                                className="badge badge-warning rounded-pill pt-2 pb-2 pl-3 pr-3 mb-1 text-white ml-2"
+                                                userId={user.data._id} username={user.data.firstName + ' ' + user.data.lastName}
+                                                style={{ cursor: 'pointer' }}
+                                                onClick={(e) => promptUserDelete(e)}>
 
-                                                    </div>
-                                                )
-                                            })} */}
+                                                <i className="fa fa-trash"></i> DELETE
+                                            </span><br />
+                                            {/* <div className="dropdown-item" style={{ cursor: 'pointer' }} onClick={(e) => promptUserDelete(e)}><i className="fa fa-trash-o m-r-5"></i> Delete</div> */}
+
+                                            {userToDelete &&
+                                                <DeleteUser
+                                                    show={show}
+                                                    handleClose={handleClose}
+                                                    userToDelete={userToDelete}
+                                                    setUserToDelete={setUserToDelete}
+                                                    userList={props.userList}
+                                                    setUserList={(payload) => props.setUserList(payload)}
+                                                />
+                                            }
+                                            {user.data.aproved === 1 ?
+                                                <>
+                                                    Deactivate User:
+                                                    <span className="badge badge-default rounded-pill pt-2 pb-2 pl-3 pr-3 mb-1" style={{ cursor: 'pointer' }} onClick={toggleUserAprovalStatus} >
+                                                        <i className="fa fa-ban"></i> DEACTIVATE
+                                                    </span>
+                                                </>
+                                                :
+                                                <>
+                                                    Activate User:
+                                                    <span className="badge badge-default rounded-pill pt-2 pb-2 pl-3 pr-3 mb-1" style={{ cursor: 'pointer' }} onClick={toggleUserAprovalStatus}>
+                                                        <i className="fa fa-check"></i> ACTIVATE
+                                                    </span>
+                                                </>
+                                            }
+
                                         </div>
-                                        <div className="tab-pane" id="statistics-tab">
-                                            Activity coming soon
-                                        </div>
+
                                         <div className="tab-pane" id="activity-tab">
                                             Activity coming soon
                                         </div>
