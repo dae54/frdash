@@ -81,6 +81,10 @@ export default function StatusFormatter(props) {
             return (
                 <span className="badge badge-success rounded-sm pt-2 pb-2 pl-3 pr-3">ACTIVE</span>
             )
+        case 20:
+            return (<span className="badge badge-default rounded-pill pt-2 pb-2 pl-3 pr-3">NOT APROVED</span>)
+        case 21:
+            return (<span className="badge badge-success rounded-pill pt-2 pb-2 pl-3 pr-3">APROVED</span>)
         default:
             return (
                 <span></span>
