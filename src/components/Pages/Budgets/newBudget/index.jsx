@@ -34,15 +34,15 @@ export default function Index() {
                 {feedback.category &&
                     <Feedback feedback={feedback} />
                 }
-                <div className="container-flui">
+                <div className="">
                     <div className="row">
-                        <div className="col-4 col-lg-4 col-md-6">
+                        <div className="col-12 col-sm-9  col-md-6 col-lg-6 col-xl-4">
                             <BudgetIdentity setFeedback={setFeedback} />
                         </div>
-                        <div className="col-4 col-lg-4 col-md-6">
+                        <div className="col-12 col-sm-9  col-md-6 col-lg-6 col-xl-4">
                             <BudgetItems />
                         </div>
-                        <div className="col-4 col-lg-4 col-md-6">
+                        <div className="col-12 col-sm-9  col-md-6 col-lg-6 col-xl-4">
                             <Preview setFeedback={setFeedback} />
                         </div>
                     </div>
