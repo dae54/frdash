@@ -107,8 +107,8 @@ const BudgetItemAmount = (props) => {
     return (
         <div className="col-12">
             <div className="form-group row">
-                <label className="col-lg-4 col-form-label">{name}</label>
-                <div className="col-8">
+                <label className="col-5 col-md-12 col-lg-5 col-form-label">{name}</label>
+                <div className="col">
                     <input type="text" value={Number(amount).toLocaleString()} placeholder="Budget Name" className="form-control" disabled />
                 </div>
             </div>
