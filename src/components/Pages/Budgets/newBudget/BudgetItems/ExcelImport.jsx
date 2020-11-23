@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import readXlsxFile from 'read-excel-file'
 import axios from 'axios'
 import { useAlert } from 'react-alert'
@@ -19,7 +19,12 @@ export default function ExcelImport() {
             var obj = []
             data.shift()
             data.forEach(excelItem => {
-                obj.push({ name: excelItem[0], code: excelItem[1].toUpperCase(), amount: excelItem[2] })
+                obj.push({
+                    name: excelItem[0],
+                    code: excelItem[1].toUpperCase(),
+                    amount: excelItem[2],
+                    description: excelItem[3]
+                })
             })
             setExcelItems(obj)
         })
@@ -29,20 +34,21 @@ export default function ExcelImport() {
         const final = excelItems.filter(item => !state.budgetItems.some(data => item.code === data.code))
         if (final.length === 0) {
             setStatus({ loading: false, itemsLoaded: true })
-            return syncBudgetItemAmounts()
         }
+
         setStatus({ loading: true, itemsLoaded: false })
 
-        axios.post(`${URL}/budgetItems/create`, {
+        axios.post(`${URL}/budgetItems`, {
             budgetItems: final
         }).then(response => {
             setStatus({ loading: false, itemsLoaded: true })
-
             //renaming _id field to budgetItemId
-            response.data.data.budgetItemId = response.data.data._id;
-            delete response.data.data._id
-            addBudgetItem(response.data.data);
-            syncBudgetItemAmounts()
+            const modifiedItems = response.data.data.createdItems.map(item => {
+                item.budgetItemId = item._id
+                delete item._id
+                return item
+            })
+            addBudgetItem(modifiedItems)
         }).catch(error => {
             setStatus({ loading: false, itemsLoaded: false })
             console.log(error.response)
@@ -50,10 +56,9 @@ export default function ExcelImport() {
 
     }
 
-
     function syncBudgetItemAmounts() {
-        console.log('sync budget item amount')
         excelItems.forEach(item => setBudgetItemAmount(item.code, item.amount))
+        alert.success('Done syncing budget items')
     }
 
     function setBudgetItemAmount(code, amount) {
@@ -62,7 +67,6 @@ export default function ExcelImport() {
                 item.amount = amount;
             return item;
         });
-        console.log(updatedBudgetItems)
         setBudgetItems(updatedBudgetItems);
     }
 
@@ -74,7 +78,7 @@ export default function ExcelImport() {
                         <div className="modal-header">
                             <h5 className="modal-title" id="exampleModalLabel">
                                 Excel Budget Import
-                        </h5>
+                            </h5>
                             <button type="button" className="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
@@ -95,6 +99,7 @@ export default function ExcelImport() {
                                                     <td>{item.name}</td>
                                                     <td>{item.code}</td>
                                                     <td>{item.amount}</td>
+                                                    <td>{item.description}</td>
                                                 </tr>
                                             )
                                         })}
@@ -110,12 +115,11 @@ export default function ExcelImport() {
                                 </button>
                                 :
                                 status.itemsLoaded ?
-                                    <button type="button" className="btn btn-secondary" data-dismiss="modal" onClick={() => alert.success('Done syncing budget items')}>Sync & Close</button>
+                                    <button type="button" className="btn btn-secondary" data-dismiss="modal" onClick={syncBudgetItemAmounts}>Sync & Close</button>
                                     :
                                     <>
                                         <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
                                         <button type="button" className="btn btn-primary" onClick={uploadBudgetItems}>Upload Items</button>
-
                                     </>
                             }
                         </div>
