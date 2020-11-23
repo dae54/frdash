@@ -22,6 +22,7 @@ import GeneralSettings from './components/Pages/Settings/GeneralSettings'
 import ChangePassword from './components/Pages/Settings/ChangePassword'
 import NewRequest from "./components/Pages/Requests/NewRequest";
 import Reports from './components/Pages/Reports/Index'
+import BudgetItems from "./components/Pages/Budgets/BudgetItems";
 
 const routes = [
     {
@@ -93,6 +94,11 @@ const routes = [
         name: 'budget profile route',
         link: '/budget/profile',
         component: BudgetProfile
+    },
+    {
+        name: 'manage budget items',
+        link: '/budgets/budgetItems',
+        component: BudgetItems
     },
     {
         name: 'view notifications route',
