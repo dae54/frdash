@@ -30,11 +30,11 @@ export default function AddNewBudgetItem(props) {
             budgetItems: [{ name: name, code: code, description: description }]
         }).then(response => {
             setIsLoading(false)
-            //renaming _id field to budgetItemId
-            response.data.data.createdItems[0].budgetItemId = response.data.data.createdItems[0]._id
-            // delete response.data.data._id
-            delete response.data.data.createdItems[0]._id
             if (!props.setCreatedItem) {
+                //renaming _id field to budgetItemId
+                response.data.data.createdItems[0].budgetItemId = response.data.data.createdItems[0]._id
+                // delete response.data.data._id
+                delete response.data.data.createdItems[0]._id
                 addBudgetItem(response.data.data.createdItems[0]);
             }
             if (props.setCreatedItem) {
