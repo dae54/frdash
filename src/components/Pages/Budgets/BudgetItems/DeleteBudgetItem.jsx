@@ -7,7 +7,7 @@ export default function DeleteBudgetItem(props) {
     const { show, handleClose, itemToDelete, setItemToDelete, itemList, setItemList } = props
 
     const [loading, setLoading] = useState(false)
-    const [itemName, setItemName] = useState()
+    const [itemName, setItemName] = useState("")
     const alert = useAlert()
 
     async function deleteBudgetItem() {
