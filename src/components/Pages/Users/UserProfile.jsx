@@ -220,7 +220,7 @@ export default function UserProfile(props) {
                                     <h3 className=''>
                                         Tsh {requestSummary.data.length !== 0 && requestSummary.data.reduce((a, b) => a + b.amount, 0).toLocaleString() || 0}
                                     </h3>
-                                    Total Amount
+                                    Total Amount Requested
                                 </div>
                             </div>
                         </div>
