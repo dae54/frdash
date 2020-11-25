@@ -45,7 +45,7 @@ export default function BudgetInformation(props) {
         <React.Fragment>
             {request.status !== 4 ?
                 <div className="card">
-                    <div className="card-header pb-2 d-flex justify-content-between">
+                    <div className={`card-header pb-2 d-flex justify-content-between ${disburseAlert > 1 && "bg-danger"}  ${disburseAlert > 0.8 && disburseAlert <= 1 && "bg-warning"} ${disburseAlert < 0.8 && "bg-success"}`}>
                         <h4 className='text-dark'>Budget Information</h4>
                         {budgetItemInfo.loading &&
                             <div className="spinner-border spinner-border-sm" role="status">
