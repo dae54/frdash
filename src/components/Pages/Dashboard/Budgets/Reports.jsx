@@ -65,7 +65,7 @@ const Report = (props) => {
             style={{ cursor: 'pointer' }}
             onClick={() => hist.push('report/', { budgetId: props })}
         >
-            <i className="fa fa-eye"></i> VIEW REPORT
+            <i className="fa fa-eye"></i> VIEW
         </span>
     )
 }
