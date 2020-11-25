@@ -22,7 +22,6 @@ export default function BudgetItems() {
     const alert = useAlert()
     async function fetchBudgetItems() {
         await axios.get('budgetItems').then(response => {
-            console.log(response.data.data)
             setBudgetItems({ loading: false, data: response.data.data })
         }).catch(error => {
             setBudgetItems({ loading: false, data: [] })
@@ -31,7 +30,6 @@ export default function BudgetItems() {
     }
 
     function handleDeleteItem(data) {
-        console.log(data)
         setItemToDelete(data)
         handleShow()
     }
@@ -54,7 +52,6 @@ export default function BudgetItems() {
         })
             .then(response => {
                 setLatestUpdate({ loading: false, data: response.data.data })
-                console.log(response.data.data)
                 alert.success(response.data.message)
             }).catch(error => {
                 setLatestUpdate({ loading: false, data: '' })
@@ -63,20 +60,12 @@ export default function BudgetItems() {
     }
 
     useEffect(() => {
-        console.log('called')
-        // console.log(createdItem)
         if (createdItem) {
-            console.log('am in now')
-            const newBudgetItemsList = budgetItems.data.push(createdItem)
-            // console.log(newBudgetItemsList)
-            setBudgetItems(newBudgetItemsList)
+            const newBudgetItemsList = budgetItems.data.concat([createdItem])
+            setBudgetItems({ loading: false, data: newBudgetItemsList })
             setCreatedItem()
         }
     }, [createdItem])
-
-    // async function addNewItem(){
-
-    // }
 
     const cellEditProp = {
         mode: 'click',
