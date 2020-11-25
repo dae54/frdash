@@ -100,6 +100,15 @@ const menu = [
                     moduleName: 'budgets'
                 }
             },
+            {
+                link: '/budgets/budgetItems',
+                icon: 'user-md',
+                name: 'Budget Items',
+                permission: {
+                    genericName: 'create_budget',
+                    moduleName: 'budgets'
+                }
+            },
         ]
     },
     {
