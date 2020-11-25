@@ -19,7 +19,7 @@ export default function Index(props) {
     useEffect(() => {
         setBreadcrumbPath([
             { name: 'Budgets', url: '/budgets' },
-            { name: 'Profile'},
+            { name: 'Profile' },
         ])
     }, [])
 
@@ -39,7 +39,7 @@ export default function Index(props) {
             </div>
             {/* FIRST SECTION ROW*/}
             <div className="row">
-                <div className="col-6">
+                <div className="col-12 col-sm-10 col-md-6 -lg-none">
                     <BudgetInformation budget={props} setRequestEditBudget={setRequestEditBudget} setDeleteBudget={setDeleteBudget} />
                     {requestEditBudget &&
                         <EditBudget budget={props.location.state} setRequestEditBudget={setRequestEditBudget} />
@@ -49,31 +49,31 @@ export default function Index(props) {
                     }
                     <RealocateBudget budget={props.location.state} />
                 </div>
-                <div className="col-6" style={{ maxHeight: '52vh' }}>
+                <div className="col-12 col-sm-10 col-md-6 -lg-none" style={{ maxHeight: '52vh' }}>
                     <BudgetItems budget={props} />
                 </div>
             </div>
             {/* SECOND SECTION ROWS */}
             <div className="row">
-                <div className="col-4">
+                <div className="col-12 col-sm-10 col-lg-8 col-xl-4">
                     <RequestsTimeLine budgetId={props.location.state._id} setRequests={setRequests} />
                 </div>
-                <div className="col-8">
+                <div className="col-12 col-lg-12 col-xl-8">
                     <RequestLineChart requests={requests} />
                 </div>
             </div>
             {/* THIRD SECTION ROWS */}
             <div className="row">
-                <div className="col-8">
+                <div className="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-7">
                     <BudgetItemUsageStatus budgetId={props.location.state._id} />
                 </div>
-                <div className="col-4">
+                <div className="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-5">
                     <BudgetDistribution items={props.location.state.budgetItems} />
                 </div>
             </div>
             {/* FOURTH SECTION ROWS */}
             <div className="row">
-                <div className="col-8">
+                <div className="col">
                     <div className="card">
                         <div className="card-header">LOGS</div>
                         <div className="card-body">Coming soon</div>

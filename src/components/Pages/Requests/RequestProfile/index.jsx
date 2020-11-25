@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import { Link, useHistory } from 'react-router-dom'
 import moment from 'moment'
+import { useAlert } from 'react-alert'
 // import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 
 // import RequestInformation from './RequestInformation'
@@ -25,8 +26,9 @@ export default function RequestProfile(props) {
             { name: 'Profile' },
         ])
     }, [])
-    
+
     const hist = useHistory();
+    const alert = useAlert();
     const [request, setRequest] = useState()
     const [disburseAlert, setDisburseAlert] = useState('')
     const [refreshRemarks, setRefreshRemarks] = useState(false)
@@ -44,13 +46,14 @@ export default function RequestProfile(props) {
         let confirmDelete = window.confirm('You are about to delete a request, Bare in mind that its an irreversible action. Proceed with care')
         if (confirmDelete) {
             await axios.delete(`requests/${request._id}`)
-            .then(res=>{
-                console.log(res)
-                hist.goBack()
-            }).catch(error=>{
-                console.log(error)
-                alert(error)
-            })
+                .then(res => {
+                    console.log(res)
+                    alert.success(res.data.message)
+                    hist.goBack()
+                }).catch(error => {
+                    console.log(error)
+                    alert(error)
+                })
         }
     }
 
@@ -65,22 +68,26 @@ export default function RequestProfile(props) {
                     <h4 className="page-title">Request Profile</h4>
                 </div>
                 <div className="col-sm-8 col-9 text-right m-b-20">
-                    <Link className="btn btn-primary btn-rounded float-right" to={{ pathname: '/requests' }}>
+                    {/* <Link className="btn btn-default btn-rounded float-right" to={{ pathname: '/requests' }}>
+                        <i className="fa fa-trash "></i> DELETE REQUEST
                         <i className="fa fa-eye "></i> VIEW ALL REQUESTS
-                    </Link>
+                    </Link> */}
+                    <span className="btn btn-default btn-rounded float-right" onClick={deleteRequest}>
+                        <i className="fa fa-trash "></i> DELETE REQUEST
+                    </span>
                 </div>
             </div>
             {request &&
                 <div className="row row-cols-2">
-                    <div className="col-5">
+                    <div className="col-12 col-md-6">
                         <div className="row row-cols-1">
-                            <div className="col">
+                            <div className="col-12">
                                 <div className="card">
                                     <div className="card-header pb-2">
                                         <span className='text-dark h4'>Request Information</span>
-                                        <span className="bt btn-secondar p-1 pull-right" style={{ cursor: 'pointer' }} onClick={deleteRequest}>
+                                        {/* <span className="bt btn-secondar p-1 pull-right" style={{ cursor: 'pointer' }} onClick={deleteRequest}>
                                             <i className="fa fa-trash"></i>
-                                        </span>
+                                        </span> */}
                                     </div>
                                     <div className="card-body pt-0">
                                         <p className="text-monospace">
@@ -110,7 +117,7 @@ export default function RequestProfile(props) {
                             </div>
                         </div>
                     </div>
-                    <div className="col">
+                    <div className="col-12 col-md-6">
                         <BudgetInformation
                             budgetItem={request.budgetItemId}
                             budgetId={request.budgetId}

@@ -138,10 +138,10 @@ export default function Distribution() {
                                 </h5>
                                 :
                                 <>
-                                    <div className="col-7">
+                                    <div className="col-12 col-md-7 d-xl-non">
                                         <Chart options={options} series={series} type="donut" height={280} />
                                     </div>
-                                    <div className="col-5">
+                                    <div className="col-12 col-md-5 d-xl-non  ">
                                         {budgetItems && budgetOnFocus.id &&
                                             <StatusRadial budgetItems={budgetItems} budgetOnFocus={budgetOnFocus} />
                                         }

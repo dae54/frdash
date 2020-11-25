@@ -34,7 +34,7 @@ export default function BudgetDistribution(props) {
                         </div>
                     } */}
                 {props.items.length ?
-                    <Chart options={options} series={series} type="donut" height={280} />
+                    <Chart options={options} series={series} type="donut" height={250} />
                     :
                     <div>No items allocated to budget</div>
                 }

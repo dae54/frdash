@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect } from 'react'
 
 import InfoCard from '../../Gadgets/InfoCard'
 import Statistics from './Request/Statistics';
@@ -57,10 +57,10 @@ export default function Dashboard() {
             {/* START OF REQUEST SECTION */}
             <h3 className="card-title text-uppercase">Requests</h3>
             <div className="row">
-                <div className="col-8">
+                <div className="col-12 col-xl-7">
                     <Statistics />
                 </div>
-                <div className="col-4">
+                <div className="col-12 col-md-9 col-xl-5">
                     <List />
                 </div>
             </div>
@@ -69,10 +69,10 @@ export default function Dashboard() {
             {/* START OF BUDGET SECTION */}
             <h3 className="card-title text-uppercase">Budgets</h3>
             <div className="row">
-                <div className="col-6">
+                <div className="col-12 col-sm-12 col-xl-8  d-xl-non">
                     <Distribution />
                 </div>
-                <div className="col-5">
+                <div className="col-12 col-sm-12 col-xl-4">
                     <Reports />
                 </div>
             </div>
