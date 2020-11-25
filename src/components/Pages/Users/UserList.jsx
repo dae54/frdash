@@ -25,8 +25,8 @@ export default function Users(props) {
     const hist = useHistory();
 
     const [userToDelete, setUserToDelete] = useState()
-    const [userName, setUserName] = useState('')
-    const [loading, setLoading] = useState(false)
+    // const [userName, setUserName] = useState('')
+    // const [loading, setLoading] = useState(false)
 
     // async function deleteUser(userId) {
     //     setLoading(true)
