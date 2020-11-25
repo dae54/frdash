@@ -61,7 +61,7 @@ export default function List() {
                                         <th scope="col">USER</th>
                                         <th scope="col">AMOUNT</th>
                                         <th scope="col">REQUEST DATE</th>
-                                        <th scope="col">STATUS</th>
+                                        {/* <th scope="col">STATUS</th> */}
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -71,7 +71,7 @@ export default function List() {
                                                 <td>{`${request.userId.firstName} ${request.userId.lastName}`}</td>
                                                 <td>{request.amount.toLocaleString()}</td>
                                                 <td>{moment(request.createdAt).format('MMM DD, YYYY')}</td>
-                                                <td className='pt-1'><StatusFormatter status={request.status} /></td>
+                                                {/* <td className='pt-1'><StatusFormatter status={request.status} /></td> */}
                                             </tr>
                                         )
                                     })}
