@@ -6,11 +6,7 @@ import axios from 'axios'
 export default function StatusRadial({ budgetItems, budgetOnFocus }) {
     const [disbursedAmount, setDisbursedAmount] = useState(0)
 
-    var totalAmount = 0
-    budgetItems.map(item => {
-        totalAmount += item.amount
-    })
-
+    const totalAmount = budgetItems.reduce((a, b) => a + b.amount, 0)
     async function fetchDisbursedRequests() {
         /**
          * THIS FUNCTION AIMS AT GETTING THE REQUESTS WITH STATUS OF DISBURSED
@@ -42,7 +38,7 @@ export default function StatusRadial({ budgetItems, budgetOnFocus }) {
         fetchDisbursedRequests()
     }, [])
 
-    const series = [Math.round((disbursedAmount / totalAmount)*100)||0]
+    const series = [Math.round((disbursedAmount / totalAmount) * 100) || 0]
     const options = {
         chart: {
             height: 350,
