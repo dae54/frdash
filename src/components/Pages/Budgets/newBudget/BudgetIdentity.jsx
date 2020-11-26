@@ -25,7 +25,7 @@ export default function BudgetIdentity({ setFeedback }) {
     let setActivateBudgetInstantly = activateBudget => dispatch({ type: 'activateBudget', payload: activateBudget })
     let setStartDate = startDate => dispatch({ type: 'startDate', payload: startDate })
     let setEndDate = endDate => dispatch({ type: 'endDate', payload: endDate })
-    let setBudgetId = budgetId => dispatch({ type: 'budgetId', payload: budgetId })
+    // let setBudgetId = budgetId => dispatch({ type: 'budgetId', payload: budgetId })
 
 
     function handleInstantBudgetActivation() {
@@ -78,8 +78,8 @@ export default function BudgetIdentity({ setFeedback }) {
                     <span className="float-right">
                         Activate Now &nbsp;
                             {activateNowLoading ?
-                            <div class="spinner-grow spinner-grow-sm text-danger" role="status">
-                                <span class="sr-only">Loading...</span>
+                            <div className="spinner-grow spinner-grow-sm text-danger" role="status">
+                                <span className="sr-only">Loading...</span>
                             </div>
                             :
                             <Switch

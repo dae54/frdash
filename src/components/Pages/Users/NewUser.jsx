@@ -7,16 +7,16 @@ import { useAlert } from 'react-alert'
 
 
 export default function NewUser() {
-    const { state, dispatch } = React.useContext(AppContext)
+    const { dispatch } = React.useContext(AppContext)
     let setBreadcrumbPath = path => dispatch({ type: 'breadcrumbPath', payload: path })
     const alert = useAlert()
 
-    useEffect(() => {
+    function handleBreadcrumbPath() {
         setBreadcrumbPath([
             { name: 'Users', url: '/users' },
             { name: 'Add New User' },
         ])
-    }, [])
+    }
 
     const [firstName, setFirstName] = useState('')
     const [lastName, setLastName] = useState('')
@@ -43,7 +43,7 @@ export default function NewUser() {
         }
         setIsLoading(true)
         setError('')
-        console.log(role)
+        // console.log(role)
 
         const newUser = { firstName, lastName, email, phoneNumber, country, region, district, ward, gender, role }
         axios.post(`${URL}/user/register`, {
@@ -75,6 +75,7 @@ export default function NewUser() {
         })
     }
     useEffect(() => {
+        handleBreadcrumbPath()
         fetchRoles();
     }, [])
     // const MessagePrompt = () => {

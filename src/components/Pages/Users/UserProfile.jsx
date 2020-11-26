@@ -61,7 +61,6 @@ export default function UserProfile(props) {
             .then(response => {
                 let summary = [];
                 response.data.data.forEach(usrRequest => {
-                    console.log(usrRequest)
                     let { amount, description, createdAt, _id } = usrRequest;
                     let budgetItem = usrRequest.budgetItemId;
                     const status = usrRequest.status
@@ -70,7 +69,6 @@ export default function UserProfile(props) {
                     }
                     summary.push(finalData)
                 })
-                console.log(summary)
                 setRequestSummary({ loading: false, data: summary })
             })
             .catch(error => {
@@ -86,7 +84,6 @@ export default function UserProfile(props) {
             email: user.data.email
         }).then(response => {
             setLoading(false)
-            console.log(response.data.data)
             alert.info(response.data.data.message)
         }).catch(error => {
             setLoading(false)
@@ -103,7 +100,6 @@ export default function UserProfile(props) {
         await axios.patch(`user/aprovalStatus/${user.data._id}/${status}`)
             .then(response => {
                 // setLoading(false)
-                console.log(response.data.data)
                 alert.info(response.data.message)
                 user.data.aproved = response.data.data
                 setUser({ loading: false, data: user.data })
@@ -123,7 +119,7 @@ export default function UserProfile(props) {
         <React.Fragment>
             <h4 className="page-title">User Profile</h4>
             <div className="row">
-                <div className="col-3">
+                <div className="col-12 col-sm-8 col-md-6 col-xl-4">
                     <div className="card shadow-sm">
                         <div className="card-body p-0" style={{ height: '39vh' }}>
                             <img style={imgStyle} className='' srcSet={`${userImg} 1.5x`} alt="userimg" />
@@ -148,7 +144,6 @@ export default function UserProfile(props) {
                                             <i className="fa fa-trash"></i> DELETE</span>
                                     </div> */}
                                 </div>
-                                {console.log(user.data.invited)}
                                 {!user.data.invited &&
                                     <div className="ml-3 mt-3 mr-1 text-danger">
                                         Invitation Email not sent
@@ -202,9 +197,10 @@ export default function UserProfile(props) {
                         }
                     </div>
                 </div>
-                <div className="col-6">
+                {/* col-12 col-sm-8 col-md-6 col-xl-4 */}
+                <div className="col-12 col-sm-8 col-md-6 col-xl-7">
                     <div className="row">
-                        <div className="col-6">
+                        <div className="col-12 col-xl-6">
                             <div className="dash-widget shadow-sm">
                                 <span className={`dash-widget-bg1 bg-info`}><i className={`fa fa-money`} aria-hidden="true"></i></span>
                                 <div className="dash-widget-info text-right">
@@ -213,7 +209,7 @@ export default function UserProfile(props) {
                                 </div>
                             </div>
                         </div>
-                        <div className="col-6">
+                        <div className="col-12 col-xl-6">
                             <div className="dash-widget shadow-sm">
                                 <span className={`dash-widget-bg1 bg-info`}><i className={`fa fa-dollar`} aria-hidden="true"></i></span>
                                 <div className="dash-widget-info text-right">
@@ -247,7 +243,6 @@ export default function UserProfile(props) {
                                                         <div className='pl-3 pt-3 pb-1 text-uppercase'>No record found</div>
                                                         :
                                                         requestSummary.data.map((item, index) => {
-                                                            console.log(item)
                                                             return (
                                                                 <div className="card-box pt-1 pb-1" key={index}>
                                                                     <div className="d-flex justify-content-between">
@@ -277,7 +272,7 @@ export default function UserProfile(props) {
                                             Delete User:
                                             <span
                                                 className="badge badge-warning rounded-pill pt-2 pb-2 pl-3 pr-3 mb-1 text-white ml-2"
-                                                userId={user.data._id} username={user.data.firstName + ' ' + user.data.lastName}
+                                                userid={user.data._id} username={user.data.firstName + ' ' + user.data.lastName}
                                                 style={{ cursor: 'pointer' }}
                                                 onClick={(e) => promptUserDelete(e)}>
 

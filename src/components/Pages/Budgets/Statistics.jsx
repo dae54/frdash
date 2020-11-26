@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import InfoCard from '../../Gadgets/InfoCard'
 
 export default function Statistics(props) {

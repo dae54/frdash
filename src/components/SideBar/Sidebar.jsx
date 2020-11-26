@@ -108,7 +108,6 @@ function CanGlobal(permission) {
         for (let i = 0; i < permission.length; i++) {
             // if (state.userDetails.role.permission.some(perm => perm.genericName === permission[i])) {
             if (state.userDetails.role.permission.some(perm => perm.genericName === permission[i])) {
-                console.log(permission[i])
                 return ''
             }
             // else return 'none'

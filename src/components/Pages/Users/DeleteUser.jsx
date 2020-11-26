@@ -23,6 +23,7 @@ export default function DeleteUser(props) {
                     if (!(item._id === response.data.data._id)) {
                         return item
                     }
+                    return ''
                 })
                 setUserList(newUserList)
             }
@@ -48,7 +49,7 @@ export default function DeleteUser(props) {
                 backdrop="static"
                 keyboard={false}>
                 <Modal.Header closeButton>
-                    <span class="modal-title text-dark font-weight-bold">
+                    <span className="modal-title text-dark font-weight-bold">
                         Are you absolutely sure?
                         </span>
                 </Modal.Header>
@@ -70,7 +71,7 @@ export default function DeleteUser(props) {
                             </button>
                         :
                         <button className="btn btn-outline-danger btn-block"
-                            onClick={() => deleteUser(userToDelete.getAttribute('userId'))}
+                            onClick={() => deleteUser(userToDelete.getAttribute('userid'))}
                             disabled={userToDelete.getAttribute('userName') !== userName}>
                             Confirm Delete
                             </button>

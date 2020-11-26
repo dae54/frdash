@@ -25,7 +25,6 @@ export default function NewLogin() {
 
     function submitForm(e) {
         e.preventDefault();
-        const data = { email, password }
         setLoading(true)
         axios.post(`/user/login`, {
             email, password

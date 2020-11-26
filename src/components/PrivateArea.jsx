@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { AuthContext } from './Auth/AuthContext'
 import { Route, Redirect, } from "react-router-dom";
 import Axios from 'axios';
@@ -20,15 +20,13 @@ export default function PrivateArea({ component, ...rest }) {
 
 
 function Authorized({ component, ...rest }) {
-    const { state, dispatch } = React.useContext(AuthContext)
+    const { dispatch } = React.useContext(AuthContext)
     let setUserDetails = userDetails => dispatch({ type: 'userDetails', payload: userDetails })
-    const [initializing, setInitializing] = useState(true)
 
     async function fetchUserDetails() {
         await Axios.get(`user/${jwt_decode(localStorage.getItem('token')).id}`)
             .then(res => {
                 setUserDetails(res.data.data)
-                setInitializing(false)
             })
             .catch(error => {
                 console.log(error)

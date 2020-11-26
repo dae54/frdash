@@ -31,7 +31,6 @@ export default function Home() {
         axios.get('/settings/idleTime')
             .then(response => {
                 setIdleTimeDuration(response.data.data.value)
-                console.log(response.data.data.value)
             })
             .catch(error => {
                 console.log(error.message)
@@ -60,7 +59,6 @@ export default function Home() {
     }
 
     return (
-        // <React.Fragment>
         <AlertProvider template={AlertTemplate} {...options}>
             <AppContextProvider>
                 {state.idleTimeDuration &&
@@ -87,6 +85,5 @@ export default function Home() {
                 </div>
             </AppContextProvider>
         </AlertProvider >
-        // </React.Fragment>
     )
 }

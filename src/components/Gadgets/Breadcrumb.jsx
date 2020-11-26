@@ -2,9 +2,9 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { AppContext } from '../services/AppContext'
 
-export default function Breadcrumb({ routes }) {
+export default function Breadcrumb() {
     const { state, dispatch } = React.useContext(AppContext)
-    console.log(state.breadcrumbPath)
+    // console.log(state.breadcrumbPath)
 
 
     return (

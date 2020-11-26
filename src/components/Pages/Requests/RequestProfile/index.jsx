@@ -17,7 +17,7 @@ import { AppContext } from '../../../services/AppContext'
 // import StatusFormatter from '../../../Gadgets/StatusFormatter'
 
 export default function RequestProfile(props) {
-    const { state, dispatch } = React.useContext(AppContext)
+    const { dispatch } = React.useContext(AppContext)
     let setBreadcrumbPath = path => dispatch({ type: 'breadcrumbPath', payload: path })
 
     useEffect(() => {

@@ -1,6 +1,4 @@
 import React, { useReducer } from "react";
-import { getUserDetails } from '../Auth/sessionControl'
-console.log('state running')
 let initialState = {
     isAuthorized: localStorage.getItem('token') ? true : false,
     // isAuth: { status: true, token: localStorage.getItem('token') },
@@ -24,6 +22,7 @@ let reducer = (state, action) => {
             return { ...state, idleTimeDuration: state.idleTimeDuration = action.payload }
         case 'userDetails':
             return { ...state, userDetails: state.userDetails = action.payload }
+        default: return { ...state }
     }
 }
 
