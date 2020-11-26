@@ -27,7 +27,7 @@ export default function NewRequest() {
 
     function fetchBudget() {
         setIsLoading(true)
-        axios.get(`budgets/${1}`, {
+        axios.get(`budgets/status/${1}`, {
         }).then((response) => {
             setIsLoading(false)
             console.log(response.data.data)
