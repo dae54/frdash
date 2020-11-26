@@ -1,25 +1,22 @@
 import React, { useState } from 'react'
 import axios from 'axios'
-import { useHistory, Link } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import moment from 'moment'
 
 import StatusFormatter from '../../../Gadgets/StatusFormatter'
 
-export default function BudgetInformation({ budget, setRequestEditBudget, setDeleteBudget }) {
-    const hist = useHistory();
-
+export default function BudgetInformation({ budget, setBudget, setRequestEditBudget, setDeleteBudget }) {
     const [isLoading, setIsLoading] = useState(false)
     const [errorMessage, setErrorMessage] = useState('')
     const [statusText, setStatusText] = useState('')
-    // const props = prop.budget.location.state;
-    // const props = prop.budget;
+
     async function toggleStatus() {
         setErrorMessage('')
         setIsLoading(true)
         await axios.patch(`/budgets/${budget._id}/${budget.status ? 0 : 1}`, {
         }).then(response => {
             setIsLoading(false)
-            hist.replace({ state: response.data.data })
+            setBudget({ loading: false, data: response.data.data })
         }).catch(error => {
             if (error.message === 'Network Error') {
                 console.log('Network Error')
@@ -73,11 +70,11 @@ export default function BudgetInformation({ budget, setRequestEditBudget, setDel
                     </div>
                     <div className="mt-4">
                         Actions
-                        <div className="d-flex justify-content-between mt-1">
-                            <button className="btn btn-outline-info" data-toggle="modal" data-target="#editBudgetModal" onClick={() => setRequestEditBudget(true)}>Edit Budget</button><br />
-                            <button className="btn btn-outline-danger" data-toggle="modal" data-target="#deleteBudgetModal" onClick={() => setDeleteBudget(true)}>Delete Budget</button><br />
-                            <button className="btn btn-outline-success">Extend Budget</button><br />
-                            <button className="btn btn-outline-info" data-toggle="modal" data-target="#realocateBudgetModal">Reallocate Budget</button><br />
+                        <div className="mt-1">
+                            <button className="btn btn-outline-info mr-1" data-toggle="modal" data-target="#editBudgetModal" onClick={() => setRequestEditBudget(true)}> <i className="fa fa-pencil"></i> Edit</button>
+                            {/* <button className="btn btn-outline-success">Extend Budget</button><br /> */}
+                            <button className="btn btn-outline-success mr-1" data-toggle="modal" data-target="#realocateBudgetModal"> <i className="fa fa-forward"></i> Reallocate</button>
+                            <button className="btn btn-outline-secondary mr-1" data-toggle="modal" data-target="#deleteBudgetModal" onClick={() => setDeleteBudget(true)}> <i className="fa fa-trash"></i> Delete</button>
                         </div>
                     </div>
                 </div>
