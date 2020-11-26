@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import { BudgetContext } from './NewBudgetContext'
 import axios from 'axios'
 
@@ -28,7 +28,7 @@ export default function Preview({ setFeedback }) {
     // }
 
     function handleSubmit() {
-        state.budgetItems.map(item => {
+        state.budgetItems.forEach(item => {
             if (item.amount) {
                 budgetItemAndValue.push({ budgetItemId: item.budgetItemId, amount: item.amount })
             }
