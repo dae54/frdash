@@ -4,7 +4,7 @@ import axios from 'axios'
 // import moment from 'moment'
 
 export default function Statistics() {
-    const [allRequests, setAllRequests] = useState([])
+    const [allRequests, setAllRequests] = useState({ loading: true, data: [] })
 
 
     /**
@@ -19,11 +19,14 @@ export default function Statistics() {
             }
         }).then(response => {
             console.log(response.data.data)
-            setAllRequests(response.data.data)
+            setAllRequests({ loading: false, data: response.data.data })
+        }).catch(error => {
+            setAllRequests({ loading: false, data: [] })
+            console.log(error)
         })
     }
 
-    let x_axis = allRequests.map(request => {
+    let x_axis = allRequests.data.map(request => {
         return request.createdAt
     })
 
@@ -33,7 +36,7 @@ export default function Statistics() {
 
     let series = [{
         name: 'Requests',
-        data: allRequests.map(request => {
+        data: allRequests.data.map(request => {
             return request.amount
         })
     }
@@ -103,19 +106,6 @@ export default function Statistics() {
     return (
         <React.Fragment>
             <div className="card-box">
-                {/* <span className=''>
-                    <h3 className="card-title">Statistics</h3>
-                    <div class="btn-group float-right mt-n4">
-                        <button class="btn btn-white shadow-sm rounded-lg pb-0 pt-0 btn-sm dropdown-toggle text-muted" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Last 6 Months &nbsp;&nbsp;
-                        </button>
-                        <div class="dropdown-menu">
-                            <a class="dropdown-item" href="#">June 20 - August 20</a>
-                            <a class="dropdown-item" href="#">Another action</a>
-                            <a class="dropdown-item" href="#">Something else here</a>
-                        </div>
-                    </div>
-                </span> */}
                 <span className='d-inline-block pl-3'>
                     <h3 className="card-title text-muted">Statistics</h3>
                 </span>
@@ -129,14 +119,21 @@ export default function Statistics() {
                             style={{ cursor: 'not-allowed' }}>
                             Last 6 Months &nbsp;&nbsp;
                         </button>
-                        {/* <div class="dropdown-menu">
-                            <a class="dropdown-item" href="#">June 20 - August 20</a>
-                            <a class="dropdown-item" href="#">Another action</a>
-                            <a class="dropdown-item" href="#">Something else here</a>
-                        </div> */}
                     </div>
                 </span>
-                <Chart options={options} series={series} type="area" width='100%' height='300px' />
+                {allRequests.loading ?
+                    <p>
+                        <div className="spinner-border spinner-border-sm" role="status">
+                            <span className="sr-only">Loading...</span>
+                        </div> &nbsp; Contacting server. Please wait
+                    </p>
+                    :
+                    allRequests.data.length === 0 ?
+                        <h5 className="card-title text-mute">No requests to show.</h5>
+                        :
+                        <Chart options={options} series={series} type="area" width='100%' height='300px' />
+                }
+
             </div>
 
         </React.Fragment>

@@ -2,9 +2,22 @@ import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import SweetAlert from 'react-bootstrap-sweetalert'
 import URL from '../../../URL'
+import { AppContext } from '../../services/AppContext'
+import { useAlert } from 'react-alert'
 
 
 export default function NewUser() {
+    const { dispatch } = React.useContext(AppContext)
+    let setBreadcrumbPath = path => dispatch({ type: 'breadcrumbPath', payload: path })
+    const alert = useAlert()
+
+    function handleBreadcrumbPath() {
+        setBreadcrumbPath([
+            { name: 'Users', url: '/users' },
+            { name: 'Add New User' },
+        ])
+    }
+
     const [firstName, setFirstName] = useState('')
     const [lastName, setLastName] = useState('')
     const [email, setEmail] = useState('')
@@ -14,23 +27,25 @@ export default function NewUser() {
     const [district, setDistrict] = useState('')
     const [ward, setWard] = useState('')
     const [gender, setGender] = useState('')
-    const [roleId, setRoleId] = useState('')
+    const [role, setRole] = useState('')
+
     const [isLoading, setIsLoading] = useState(false)
     const [error, setError] = useState('')
     const [message, setMessage] = useState({})
 
-    const [roles, setRoles] = useState([])
+    const [roles, setRoles] = useState({ loading: true, data: [] })
 
     function handleSubmit(e) {
         e.preventDefault()
-        if (roleId === '0') {
-            return setError('Assign role to user')
+        if (role === '0') {
+            return alert.error('Please assign ROLE to user')
+            // return setError('Assign role to user')
         }
         setIsLoading(true)
         setError('')
-        console.log(roleId)
+        // console.log(role)
 
-        const newUser = { firstName, lastName, email, phoneNumber, country, region, district, ward, gender, roleId }
+        const newUser = { firstName, lastName, email, phoneNumber, country, region, district, ward, gender, role }
         axios.post(`${URL}/user/register`, {
             headers: {
                 'Content-Type': 'application/json',
@@ -39,41 +54,41 @@ export default function NewUser() {
             newUser
         }).then((response) => {
             setIsLoading(false)
-            setMessage({ title: 'success', text: response.data.message })
-            // window.location.replace('/user')
+            alert.success(response.data.message)
         }).catch((error) => {
             setIsLoading(false)
             console.log(error)
-            setError(error.response.data.userMessage)
+            if (error.message) {
+                return alert.error(error.message)
+            }
+            alert.error(error.response.data.userMessage)
         })
     }
     // FETCH ROLES
     async function fetchRoles() {
-        setIsLoading(true)
         axios.get(`${URL}/accessControl/roles`, {
         }).then((response) => {
-            setRoles(response.data.data)
-            setIsLoading(false)
+            setRoles({ loading: false, data: response.data.data })
         }).catch((error) => {
-            setIsLoading(false)
+            setRoles({ loading: false, data: [] })
             console.log(error.response)
-            // setError(error.response.data.userMessage)
         })
     }
     useEffect(() => {
+        handleBreadcrumbPath()
         fetchRoles();
     }, [])
-    const MessagePrompt = () => {
-        return (
-            <SweetAlert
-                success
-                title="Woot!"
-                onConfirm={() => setMessage('')}
-            >
-                I did it!
-            </SweetAlert>
-        )
-    }
+    // const MessagePrompt = () => {
+    //     return (
+    //         <SweetAlert
+    //             success
+    //             title="Woot!"
+    //             onConfirm={() => setMessage('')}
+    //         >
+    //             I did it!
+    //         </SweetAlert>
+    //     )
+    // }
     return (
         <React.Fragment>
             <div className="row">
@@ -126,10 +141,10 @@ export default function NewUser() {
                                 <div className="form-group row">
                                     <label className="col-lg-3 col-form-label">Role:</label>
                                     <div className="col-lg-9">
-                                        <select className='form-control' value={roleId} onChange={(e) => setRoleId(e.target.value)} required>
+                                        <select className='form-control' value={role} onChange={(e) => setRole(e.target.value)} required>
                                             <option value={0}>...</option>
-                                            {roles.length &&
-                                                roles.map(item => {
+                                            {roles.data.length &&
+                                                roles.data.map(item => {
                                                     return (
                                                         <option value={item._id}>{item.name} ({item.description})</option>
                                                     )
@@ -170,12 +185,7 @@ export default function NewUser() {
                                 </div>
                             </div>
                         </div>
-                        {!isLoading &&
-                            <div className="text-right">
-                                <button type="submit" className="btn btn-primary">Submit</button>
-                            </div>
-                        }
-                        {isLoading &&
+                        {roles.loading || isLoading ?
                             <div className="text-right">
                                 <button className="btn btn-primary" disabled>
                                     <div>
@@ -186,8 +196,11 @@ export default function NewUser() {
                                         </div>
                                 </button>
                             </div>
+                            :
+                            <div className="text-right">
+                                <button type="submit" className="btn btn-primary">Submit</button>
+                            </div>
                         }
-                        {/* </div> */}
                     </form>
                 </div>
             </div>

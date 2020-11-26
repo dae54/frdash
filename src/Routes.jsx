@@ -6,7 +6,8 @@ import NewUser from './components/Pages/Users/NewUser'
 import EditUser from './components/Pages/Users/EditUser'
 import Requests from './components/Pages/Requests'
 import RequestProfile from './components/Pages/Requests/RequestProfile/'
-import UserProfile from './components/Pages/Users/NewUserProfile'
+import RequestAproves from './components/Pages/Requests/RequestAproves'
+import UserProfile from './components/Pages/Users/UserProfile'
 // import UserProfile from './components/Pages/Users/UserProfile'
 import Budgets from './components/Pages/Budgets/index'
 import NewBudget from './components/Pages/Budgets/newBudget'
@@ -21,6 +22,7 @@ import GeneralSettings from './components/Pages/Settings/GeneralSettings'
 import ChangePassword from './components/Pages/Settings/ChangePassword'
 import NewRequest from "./components/Pages/Requests/NewRequest";
 import Reports from './components/Pages/Reports/Index'
+import BudgetItems from "./components/Pages/Budgets/BudgetItems";
 
 const routes = [
     {
@@ -64,6 +66,11 @@ const routes = [
         component: RequestProfile
     },
     {
+        name: 'request route',
+        link: '/request/aproves',
+        component: RequestAproves
+    },
+    {
         name: 'new request',
         link: '/request/create',
         component: NewRequest
@@ -87,6 +94,11 @@ const routes = [
         name: 'budget profile route',
         link: '/budget/profile',
         component: BudgetProfile
+    },
+    {
+        name: 'manage budget items',
+        link: '/budgets/budgetItems',
+        component: BudgetItems
     },
     {
         name: 'view notifications route',

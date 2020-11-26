@@ -4,12 +4,12 @@ export default function InfoCard(props) {
     const { color, label, icon, amount, count } = props.item
     return (
         <React.Fragment>
-            <div className="col-md-6 col-sm-6 col-lg-6 col-xl-3">
+            <div className="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-3">
                 <div className="dash-widget shadow-sm">
                     <span className={`dash-widget-bg1 bg-${color}`}><i className={`fa fa-${icon}`} aria-hidden="true"></i></span>
                     <div className="dash-widget-info text-right">
                         <h3 className=''>
-                            {amount}
+                            <span className='text-sm'>{amount}</span>
                             {count &&
                                 <span className='font-weight-lighter'>({count})</span>
                             }

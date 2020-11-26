@@ -5,17 +5,18 @@ import moment from 'moment'
 
 import StatusFormatter from '../../../Gadgets/StatusFormatter'
 
-export default function BudgetInformation(prop) {
+export default function BudgetInformation({ budget, setRequestEditBudget, setDeleteBudget }) {
     const hist = useHistory();
 
     const [isLoading, setIsLoading] = useState(false)
     const [errorMessage, setErrorMessage] = useState('')
     const [statusText, setStatusText] = useState('')
-    const props = prop.budget.location.state;
+    // const props = prop.budget.location.state;
+    // const props = prop.budget;
     async function toggleStatus() {
         setErrorMessage('')
         setIsLoading(true)
-        await axios.patch(`/budgets/${props._id}/${props.status ? 0 : 1}`, {
+        await axios.patch(`/budgets/${budget._id}/${budget.status ? 0 : 1}`, {
         }).then(response => {
             setIsLoading(false)
             hist.replace({ state: response.data.data })
@@ -43,38 +44,38 @@ export default function BudgetInformation(prop) {
                 }
                 <div className="card-header text-uppercase"></div>
                 <div className="card-body pt-0">
-                    <p>{props.name.toUpperCase()}</p>
-                    <p className='mt-n2'>Description: {props.description}</p>
+                    <p>{budget.name.toUpperCase()}</p>
+                    <p className='mt-n2'>Description: {budget.description}</p>
                     <p>Created By &nbsp;
-                        <Link to={{ pathname: '../../user/profile', state: props.createdBy._id }}>
-                            ${props.createdBy.lastName + ', ' + props.createdBy.firstName}
-                        </Link> on {moment(props.createdAt).format('DD MMM YYYY, hh:mm A')}
+                        <Link to={{ pathname: '../../user/profile', state: budget.createdBy._id }}>
+                            ${budget.createdBy.lastName + ', ' + budget.createdBy.firstName}
+                        </Link> on {moment(budget.createdAt).format('DD MMM YYYY, hh:mm A')}
                     </p>
-                    {props.activatedBy &&
+                    {budget.activatedBy &&
                         <p>Activated By &nbsp;
-                            <Link to={{ pathname: '../../user/profile', state: props.activatedBy._id }}>
-                                ${props.activatedBy.lastName + ', ' + props.activatedBy.firstName}
-                            </Link> on {moment(props.activatedBy.createdAt).format('DD MMM YYYY, hh:mm A')}
+                            <Link to={{ pathname: '../../user/profile', state: budget.activatedBy._id }}>
+                                ${budget.activatedBy.lastName + ', ' + budget.activatedBy.firstName}
+                            </Link> on {moment(budget.activatedBy.createdAt).format('DD MMM YYYY, hh:mm A')}
                         </p>
                     }
-                    <p>Estimated Final Usage Date on {props.endDate}</p>
+                    <p>Estimated Final Usage Date on {budget.endDate}</p>
                     <p>Status</p>
                     <div className='d-fle'>
-                        <StatusFormatter status={props.status + 10} />
+                        <StatusFormatter status={budget.status + 10} />
                         {isLoading ?
                             <span className="text-white bg-info p-2 ml-4">
                                 <div className="spinner-border text-white spinner-border-sm"></div>
                                 &nbsp;Please Wait...
                             </span>
                             :
-                            <span className={`btn btn-${props.status ? 'warning' : 'info'} btn-sm ml-4`} onClick={toggleStatus}>{props.status ? 'DEACTIVATE' : 'ACTIVATE'}</span>
+                            <span className={`btn btn-${budget.status ? 'warning' : 'info'} btn-sm ml-4`} onClick={toggleStatus}>{budget.status ? 'DEACTIVATE' : 'ACTIVATE'}</span>
                         }
                     </div>
                     <div className="mt-4">
                         Actions
                         <div className="d-flex justify-content-between mt-1">
-                            <button className="btn btn-outline-info" data-toggle="modal" data-target="#editBudgetModal" onClick={() => prop.setRequestEditBudget(true)}>Edit Budget</button><br />
-                            <button className="btn btn-outline-danger" data-toggle="modal" data-target="#deleteBudgetModal" onClick={() => prop.setDeleteBudget(true)}>Delete Budget</button><br />
+                            <button className="btn btn-outline-info" data-toggle="modal" data-target="#editBudgetModal" onClick={() => setRequestEditBudget(true)}>Edit Budget</button><br />
+                            <button className="btn btn-outline-danger" data-toggle="modal" data-target="#deleteBudgetModal" onClick={() => setDeleteBudget(true)}>Delete Budget</button><br />
                             <button className="btn btn-outline-success">Extend Budget</button><br />
                             <button className="btn btn-outline-info" data-toggle="modal" data-target="#realocateBudgetModal">Reallocate Budget</button><br />
                         </div>

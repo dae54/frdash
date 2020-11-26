@@ -6,11 +6,7 @@ import axios from 'axios'
 export default function StatusRadial({ budgetItems, budgetOnFocus }) {
     const [disbursedAmount, setDisbursedAmount] = useState(0)
 
-    var totalAmount = 0
-    budgetItems.map(item => {
-        totalAmount += item.amount
-    })
-
+    const totalAmount = budgetItems.reduce((a, b) => a + b.amount, 0)
     async function fetchDisbursedRequests() {
         /**
          * THIS FUNCTION AIMS AT GETTING THE REQUESTS WITH STATUS OF DISBURSED
@@ -42,7 +38,7 @@ export default function StatusRadial({ budgetItems, budgetOnFocus }) {
         fetchDisbursedRequests()
     }, [])
 
-    const series = [Math.round((disbursedAmount / totalAmount)*100)||0]
+    const series = [Math.round((disbursedAmount / totalAmount) * 100) || 0]
     const options = {
         chart: {
             height: 350,
@@ -89,9 +85,9 @@ export default function StatusRadial({ budgetItems, budgetOnFocus }) {
     return (
         <React.Fragment>
             <div className="text-dark">
-                <p className='h3 mb-3'>Initial Amount <span className='text-default'>{totalAmount}</span></p>
-                <p className='p-0 m-0'>Disbursed: {disbursedAmount} </p>
-                <p className='p-0 m-0'>Remaining: {totalAmount - disbursedAmount}</p>
+                <p className='h3 mb-3'>Initial Amount <span className='text-default'>{totalAmount.toLocaleString()}</span></p>
+                <p className='p-0 m-0'>Disbursed: {disbursedAmount.toLocaleString()} </p>
+                <p className='p-0 m-0'>Remaining: {(totalAmount - disbursedAmount).toLocaleString()}</p>
             </div>
             <div className="mt-n3x">
                 <Chart options={options} series={series} type="radialBar" height={200} />

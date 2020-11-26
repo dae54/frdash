@@ -4,6 +4,7 @@ import axios from 'axios'
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
 import moment from 'moment'
 import Switch from '@material-ui/core/Switch';
+import { useAlert } from 'react-alert'
 
 /**date picker material */
 import 'date-fns';
@@ -13,9 +14,10 @@ import DateFnsUtils from '@date-io/date-fns';
 export default function BudgetIdentity({ setFeedback }) {
     const { state, dispatch } = React.useContext(BudgetContext)
     const [duration, setDuration] = useState(7)
-    const [errorMessage, setErrorMessage] = useState('')
+    // const [errorMessage, setErrorMessage] = useState('')
     // loading indicators
     const [activateNowLoading, setActivateNowLoading] = useState(false)
+    const alert = useAlert()
 
     // console.log(state)
     let setBudgetName = budgetName => dispatch({ type: 'budgetName', payload: budgetName })
@@ -23,11 +25,11 @@ export default function BudgetIdentity({ setFeedback }) {
     let setActivateBudgetInstantly = activateBudget => dispatch({ type: 'activateBudget', payload: activateBudget })
     let setStartDate = startDate => dispatch({ type: 'startDate', payload: startDate })
     let setEndDate = endDate => dispatch({ type: 'endDate', payload: endDate })
-    let setBudgetId = budgetId => dispatch({ type: 'budgetId', payload: budgetId })
+    // let setBudgetId = budgetId => dispatch({ type: 'budgetId', payload: budgetId })
 
 
     function handleInstantBudgetActivation() {
-        setErrorMessage('')
+        // setErrorMessage('')
         if (state.activateBudget) {
             setStartDate(new Date().toLocaleDateString())
             return setActivateBudgetInstantly(false)
@@ -39,8 +41,9 @@ export default function BudgetIdentity({ setFeedback }) {
             if (response.data.data === 0) {
                 setActivateBudgetInstantly(true)
             } else {
+                alert.error('Only one active budget is allowed')
                 // setErrorMessage(response.data.message)
-                setFeedback({category:'warning',message:response.data.message})
+                // setFeedback({category:'warning',message:response.data.message})
             }
         }).catch((error) => {
             setActivateNowLoading(false)
@@ -75,8 +78,8 @@ export default function BudgetIdentity({ setFeedback }) {
                     <span className="float-right">
                         Activate Now &nbsp;
                             {activateNowLoading ?
-                            <div class="spinner-grow spinner-grow-sm text-danger" role="status">
-                                <span class="sr-only">Loading...</span>
+                            <div className="spinner-grow spinner-grow-sm text-danger" role="status">
+                                <span className="sr-only">Loading...</span>
                             </div>
                             :
                             <Switch

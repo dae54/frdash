@@ -5,34 +5,38 @@ import InfoCard from '../../Gadgets/InfoCard'
 import BudgetDataTable from './BudgetDatatable'
 import Statistics from './Statistics'
 import URL from '../../../URL'
+import { AppContext } from '../../services/AppContext'
 
 
 export default function Budgets() {
-    // const [budgetStats, setBudgetStats] = useState([])
-    const [budgets, setBudgets] = useState([])
-    const [activeBudget, setActiveBudget] = useState()
-    const [budgetsLoaded, setBudgetsLoaded] = useState(false)
-    async function fetchBudgetStats() {
+    const { dispatch } = React.useContext(AppContext)
+    let setBreadcrumbPath = path => dispatch({ type: 'breadcrumbPath', payload: path })
 
-    }
+    useEffect(() => {
+        setBreadcrumbPath([
+            { name: 'Budgets' },
+        ])
+    }, [])
+
+    const [budgets, setBudgets] = useState({ loading: true, data: [] })
+    const [activeBudget, setActiveBudget] = useState()
+
     async function fetchBudgets() {
         await axios.get(`${URL}/budgets`, {
         }).then(response => {
-            // console.log(response.data.data)
-            setBudgets(response.data.data)
-            setBudgetsLoaded(true)
+            setBudgets({ loading: false, data: response.data.data })
         }).catch(error => {
+            setBudgets({ loading: false, data: [] })
             console.log(error)
         })
     }
     useEffect(() => {
-        fetchBudgetStats();
         fetchBudgets();
     }, [])
 
     useEffect(() => {
-        setActiveBudget(budgets.filter(budget => budget.status === 1).pop())
-    }, [budgets])
+        setActiveBudget(budgets.data.filter(budget => budget.status === 1).pop())
+    }, [budgets.data])
 
     return (
         <React.Fragment>
@@ -48,13 +52,20 @@ export default function Budgets() {
             </div>
             <div className="row">
                 <div className="col-sm-12 col-lg-8">
-                    {budgets.length ?
-                        <BudgetDataTable budgets={budgets} />
+                    {budgets.loading ?
+                        <>
+                            <div className="spinner-border spinner-border-sm" role="status">
+                                <span className="sr-only">Loading...</span>
+                            </div> &nbsp; Contacting server. Please wait
+                        </>
                         :
-                        <div className="alert alert-warning alert-dismissible fade show" role="alert">
-                            <strong>Sorry!</strong> No budget available.
-                        <NavLink to='/budgets/create'> Consider creating new budget</NavLink>
-                        </div>
+                        budgets.data.length ?
+                            <BudgetDataTable budgets={budgets.data} />
+                            :
+                            <div className="alert alert-warning alert-dismissible fade show" role="alert">
+                                <strong>Sorry!</strong> No budget available.
+                                <NavLink to='/budgets/create'> Consider creating new budget</NavLink>
+                            </div>
                     }
                 </div>
                 <div className="col-lg-4">

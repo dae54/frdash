@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import BudgetIdentity from './BudgetIdentity'
 import { Link } from 'react-router-dom'
 // import BudgetIdentity from './BudgetIdentity/BudgetIdentity'
@@ -6,9 +6,20 @@ import { Link } from 'react-router-dom'
 import { BudgetContextProvider } from './NewBudgetContext'
 import Preview from './Preview'
 import BudgetItems from './BudgetItems/BudgetItems'
+import { AppContext } from '../../../services/AppContext'
 
 
 export default function Index() {
+    const { dispatch } = React.useContext(AppContext)
+    let setBreadcrumbPath = path => dispatch({ type: 'breadcrumbPath', payload: path })
+
+    useEffect(() => {
+        setBreadcrumbPath([
+            { name: 'Budgets', url: '/budgets' },
+            { name: 'Create New' },
+        ])
+    }, [])
+
     const [feedback, setFeedback] = useState({ category: '', message: '' })
 
     return (
@@ -23,15 +34,15 @@ export default function Index() {
                 {feedback.category &&
                     <Feedback feedback={feedback} />
                 }
-                <div className="container-flui">
+                <div className="">
                     <div className="row">
-                        <div className="col-4 col-lg-4 col-md-6">
-                            <BudgetIdentity setFeedback={setFeedback}/>
+                        <div className="col-12 col-sm-9  col-md-6 col-lg-6 col-xl-4">
+                            <BudgetIdentity setFeedback={setFeedback} />
                         </div>
-                        <div className="col-4 col-lg-4 col-md-6">
+                        <div className="col-12 col-sm-9  col-md-6 col-lg-6 col-xl-4">
                             <BudgetItems />
                         </div>
-                        <div className="col-4 col-lg-4 col-md-6">
+                        <div className="col-12 col-sm-9  col-md-6 col-lg-6 col-xl-4">
                             <Preview setFeedback={setFeedback} />
                         </div>
                     </div>

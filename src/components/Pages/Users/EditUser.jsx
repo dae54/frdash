@@ -1,11 +1,25 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import URL from '../../../URL'
-import {NavLink, useHistory} from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
+import { useAlert } from 'react-alert'
 
 import MessagesHandler from '../../Gadgets/MessagesHandler';
+import { AppContext } from '../../services/AppContext';
 export default function UpdateUser() {
+    const { state, dispatch } = React.useContext(AppContext)
+    let setBreadcrumbPath = path => dispatch({ type: 'breadcrumbPath', payload: path })
+
+    useEffect(() => {
+        setBreadcrumbPath([
+            { name: 'Users', url: '/users' },
+            { name: 'Edit User' },
+        ])
+    }, [])
+
     const hist = useHistory();
+    const alert = useAlert()
+
     // hook to use when edit user is fired from edit dropdown in user list
     // const [editUser, setEditUser] = useState({})
 
@@ -23,33 +37,29 @@ export default function UpdateUser() {
     const [district, setDistrict] = useState()
     const [ward, setWard] = useState()
     const [gender, setGender] = useState()
-    const [roleId, setRoleId] = useState()
+    const [role, setRole] = useState()
     const [isLoading, setIsLoading] = useState(false)
 
-    const [roles, setRoles] = useState([])
-    const [message, setMessage] = useState({})
+    const [roles, setRoles] = useState({ loading: true, data: [] })
 
     useEffect(() => {
-        setFirstName(user.firstName); setLastName(user.lastName); setEmail(user.email); setPhoneNumber(user.phoneNumber)
-        setCountry(user.country); setRegion(user.region); setDistrict(user.district); setWard(user.ward); setGender(user.gender)
-        setRoleId(user.roleId);
-        console.log(user)
+        if (typeof user.email !== "undefined") {
+            setFirstName(user.firstName); setLastName(user.lastName); setEmail(user.email); setPhoneNumber(user.phoneNumber)
+            setCountry(user.country); setRegion(user.region); setDistrict(user.district); setWard(user.ward); setGender(user.gender)
+            setRole(user.role._id);
+        }
     }, [user])
-
-    // const [error, setError] = useState('')
-    // const [message, setMessage] = useState({})
 
     // FETCH ROLES
     async function fetchRoles() {
-        setIsLoading(true)
         axios.get(`${URL}/accessControl/roles`, {
         }).then((response) => {
-            setRoles(response.data.data)
-            setIsLoading(false)
+            setRoles({ loading: false, data: response.data.data })
         }).catch((error) => {
-            setIsLoading(false)
+            setRoles({ loading: false, data: [] })
             console.log(error.response)
-            // setError(error.response.data.userMessage)
+            // alert.error(error.response)
+
         })
     }
 
@@ -63,26 +73,23 @@ export default function UpdateUser() {
         }).catch((error) => {
             setIsLoading(false)
             console.log(error.response)
-            // setError(error.response.data.userMessage)
         })
     }
 
     async function handleSubmit(e) {
         e.preventDefault()
-        setMessage({})
-        if (roleId === '0') {
-            console.log('zero')
-            return setMessage({ message: 'ROLE NOT ASSIGNED TO USER', status: 'warning', dismissible: false })
+        if (role === '0') {
+            return alert.error('Please assign ROLE to user')
         }
-        const updatedUser = { firstName, lastName, email, phoneNumber, gender, country, ward, region, district, userId: user._id, roleId }
+        const updatedUser = { firstName, lastName, email, phoneNumber, gender, country, ward, region, district, userId: user._id, roleId: role }
         await axios.post(`${URL}/user/edit`, {
             updatedUser
         }).then(response => {
-            setMessage({ message: response.data.message.toUpperCase(), status: 'info', dismissible: true })
+            alert.success(response.data.message)
             console.log(response.data)
         }).catch(error => {
-            // setError('Assign role to user')
-            console.log(error)
+            // alert.error(error.response.message)
+            console.log(error.response)
         })
         console.log('submit')
     }
@@ -97,25 +104,16 @@ export default function UpdateUser() {
         <React.Fragment>
             <div className="row">
                 <div className="col-lg-8 offset-lg-2">
-                    {/* <div className="row text-right">
-                        <div className="btn btn-outline-info btn-rounded float-right" onClick={() => hist.push('edit', { user: user })}>
-                            <i className="fa fa-pencil"></i> Edit
-                        </div>
-                    </div> */}
                     <div className="row">
                         <div className="col-sm-4 col-3">
                             <h4 className="page-title">Personal details</h4>
                         </div>
                         <div className="col-sm-8 col-9 text-right m-b-20">
-                            <div className="btn btn-outline-primary btn-rounded float-right" onClick={()=>hist.goBack()}>
+                            <div className="btn btn-outline-primary btn-rounded float-right" onClick={() => hist.goBack()}>
                                 <i className="fa fa-caret-square-o-left"></i> Back
                             </div>
                         </div>
                     </div>
-
-                    {message.message &&
-                        <MessagesHandler message={message} />
-                    }
                     <form onSubmit={handleSubmit}>
                         <div className="row">
                             <div className="col-md-12 col-12 col-lg-12">
@@ -148,10 +146,10 @@ export default function UpdateUser() {
                                 <div className="form-group row">
                                     <label className="col-lg-3 col-form-label">Role:</label>
                                     <div className="col-lg-9">
-                                        <select className='form-control' value={roleId} onChange={(e) => setRoleId(e.target.value)} required>
+                                        <select className='form-control' value={role} onChange={(e) => setRole(e.target.value)} required>
                                             <option value={0}>...</option>
-                                            {roles.length &&
-                                                roles.map((item, index) => {
+                                            {roles.data.length &&
+                                                roles.data.map((item, index) => {
                                                     return (
                                                         <option key={index} value={item._id}>{item.name} ({item.description})</option>
                                                     )
@@ -194,38 +192,25 @@ export default function UpdateUser() {
                                 </div>
                             </div>
                         </div>
-                        {!isLoading &&
-                            <div className="text-right">
-                                <button type="submit" className="btn btn-primary">Submit</button>
-                            </div>
-                        }
-                        {isLoading &&
+                        {roles.loading || isLoading?
                             <div className="text-right">
                                 <button className="btn btn-primary" disabled>
                                     <div>
                                         <div className="spinner-border text-light spinner-border-sm " role="status">
                                             <span className="sr-only">Please Wait...</span>
                                         </div>
-                                        &nbsp;Please Wait...
-                                        </div>
+                                &nbsp;Please Wait...
+                                </div>
                                 </button>
                             </div>
+                            :
+                            <div className="text-right">
+                                <button type="submit" className="btn btn-primary">Submit</button>
+                            </div>
                         }
-                        {/* </div> */}
                     </form>
                 </div>
             </div>
         </React.Fragment>
-    )
-}
-
-const ErrorMessage = (props) => {
-    return (
-        <div className="alert alert-warning alert-dismissible fade show" role="alert">
-            <strong>Warning!</strong> {props.message}.
-            {/* <button type="button" className="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button> */}
-        </div>
     )
 }

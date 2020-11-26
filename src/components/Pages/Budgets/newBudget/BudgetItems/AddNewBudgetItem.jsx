@@ -3,9 +3,12 @@ import axios from 'axios'
 
 import { BudgetContext } from '../NewBudgetContext'
 import URL from '../../../../../URL'
-export default function AddNewBudgetItem() {
+export default function AddNewBudgetItem(props) {
     const { state, dispatch } = React.useContext(BudgetContext)
-    let addBudgetItem = budgetItem => dispatch({ type: 'addBudgetItem', payload: budgetItem })
+    let addBudgetItem;
+    if (!props.setCreatedItem) {
+        addBudgetItem = budgetItem => dispatch({ type: 'addBudgetItem', payload: budgetItem })
+    }
 
     const [name, setName] = useState('')
     const [code, setCode] = useState('')
@@ -23,17 +26,21 @@ export default function AddNewBudgetItem() {
     }
 
     function createNewBudgetItem(name, code, description) {
-        axios.post(`${URL}/budgetItems/create`, {
-            name, code, description
+        axios.post(`${URL}/budgetItems`, {
+            budgetItems: [{ name: name, code: code, description: description }]
         }).then(response => {
             setIsLoading(false)
-            //renaming _id field to budgetItemId
-            response.data.data.budgetItemId = response.data.data._id;
-            delete response.data.data._id
-            // append checked status
-            response.data.data.checked = true
-
-            addBudgetItem(response.data.data);
+            if (!props.setCreatedItem) {
+                //renaming _id field to budgetItemId
+                response.data.data.createdItems[0].budgetItemId = response.data.data.createdItems[0]._id
+                // delete response.data.data._id
+                delete response.data.data.createdItems[0]._id
+                addBudgetItem(response.data.data.createdItems[0]);
+            }
+            if (props.setCreatedItem) {
+                console.log('here setCreatedItem')
+                props.setCreatedItem(response.data.data.createdItems[0])
+            }
             setError(false)
             setName('')
             setCode('')
@@ -41,19 +48,20 @@ export default function AddNewBudgetItem() {
             setMessage(response.data.message)
         }).catch(error => {
             setIsLoading(false)
-            setError(true)
-            if (error.message === 'Network Error') {
-                setMessage('Network Error')
-            } else {
-                setMessage(error.response.data.userMessage)
-            }
+            // setError(true)
+            // if (error.message === 'Network Error') {
+            //     setMessage('Network Error')
+            // } else {
+            //     setMessage(error.response.data.userMessage)
+            // }
             console.log(error.response)
+            console.log(error)
         })
     }
     return (
         <React.Fragment>
             <form onSubmit={handleSubmit}>
-                <div className="modal fade" id="exampleModalCenter" tabIndex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div className="modal fade" id="addNewBudgetItemModal" tabIndex="-1" role="dialog" aria-labelledby="addNewBudgetItemModal" aria-hidden="true">
                     <div className="modal-dialog modal-dialog-centered" role="document">
                         <div className="modal-content card-box shadow-sm">
                             <div className="row">

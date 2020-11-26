@@ -2,8 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { NavLink } from 'react-router-dom';
 import axios from 'axios'
 
-// import URL from '../../../URL'
-import Users from './Users'
+import Users from './UserList'
 
 export default function Index() {
     const [userList, setUserList] = useState([])
@@ -39,7 +38,7 @@ export default function Index() {
             </div>
             {isLoading ?
                 <div className='row'>
-                    {Array.from({ length: 8 }, () => {
+                    {Array.from({ length: 2 }, () => {
                         return (
                             <div className='col-3'>
                                 <div className='jumbotron blink_me'></div>

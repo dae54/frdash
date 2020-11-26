@@ -1,9 +1,20 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import { useHistory } from 'react-router-dom'
+import { AppContext } from '../../../services/AppContext'
 // import SweetAlert from 'react-bootstrap-sweetalert'
 
 export default function NewRequest() {
+    const { state, dispatch } = React.useContext(AppContext)
+    let setBreadcrumbPath = path => dispatch({ type: 'breadcrumbPath', payload: path })
+
+    useEffect(() => {
+        setBreadcrumbPath([
+            { name: 'Requests', url: '/requests' },
+            { name: 'Test New Request' },
+        ])
+    }, [])
+    
     const history = useHistory()
 
     const [budget, setBudget] = useState([])
@@ -16,7 +27,7 @@ export default function NewRequest() {
 
     function fetchBudget() {
         setIsLoading(true)
-        axios.get(`budgets/${1}`, {
+        axios.get(`budgets/status/${1}`, {
         }).then((response) => {
             setIsLoading(false)
             console.log(response.data.data)

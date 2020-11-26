@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import { Link, useHistory } from 'react-router-dom'
 import moment from 'moment'
+import { useAlert } from 'react-alert'
 // import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 
 // import RequestInformation from './RequestInformation'
@@ -12,12 +13,26 @@ import BudgetInformation from './BudgetInformation'
 // import { setAvatar } from '../../../AccessoryFunctions/avatarGenerator';
 import RequestStatusController from './RequestStatusController'
 import Remarks from './Remarks'
+import { AppContext } from '../../../services/AppContext'
 // import StatusFormatter from '../../../Gadgets/StatusFormatter'
 
 export default function RequestProfile(props) {
+    const { dispatch } = React.useContext(AppContext)
+    let setBreadcrumbPath = path => dispatch({ type: 'breadcrumbPath', payload: path })
+
+    useEffect(() => {
+        setBreadcrumbPath([
+            { name: 'Requests', url: '/requests' },
+            { name: 'Profile' },
+        ])
+    }, [])
+
     const hist = useHistory();
+    const alert = useAlert();
     const [request, setRequest] = useState()
     const [disburseAlert, setDisburseAlert] = useState('')
+    const [refreshRemarks, setRefreshRemarks] = useState(false)
+
     async function fetchRequestById() {
         await axios.get(`/requests/${props.location.state.requestId}`, {
         }).then(response => {
@@ -25,6 +40,21 @@ export default function RequestProfile(props) {
         }).catch(error => {
             console.log(error.response)
         })
+    }
+
+    const deleteRequest = async () => {
+        let confirmDelete = window.confirm('You are about to delete a request, Bare in mind that its an irreversible action. Proceed with care')
+        if (confirmDelete) {
+            await axios.delete(`requests/${request._id}`)
+                .then(res => {
+                    console.log(res)
+                    alert.success(res.data.message)
+                    hist.goBack()
+                }).catch(error => {
+                    console.log(error)
+                    alert(error)
+                })
+        }
     }
 
     useEffect(() => {
@@ -38,40 +68,63 @@ export default function RequestProfile(props) {
                     <h4 className="page-title">Request Profile</h4>
                 </div>
                 <div className="col-sm-8 col-9 text-right m-b-20">
-                    <Link className="btn btn-primary btn-rounded float-right" to={{ pathname: '/requests' }}>
+                    {/* <Link className="btn btn-default btn-rounded float-right" to={{ pathname: '/requests' }}>
+                        <i className="fa fa-trash "></i> DELETE REQUEST
                         <i className="fa fa-eye "></i> VIEW ALL REQUESTS
-                    </Link>
+                    </Link> */}
+                    <span className="btn btn-default btn-rounded float-right" onClick={deleteRequest}>
+                        <i className="fa fa-trash "></i> DELETE REQUEST
+                    </span>
                 </div>
             </div>
             {request &&
                 <div className="row row-cols-2">
-                    <div className="col-5">
+                    <div className="col-12 col-md-6">
                         <div className="row row-cols-1">
-                            <div className="col">
+                            <div className="col-12">
                                 <div className="card">
                                     <div className="card-header pb-2">
-                                        <h4 className='text-dark'>Request Information</h4>
+                                        <span className='text-dark h4'>Request Information</span>
+                                        {/* <span className="bt btn-secondar p-1 pull-right" style={{ cursor: 'pointer' }} onClick={deleteRequest}>
+                                            <i className="fa fa-trash"></i>
+                                        </span> */}
                                     </div>
                                     <div className="card-body pt-0">
                                         <p className="text-monospace">
                                             <Link to={{ pathname: '../../user/profile', state: request.userId._id }} className="text-inf h5">${request.userId.firstName + ' ' + request.userId.lastName}</Link>&nbsp;
-                                            requested {request.amount}Tsh from
-                                            <span className='text-info h5' style={{ cursor: 'pointer' }}>${request.budgetItemId.name}</span></p>
-                                        <p className='text-dark' style={{ height: '12vh' }}>Reasons: {request.description}
+                                            requested {request.amount.toLocaleString()}
+                                            Tsh from <span className='text-info h5' style={{ cursor: 'pointer' }}>${request.budgetItemId.name}</span></p>
+                                        <p className='text-dark pt-2 pb-2' styl={{ height: '12vh' }}>Reasons: {request.description}
                                         </p>
                                         <p className="text-monospace">{moment(request.createdAt).format('DD/MM/YYYY HH:MM a').toUpperCase()} &nbsp; {moment(request.createdAt).fromNow()}</p>
                                         <hr />
-                                        <RequestStatusController request={request} disburseAlert={disburseAlert} />
+                                        <RequestStatusController
+                                            request={request}
+                                            disburseAlert={disburseAlert}
+                                            setRequest={setRequest}
+                                            // refreshRemarks={refreshRemarks}
+                                            setRefreshRemarks={setRefreshRemarks}
+                                        />
                                     </div>
                                 </div>
                             </div>
                             <div className="col">
-                                <Remarks requestId={request._id} />
+                                <Remarks
+                                    requestId={request._id}
+                                    refreshRemarks={refreshRemarks}
+                                    setRefreshRemarks={setRefreshRemarks}
+                                />
                             </div>
                         </div>
                     </div>
-                    <div className="col">
-                        <BudgetInformation budgetItem={request.budgetItemId} budgetId={request.budgetId} request={request} setDisburseAlert={setDisburseAlert} disburseAlert={disburseAlert} />
+                    <div className="col-12 col-md-6">
+                        <BudgetInformation
+                            budgetItem={request.budgetItemId}
+                            budgetId={request.budgetId}
+                            request={request}
+                            setDisburseAlert={setDisburseAlert}
+                            disburseAlert={disburseAlert}
+                        />
                     </div>
                 </div>
                 ////////////////////////////////////////////////

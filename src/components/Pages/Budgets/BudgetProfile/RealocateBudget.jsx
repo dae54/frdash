@@ -1,8 +1,6 @@
-import React, { useState, useEffect } from 'react'
-import axios from 'axios'
+import React, { useState } from 'react'
 
 export default function RealocateBudget(props) {
-    const [isLoading, setIsLoading] = useState(false)
     const [budgetItems] = useState(
         props.budget.budgetItems.map(item => {
             return { name: item.budgetItemId.name, id: item.budgetItemId._id, amount: item.amount }
@@ -10,7 +8,7 @@ export default function RealocateBudget(props) {
     )
     // const [budgets, setBudgets] = useState([])
     const [selectedBudgetItem, setSelectedBudgetItem] = useState({})
-
+    // setIsLoading(false)
     // function fetchAllBudgets() {
     //     axios.get('/budgets')
     //         .then(response => {
@@ -35,14 +33,18 @@ export default function RealocateBudget(props) {
                         <div className="modal-body">
                             <div className="container-fluid">
                                 <form className='form-'>
-                                    <select class="form-control form-control-lg mb-2" onChange={(e) => setSelectedBudgetItem(JSON.parse(e.target.value))}>
+                                    <select className="form-control form-control-lg mb-2" onChange={(e) => setSelectedBudgetItem(JSON.parse(e.target.value))}>
                                         <option value=" ">Select item</option>
-                                        {budgetItems.map(item => <option value={JSON.stringify(item)}>{item.name}</option>)}
+                                        {budgetItems.map(item =>
+                                            <option key={item.id} value={JSON.stringify(item)}>
+                                                {item.name}
+                                            </option>
+                                        )}
                                     </select>
                                     <div className="form-group row">
                                         <div className="col-6">
                                             <label>From</label>
-                                            <select class="form-control form-control-lg mb-2">
+                                            <select className="form-control form-control-lg mb-2">
                                                 <option value="">Cash</option>
                                                 {/* {budgets.map(item => <option value={item._id}>{item.name}</option>)} */}
                                             </select>
@@ -72,7 +74,7 @@ export default function RealocateBudget(props) {
                             </div>
                         </div>
                         <div className="modal-footer">
-                            {isLoading ?
+                            {/* {isLoading ?
                                 <button className="btn btn-primary btn-" disabled>
                                     <div>
                                         <div className="spinner-border text-light spinner-border-sm " role="status">
@@ -82,11 +84,11 @@ export default function RealocateBudget(props) {
                                     </div>
                                 </button>
                                 :
-                                <>
-                                    <button className="btn btn-secondary " data-dismiss="modal">CLOSE</button>
-                                    <button type="submit" className="btn btn-primary ">APROVE REALOCATION</button>
-                                </>
-                            }
+                                <> */}
+                            <button className="btn btn-secondary " data-dismiss="modal">CLOSE</button>
+                            <button type="submit" className="btn btn-primary ">APROVE REALOCATION</button>
+                            {/* </> */}
+                            {/* } */}
                         </div>
                     </div>
                 </div>
