@@ -132,7 +132,7 @@ export default function UserProfile(props) {
                             :
                             <>
                                 <div className="top d-inline pt-3 ml-3">
-                                    <span className="text-dark p-0" style={{ fontSize: '20px' }}> {user.data.firstName + ' ' + user.data.lastName}</span>
+                                    <span className="text-dark p-0" style={{ fontSize: '20px' }}> {user.data.firstName + ' ' + user.data.lastName}</span> &nbsp;  <Link to={{ pathname: 'edit', state: { user: user.data } }}><i className="fa fa-pencil"></i></Link>
                                     <div className="float-right mr-1">
                                         <StatusFormatter status={user.data.aproved + 20} />
                                     </div><br />

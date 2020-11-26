@@ -55,7 +55,7 @@ export default function Index(props) {
                     {/* FIRST SECTION ROW*/}
                     <div className="row">
                         <div className="col-12 col-sm-10 col-md-6 -lg-none">
-                            <BudgetInformation budget={budget.data} setRequestEditBudget={setRequestEditBudget} setDeleteBudget={setDeleteBudget} />
+                            <BudgetInformation budget={budget.data} setBudget={setBudget} setRequestEditBudget={setRequestEditBudget} setDeleteBudget={setDeleteBudget} />
                             {requestEditBudget &&
                                 <EditBudget budget={budget.data} setRequestEditBudget={setRequestEditBudget} />
                             }
