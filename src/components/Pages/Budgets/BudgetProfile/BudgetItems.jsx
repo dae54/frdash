@@ -3,17 +3,14 @@ import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 
 // import MapBudgetItems from './MapBudgetItems';
 
-export default function BudgetItems(prop) {
-    var total = 0;
-    const props = prop.budget.location.state;
+export default function BudgetItems({ budgetItems }) {
 
-    console.log(props.budgetItems)
     return (
         <React.Fragment>
             <div className="card-box">
                 <div className="col-md-12 col-12 col-lg-12">
                     <h4 className="card-title text-uppercase">Budget details</h4>
-                    <BootstrapTable className='mt-n5' data={props.budgetItems} tableStyle={{overflow:'hidden'}} bordered={false} maxHeight='34vh' ignoreSinglePage hover version='4' search>
+                    <BootstrapTable className='mt-n5' data={budgetItems} tableStyle={{ overflow: 'hidden' }} bordered={false} maxHeight='34vh' ignoreSinglePage hover version='4' search>
                         <TableHeaderColumn isKey dataField='_id' hidden>S/N #</TableHeaderColumn>
                         <TableHeaderColumn dataField='budgetItemId' dataFormat={cell => cell.name} filterFormatted>Name</TableHeaderColumn>
                         <TableHeaderColumn dataField='budgetItemId' dataFormat={cell => cell.code} filterFormatted>Code</TableHeaderColumn>

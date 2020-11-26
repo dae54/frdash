@@ -3,13 +3,12 @@ import { AuthContext } from '../Auth/AuthContext'
 import { useHistory } from 'react-router-dom'
 import Notifications from './Notifications'
 // import { tokenParams, removeToken } from '../Auth/sessionControl'
-import logo from '../Assets/images/radial.png'
+// import logo from '../Assets/images/radial.png'
 
 import { setAvatar } from '../AccessoryFunctions/avatarGenerator'
 import Breadcrumb from '../Gadgets/Breadcrumb'
 export default function Index() {
     const hist = useHistory()
-    console.log('object')
     const { state, dispatch } = React.useContext(AuthContext)
     const [notificationCount, setNotificationCount] = useState(0)
     let setIsAuthorized = isAuthorized => dispatch({ type: 'isAuthorized', payload: isAuthorized })
@@ -46,19 +45,45 @@ export default function Index() {
     return (
         <React.Fragment>
             <div className="header">
-                <div className="header-left">
+                {/* <div className="header-left">
                     <a href="index-2.html" className="logo">
                         <img src={logo} width="35" height="35" alt="" />
                         <span>Fund Request</span>
                     </a>
+                </div> */}
+                <div className="header-left">
+                    <a href="#" className="dropdown-toggle nav-link user-link" data-toggle="dropdown">
+                        {state.userDetails === '' ?
+                            <span className="text-light">Initializing...</span>
+                            :
+                            <>
+                                <span className="user-img">
+                                    <span className="avatar">{setAvatar(state.userDetails.firstName, state.userDetails.lastName)}</span>
+                                </span>
+                                <span className='text-uppercase text-light'>{`${state.userDetails.firstName} ${state.userDetails.lastName}`}
+                                    {/* <small>
+                                        ({state.userDetails.role.name})
+                                    </small> */}
+                                </span>
+                                <p className="text-light mt-n3 ml-5">{state.userDetails.role.name}</p>
+                            </>
+                        }
+                        {/* <p><small>asdf</small></p> */}
+                    </a>
                 </div>
+                {/* <div className="header-right">
+                    s
+                </div> */}
                 <a id="toggle_btn" href=""><i className="fa fa-bars"></i></a>
                 <a id="mobile_btn" className="mobile_btn float-left" href="#sidebar"><i className="fa fa-bars"></i></a>
-                <div>
+                {/* <div>
                     <Breadcrumb />
-                </div>
+                </div> */}
 
                 <ul className="nav user-menu float-right">
+                {/* <div> */}
+                    <Breadcrumb />
+                {/* </div> */}
                     <li className="nav-item dropdown d-none d-sm-block">
                         <a href="#" className="dropdown-toggle nav-link" data-toggle="dropdown"><i className="fa fa-bell-o"></i> <span className="badge badge-pill bg-danger float-right">{notificationCount}</span></a>
                         <div className="dropdown-menu notifications">
@@ -82,27 +107,7 @@ export default function Index() {
                         </li>
                         : */}
                     <li className="nav-item dropdown has-arrow">
-                        <a href="#" className="dropdown-toggle nav-link user-link" data-toggle="dropdown">
-                            {state.userDetails === '' ?
-                                <span className="">Initializing...</span>
-                                :
-                                <>
-                                    <span className="user-img">
-                                        <span className="avatar">{setAvatar(state.userDetails.firstName, state.userDetails.lastName)}</span>
-                                        {/* <span className="avatar">{setAvatar(JSON.parse(localStorage.getItem('userDetails')).displayName.split(' ')[0], localStorage.getItem('userDetails')).displayName.split(' ')[1]}</span> */}
 
-                                        {/* <img className="rounded-circle" src="assets/img/user.jpg" width="24" alt="Admin" /> */}
-                                        {/* <span className="status online"></span> */}
-                                    </span>
-                                    <span className='text-uppercase'>{`${state.userDetails.firstName} ${state.userDetails.lastName}`}
-                                        <small>
-                                            ({state.userDetails.role.name})
-                                    </small>
-                                    </span>
-                                </>
-                            }
-                            {/* <p><small>asdf</small></p> */}
-                        </a>
                         <div className="dropdown-menu text-center">
                             <div className="row pl-5 pr-5">
                                 <div className="col">
