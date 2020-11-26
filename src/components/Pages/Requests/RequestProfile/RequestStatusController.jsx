@@ -146,7 +146,7 @@ export default function RequestStatusController(props) {
             </div>
             <Modal show={show} onHide={handleClose} centered>
                 <Modal.Header closeButton>
-                    <span class="modal-title" id="exampleModalLabel">
+                    <span className="modal-title" id="exampleModalLabel">
                         <div>
                             <small>Revert Request</small>
                         </div>
@@ -204,34 +204,34 @@ const RemarksController = ({ action, handleStatusChange, statusChanged }) => {
     //         setActionString('HOLD')
     // }
     return (
-        <div class="modal fade" id="remarksModal" tabindex="-1" role="dialog">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        {/* <h5 class="modal-title">Add Remarks</h5> */}
-                        <h5 class="modal-title">
+        <div className="modal fade" id="remarksModal" tabIndex="-1" role="dialog">
+            <div className="modal-dialog modal-dialog-centered">
+                <div className="modal-content">
+                    <div className="modal-header">
+                        {/* <h5 className="modal-title">Add Remarks</h5> */}
+                        <h5 className="modal-title">
                             Change status to <StatusFormatter status={action} />
                         </h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <button type="button" className="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     {statusChanged ?
-                        <div class="modal-body text-center">
+                        <div className="modal-body text-center">
                             <p>Remark Saved and Status changed</p>
-                            <button type="button" class="btn btn-secondary btn-sm mr-2" data-dismiss="modal" onClick={() => statusChanged = false}>Close</button>
+                            <button type="button" className="btn btn-secondary btn-sm mr-2" data-dismiss="modal" onClick={() => statusChanged = false}>Close</button>
                         </div>
                         :
-                        <div class="modal-body">
+                        <div className="modal-body">
                             <form onSubmit={(e) => handleSubmit(e)}>
-                                <h5 class="modal-titl">
+                                <h5 className="modal-titl">
                                     {/* Change status to <StatusFormatter status={action} /> */}
                                 Remarks
                                 </h5>
                                 <textarea type="text" placeholder='Type a remark' className="form-control" rows='5' value={remark} onChange={(e) => setRemark(e.target.value)} style={{ resize: 'none' }} autoFocus={true} required></textarea>
                                 <hr />
-                                <div class="float-right">
-                                    <button type="submit" class="btn btn-primary btn-sm">Confirm </button>
+                                <div className="float-right">
+                                    <button type="submit" className="btn btn-primary btn-sm">Confirm </button>
                                 </div>
                             </form>
                         </div>

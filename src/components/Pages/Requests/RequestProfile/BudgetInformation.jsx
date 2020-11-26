@@ -59,7 +59,7 @@ export default function BudgetInformation(props) {
                                 ${request.budgetId.name}
                             </span>
                         </p>
-                        <table class="table table-borderless text-muted border-0">
+                        <table className="table table-borderless text-muted border-0">
                             <tbody>
                                 <tr>
                                     <td>Item Requested</td>

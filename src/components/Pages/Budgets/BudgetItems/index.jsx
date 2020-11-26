@@ -81,10 +81,10 @@ export default function BudgetItems() {
             <div className="row">
                 <div className="col-10">
                     <div className="card">
-                        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                        <div className="alert alert-warning alert-dismissible fade show" role="alert">
                             <p>1. Edit item by clicling on the particular field. (<small><strong>Code</strong> field cant be edited</small>)</p>
                             <span className='mt-'>2. Save Edits by using Enter key/ Blur out.</span>
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <button type="button" className="close" data-dismiss="alert" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>

@@ -88,7 +88,7 @@ export default function RequestAproves() {
                             </div>
                             <div className="card-body">
                                 {/* <div className="btn btn-default" onClick={fetchRequestsAproves}>click me</div> */}
-                                <table class="table">
+                                <table className="table">
                                     <thead className='bg-ligh'>
                                         <tr>
                                             <th scope="col">Requester Name</th>

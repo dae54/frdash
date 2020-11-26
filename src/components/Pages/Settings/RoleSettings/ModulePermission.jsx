@@ -24,7 +24,7 @@ export default function ModulePermission() {
             console.log(error)
         })
     }
-    
+
     async function fetchRolePermissions() {
         await axios.get(`/accessControl/roles/${state.activeRole}`, {
         }).then(response => {
@@ -47,15 +47,18 @@ export default function ModulePermission() {
     }
 
     async function addPermission(e) {
+        setIsLoading(true)
         e.preventDefault()
         console.log(e.target.id)
         await axios.post(`/accessControl/permissions`,
             { data: { moduleName: e.target.id, displayName: name, genericName, description } }
         )
             .then(response => {
+                setIsLoading(false)
                 setRowRolePermissions([...rowRolePermissions, response.data.data]) //add permission
                 alert.success(response.data.message)
             }).catch(error => {
+                setIsLoading(false)
                 console.log(error)
             })
     }
@@ -119,14 +122,14 @@ export default function ModulePermission() {
                                         <div className="card">
                                             <div className="card-body">
                                                 <form onSubmit={addPermission} id={permission[0].moduleName}>
-                                                    <div class="form-row">
-                                                        <div class="col">
+                                                    <div className="form-row">
+                                                        <div className="col">
                                                             <label for="inputEmail4" className='text-dark'>Permission Display Name</label>
-                                                            <input type="text" class="form-control form-control-sm" placeholder={`eg. create ${permission[0].moduleName.toLowerCase()}`} value={name} onChange={e => setName(e.target.value)} required />
+                                                            <input type="text" className="form-control form-control-sm" placeholder={`eg. create ${permission[0].moduleName.toLowerCase()}`} value={name} onChange={e => setName(e.target.value)} required />
                                                         </div>
-                                                        <div class="col">
+                                                        <div className="col">
                                                             <label for="inputEmail4" className='text-dark'>Permission Generic Name</label>
-                                                            <input type="text" class="form-control form-control-sm" placeholder={`eg. create_${permission[0].moduleName.toLowerCase()}`} value={genericName} onChange={e => setGenericName(e.target.value)} required />
+                                                            <input type="text" className="form-control form-control-sm" placeholder={`eg. create_${permission[0].moduleName.toLowerCase()}`} value={genericName} onChange={e => setGenericName(e.target.value)} required />
                                                         </div>
                                                     </div>
                                                     <div className="form-group pt-2">

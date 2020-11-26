@@ -91,7 +91,7 @@ export default function Remarks(props) {
                         />
                         {newRemarkStatus.isLoading ?
                             <button className='btn btn-info btn-sm float-right' disabled style={{ cursor: 'progress' }}>
-                                <div class="spinner-border text-dark spinner-border-sm" role="status"></div>
+                                <div className="spinner-border text-dark spinner-border-sm" role="status"></div>
                             </button>
                             :
                             <button type="submit" className='btn btn-info float-right'>Submit</button>
@@ -109,7 +109,7 @@ export default function Remarks(props) {
                                     </div>
                                 )
                             })}
-                            <div class="spinner-border text-dark spinner-border-sm" role="status"></div> Please wait
+                            <div className="spinner-border text-dark spinner-border-sm" role="status"></div> Please wait
                         </div>
                         :
                         <div style={{ maxHeight: '50vh', overflowY: 'auto' }}>
