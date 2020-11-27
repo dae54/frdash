@@ -50,6 +50,7 @@ export default function NewLogin() {
         if (state.isAuthorized) {
             window.location.replace('/')
         } else {
+            alert("you cant be allowed in.. sorry")
             localStorage.removeItem('userDetails')
         }
     }, [])
