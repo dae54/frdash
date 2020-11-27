@@ -20,7 +20,6 @@ export default function Home() {
     let setIsLocked = isLocked => dispatch({ type: 'isLocked', payload: isLocked })
 
     function _onIdle(e) {
-        alert('You are locked')
         setIsLocked(true)
         // sessionStorage.setItem('hist',JSON.stringify(hist))
         sessionStorage.setItem('pathname', hist.location.pathname)
@@ -39,7 +38,6 @@ export default function Home() {
                     return
                 }
                 if (error.response.status === 401) {
-                    alert("unfortunately we cant let you in. try again later")
                     localStorage.removeItem('token')
                     localStorage.removeItem('userDetails')
                     window.location.replace('login')
