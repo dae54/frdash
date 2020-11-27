@@ -84,7 +84,7 @@ export default function Dashboard() {
                                 <div className="dash-widget shadow-sm">
                                     <span className={`dash-widget-bg1 bg-${item.color}`}><i className={`fa fa-${item.icon}`} aria-hidden="true"></i></span>
                                     <div className="dash-widget-info text-right">
-                                        <h3 className=''>{item.amount.toLocaleString()}</h3>
+                                        <h5 className='pb-2 font-weight-bold'>{item.amount.toLocaleString()}</h5>
                                         {item.label}
                                     </div>
                                 </div>
