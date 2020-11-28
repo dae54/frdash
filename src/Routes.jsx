@@ -23,6 +23,7 @@ import ChangePassword from './components/Pages/Settings/ChangePassword'
 import NewRequest from "./components/Pages/Requests/NewRequest";
 import Reports from './components/Pages/Reports/Index'
 import BudgetItems from "./components/Pages/Budgets/BudgetItems";
+import ProfileManager from "./components/Pages/Settings/ProfileManager";
 
 const routes = [
     {
@@ -124,6 +125,11 @@ const routes = [
         name: 'settings route',
         link: '/settings/pwd',
         component: ChangePassword
+    },
+    {
+        name: 'User Profile route',
+        link: '/profile',
+        component: ProfileManager
     },
     {
         name: 'reports route',
