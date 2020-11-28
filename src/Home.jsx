@@ -12,6 +12,8 @@ import Error404 from './components/Error404'
 
 import { transitions, positions, Provider as AlertProvider } from 'react-alert'
 import AlertTemplate from 'react-alert-template-basic'
+import Breadcrumb from './components/Gadgets/Breadcrumb';
+import RightSidebar from './components/SideBar/RightSidebar';
 
 export default function Home() {
     const hist = useHistory()
@@ -71,7 +73,13 @@ export default function Home() {
                     <Sidebar />
                     <Navbar />
                     <div className="page-wrapper">
+                        <div className="row pl-4 pt-2">
+                            <Breadcrumb />
+                            {state.userDetails && <RightSidebar />}
+                            {/* <RightSidebar /> */}
+                        </div>
                         <div className="content">
+
                             <Switch>
                                 {routes.map((item, index) => {
                                     return (
