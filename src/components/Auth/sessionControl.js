@@ -1,5 +1,11 @@
 import jwt_decode from 'jwt-decode'
 
+export const logout = () => {
+    localStorage.removeItem('token')
+    localStorage.removeItem('userDetails')
+    return true
+}
+
 export const validateToken = () => {
     const token = sessionStorage.getItem('token')
     if (token) {
