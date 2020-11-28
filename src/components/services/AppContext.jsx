@@ -1,12 +1,14 @@
 import React, { useReducer } from "react";
 
 let initialState = {
-    breadcrumbPath: []
+    breadcrumbPath: [], rightSidebarOverlayOpened: true
 }
 let reducer = (state, action) => {
     switch (action.type) {
         case 'breadcrumbPath':
             return { ...state, breadcrumbPath: state.breadcrumbPath = action.payload }
+        case 'rightSidebarOverlayOpened':
+            return { ...state, rightSidebarOverlayOpened: state.rightSidebarOverlayOpened = action.payload }
     }
 }
 
