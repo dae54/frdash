@@ -3,13 +3,13 @@ import { Link } from 'react-router-dom'
 import { AppContext } from '../services/AppContext'
 
 export default function Breadcrumb() {
-    const { state, dispatch } = React.useContext(AppContext)
+    const { state } = React.useContext(AppContext)
     // console.log(state.breadcrumbPath)
 
 
     return (
         <React.Fragment>
-            <nav aria-label="breadcrumb" className='float-left pt-1'>
+            <nav aria-label="breadcrumb">
                 <ol className="breadcrumb">
                     <li className="breadcrumb-item">
                         <Link to="" > <i className="fa fa-home"></i> Dashboard</Link>
