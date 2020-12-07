@@ -73,7 +73,7 @@ export default function Home() {
                     <Sidebar />
                     <Navbar />
                     <div className="page-wrapper">
-                        <div className="row pl-4 pt-2">
+                        <div className="row ml-4 pt-2">
                             <Breadcrumb />
                             {state.userDetails && <RightSidebar />}
                             {/* <RightSidebar /> */}
