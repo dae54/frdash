@@ -114,7 +114,7 @@ export default function EditBudget(prop) {
 
     return (
         <React.Fragment>
-            <div className="modal fade" id="editBudgetModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
+            <div className="modal fade" id="editBudgetModa" tabIndex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
                 <div className="modal-dialog modal-dialog-scrollable modal-xl" role="document">
                     <div className="modal-content">
                         <div className="modal-header">
