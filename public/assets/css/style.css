@@ -118,6 +118,10 @@ body ::-webkit-scrollbar-thumb {
     color: #43425D !important;
 }
 
+.border-default {
+    border-color:#43425D!important
+}
+
 .blink_me {
     animation: blinker 1s linear infinite;
 }
