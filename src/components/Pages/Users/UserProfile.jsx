@@ -16,6 +16,7 @@ export default function UserProfile(props) {
     const { state, dispatch } = React.useContext(AppContext)
     let setBreadcrumbPath = path => dispatch({ type: 'breadcrumbPath', payload: path })
     const [loading, setLoading] = useState(false)
+    const [userStatusChangeLoading, setUserStatusChangeLoading] = useState(false)
     useEffect(() => {
         setBreadcrumbPath([
             { name: 'Users', url: '/users' },
@@ -95,16 +96,15 @@ export default function UserProfile(props) {
 
     async function toggleUserAprovalStatus() {
         let status = user.data.aproved === 0 ? 1 : 0
-
-        // setLoading(true)
+        setUserStatusChangeLoading(true)
         await axios.patch(`user/aprovalStatus/${user.data._id}/${status}`)
             .then(response => {
-                // setLoading(false)
+                setUserStatusChangeLoading(false)
                 alert.info(response.data.message)
                 user.data.aproved = response.data.data
                 setUser({ loading: false, data: user.data })
             }).catch(error => {
-                setLoading(false)
+                setUserStatusChangeLoading(false)
                 // alert.error(error.response.message)
                 console.log(error.response)
             })
@@ -293,16 +293,29 @@ export default function UserProfile(props) {
                                             {user.data.aproved === 1 ?
                                                 <>
                                                     Deactivate User:
-                                                    <span className="badge badge-default rounded-pill pt-2 pb-2 pl-3 pr-3 mb-1" style={{ cursor: 'pointer' }} onClick={toggleUserAprovalStatus} >
-                                                        <i className="fa fa-ban"></i> DEACTIVATE
-                                                    </span>
+                                                    {userStatusChangeLoading ?
+                                                        <span className="badge badge-default rounded-pill pt-2 pb-2 pl-3 pr-3 mb-1">
+                                                            <span className="spinner-border spinner-border-sm"></span> Please wait ...
+                                                        </span>
+                                                        :
+                                                        <span className="badge badge-default rounded-pill pt-2 pb-2 pl-3 pr-3 mb-1" style={{ cursor: 'pointer' }} onClick={toggleUserAprovalStatus} >
+                                                            <i className="fa fa-ban"></i> DEACTIVATE
+                                                        </span>
+                                                    }
                                                 </>
                                                 :
                                                 <>
                                                     Activate User:
-                                                    <span className="badge badge-default rounded-pill pt-2 pb-2 pl-3 pr-3 mb-1" style={{ cursor: 'pointer' }} onClick={toggleUserAprovalStatus}>
-                                                        <i className="fa fa-check"></i> ACTIVATE
-                                                    </span>
+                                                    {userStatusChangeLoading ?
+                                                        <span className="badge badge-default rounded-pill pt-2 pb-2 pl-3 pr-3 mb-1">
+                                                            <span className="spinner-border spinner-border-sm"></span> Please wait ...
+                                                        </span>
+                                                        :
+                                                        <span className="badge badge-default rounded-pill pt-2 pb-2 pl-3 pr-3 mb-1" style={{ cursor: 'pointer' }} onClick={toggleUserAprovalStatus}>
+                                                            <i className="fa fa-check"></i> ACTIVATE
+                                                        </span>
+                                                    }
+
                                                 </>
                                             }
 
