@@ -6,7 +6,7 @@ import StatusFormatter from '../../../Gadgets/StatusFormatter'
 import { AppContext } from '../../../services/AppContext'
 
 export default function RequestAproves() {
-    const { state, dispatch } = React.useContext(AppContext)
+    const { dispatch } = React.useContext(AppContext)
     let setBreadcrumbPath = path => dispatch({ type: 'breadcrumbPath', payload: path })
 
     useEffect(() => {
@@ -15,12 +15,12 @@ export default function RequestAproves() {
             { name: 'Aproves' },
         ])
     }, [])
-    
-    const hist = useHistory()
+
+    // const hist = useHistory()
     const [requestAproves, setRequestsAproves] = useState({ loading: false, error: '', data: [] })
 
     async function fetchRequestsAproves() {
-        setRequestsAproves({ loading: true, error: [], data: [] });
+        setRequestsAproves({ loading: true, error: '', data: [] });
 
         await axios.get('/requests/aprove', {
         }).then(response => {
@@ -71,8 +71,8 @@ export default function RequestAproves() {
             <div className="row">
                 <div className="col">
                     {requestAproves.loading &&
-                        <div className="btn btn-default text-white  pl-5 pr-5 pt-3 pb-3">
-                            <div className="spinner-border text-white spinner-border-sm"></div> Please Wait...
+                        <div>
+                            <div className="spinner-border spinner-border-sm"></div> Please Wait...
                         </div>
                     }
                     {requestAproves.error &&
@@ -91,14 +91,14 @@ export default function RequestAproves() {
                                 <table className="table">
                                     <thead className='bg-ligh'>
                                         <tr>
-                                            <th scope="col">Requester Name</th>
+                                            <th scope="col">Requester</th>
                                             {/* <th scope="col">Item Requested</th> */}
                                             {/* <th scope="col">Request At  Budget</th> */}
                                             <th scope="col">Request At</th>
                                             <th scope="col">Request Status</th>
 
-                                            <th scope="col">Aprove #</th>
-                                            <th scope="col">Aproved By</th>
+                                            <th scope="col">Approve Counts</th>
+                                            <th scope="col">Approved By</th>
 
                                             <th scope="col">Action</th>
                                         </tr>
@@ -135,15 +135,21 @@ export default function RequestAproves() {
                                                         })}
                                                     </td>
                                                     <td className=''>
-                                                        <Link
+                                                        {/* <Link
                                                             to={{
                                                                 pathname: '../request/profile',
                                                                 state: { requestId: requestAprove[0].requestId._id }
                                                             }}
                                                             className="badge badge-success rounded-sm pt-2 pb-2 pl-3 pr-3" style={{ cursor: 'pointer' }}>
                                                             VIEW REQUEST
+                                                        </Link> */}
+                                                        <Link to={{
+                                                            pathname: '../request/profile',
+                                                            state: { requestId: requestAprove[0].requestId._id }
+                                                        }}>
+                                                            <span className='bg-default p-1 ml-3 rounded-lg text-white'><i className="fa fa-eye">   </i></span>
                                                         </Link>
-                                                        <span className='bg-warning p-1 ml-3 rounded-lg text-dark' onClick={() => alert('delete')}><i className="fa fa-trash">   </i></span>
+                                                        <span className='bg-warning p-1 ml-3 rounded-lg text-dark' onClick={() => alert('delete')} style={{ cursor: 'not-allowed' }}><i className="fa fa-trash">   </i></span>
                                                     </td>
                                                 </tr>
                                             )
