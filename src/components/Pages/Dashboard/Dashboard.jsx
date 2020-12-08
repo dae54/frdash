@@ -81,7 +81,7 @@ export default function Dashboard() {
                     info.map((item, index) => {
                         return (
                             <div key={index} className="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-3">
-                                <div className="dash-widget shadow-sm">
+                                <div className={`dash-widget shadow border-left border-${item.color}`}>
                                     <span className={`dash-widget-bg1 bg-${item.color}`}><i className={`fa fa-${item.icon}`} aria-hidden="true"></i></span>
                                     <div className="dash-widget-info text-right">
                                         <h5 className='pb-2 font-weight-bold'>{item.amount.toLocaleString()}</h5>

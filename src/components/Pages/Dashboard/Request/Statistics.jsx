@@ -105,7 +105,7 @@ export default function Statistics() {
     }
     return (
         <React.Fragment>
-            <div className="card-box">
+            <div className="card-box border-left border-default shadow">
                 <span className='d-inline-block pl-3'>
                     <h3 className="card-title text-muted">Statistics</h3>
                 </span>

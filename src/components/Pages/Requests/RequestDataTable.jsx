@@ -35,20 +35,18 @@ export default function RequestDataTable(props) {
     }
     return (
         <React.Fragment>
-            <div className="row">
-                <div className="col-sm-12">
-                    <div className="card-box">
-                        <div className="card-block">
-                            <BootstrapTable trStyle={{ cursor: 'pointer' }} data={props.requests} options={options} dataField='requests' exportCSV pagination hover version='4' search>
-                                <TableHeaderColumn thStyle={{ cursor: 'auto' }} isKey dataField='_id' dataFormat={indexNum}>S/N #</TableHeaderColumn>
-                                <TableHeaderColumn dataField='userId' dataFormat={cell => cell.firstName + " " + cell.lastName} filterFormatted dataSort={true}>Requested By</TableHeaderColumn>
-                                <TableHeaderColumn dataField='budgetItemId' dataFormat={cell => cell.name} filterFormatted dataSort={true} >Budget Item</TableHeaderColumn>
-                                <TableHeaderColumn dataField='budgetId' dataFormat={cell => cell.name} filterFormatted dataSort={true} >On Budget</TableHeaderColumn>
-                                <TableHeaderColumn thStyle={{ cursor: 'auto' }} dataField='amount'>Amount</TableHeaderColumn>
-                                <TableHeaderColumn thStyle={{ cursor: 'auto' }} dataField='status' dataFormat={cell => <StatusFormatter status={cell} />} filterFormatted>status</TableHeaderColumn>
-                                {/* <TableHeaderColumn thStyle={{ cursor: 'auto' }} dataField='action' dataFormat={(cell, row) => action(row)} filterFormatted>Action</TableHeaderColumn> */}
-                            </BootstrapTable>
-                        </div>
+            <div className="col">
+                <div className="card-box shadow border-left border-left-danger">
+                    <div className="card-block">
+                        <BootstrapTable trStyle={{ cursor: 'pointer' }} data={props.requests} options={options} dataField='requests' exportCSV pagination hover version='4' search>
+                            <TableHeaderColumn thStyle={{ cursor: 'auto' }} isKey dataField='_id' dataFormat={indexNum}>S/N #</TableHeaderColumn>
+                            <TableHeaderColumn dataField='userId' dataFormat={cell => cell.firstName + " " + cell.lastName} filterFormatted dataSort={true}>Requested By</TableHeaderColumn>
+                            <TableHeaderColumn dataField='budgetItemId' dataFormat={cell => cell.name} filterFormatted dataSort={true} >Budget Item</TableHeaderColumn>
+                            <TableHeaderColumn dataField='budgetId' dataFormat={cell => cell.name} filterFormatted dataSort={true} >On Budget</TableHeaderColumn>
+                            <TableHeaderColumn thStyle={{ cursor: 'auto' }} dataFormat={cell=> cell.toLocaleString()} dataField='amount'>Amount</TableHeaderColumn>
+                            <TableHeaderColumn thStyle={{ cursor: 'auto' }} dataField='status' dataFormat={cell => <StatusFormatter status={cell} />} filterFormatted>status</TableHeaderColumn>
+                            {/* <TableHeaderColumn thStyle={{ cursor: 'auto' }} dataField='action' dataFormat={(cell, row) => action(row)} filterFormatted>Action</TableHeaderColumn> */}
+                        </BootstrapTable>
                     </div>
                 </div>
             </div>
