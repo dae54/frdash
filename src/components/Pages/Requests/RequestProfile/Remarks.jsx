@@ -34,7 +34,7 @@ export default function Remarks(props) {
             remark: newRemark
         }).then(() => {
             setNewRemarkStatus({ error: '', isLoading: false })
-            setNewRemark() //clear remark text field
+            setNewRemark('') //clear remark text field
             fetchRemarks()   //refresh remark list
         }).catch(error => {
             console.log(error.response)
@@ -77,7 +77,6 @@ export default function Remarks(props) {
             <div className="card">
                 <div className="card-header pb-2">
                     <h4 className='text-dark'>Remarks</h4>
-                    <div className="btn btn-info" onClick={fetchRemarks}><i className="fa fa-user"></i></div>
                 </div>
                 <div className="card-body pt-0">
                     <p className="text-uppercase text-muted">Comments from the admins</p>
