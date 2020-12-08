@@ -1,7 +1,7 @@
 import React, { useReducer } from "react";
 
 let initialState = {
-    breadcrumbPath: [], rightSidebarOverlayOpened: true
+    breadcrumbPath: [], rightSidebarOverlayOpened: false
 }
 let reducer = (state, action) => {
     switch (action.type) {
