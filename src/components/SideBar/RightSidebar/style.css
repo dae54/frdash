@@ -1,0 +1,100 @@
+#overlay {
+    position: fixed;
+    display: none;
+    width: 250px;
+    height: auto;
+    top: 1;
+    right: 0;
+    /* bottom: 0; */
+    /* background-color: rgba(0, 0, 0, 0.5); */
+    z-index: 2;
+    /* cursor: pointer; */
+    animation-name: run;
+    animation-duration: 0.2s;
+    -webkit-animation-name: run;
+    -webkit-animation-duration: 0.2s;
+}
+
+@keyframes run {
+    0% {
+        left: 100%;
+    }
+    5% {
+        left: 97%;
+    }
+    10% {
+        left: 95%;
+    }
+    15% {
+        left: 93%;
+    }
+    20% {
+        left: 90%;
+    }
+    25% {
+        left: 87%;
+    }
+    30% {
+        left: 86%;
+    }
+    /* 35% {
+        left: 83%;
+    }
+    40% {
+        left: 80%;
+    } */
+    /* 45% {
+        left: 77%;
+    }
+    50% {
+        left: 75%;
+    }
+    55% {
+        left: 73%;
+    }
+    60% {
+        left: 70%;
+    } */
+}
+
+@-webkit-keyframes run {
+    0% {
+        left: 100%;
+    }
+    5% {
+        left: 97%;
+    }
+    10% {
+        left: 95%;
+    }
+    15% {
+        left: 93%;
+    }
+    20% {
+        left: 90%;
+    }
+    25% {
+        left: 87%;
+    }
+    30% {
+        left: 85%;
+    }
+    35% {
+        left: 83%;
+    }
+    40% {
+        left: 80%;
+    }
+    45% {
+        left: 77%;
+    }
+    50% {
+        left: 75%;
+    }
+    55% {
+        left: 73%;
+    }
+    60% {
+        left: 70%;
+    }
+}

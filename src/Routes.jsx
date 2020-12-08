@@ -14,7 +14,7 @@ import NewBudget from './components/Pages/Budgets/newBudget'
 import BudgetProfile from './components/Pages/Budgets/BudgetProfile'
 import Notifications from './components/Pages/Notifications'
 // import Login from './components/Auth/Login'
-import Login from './components/Auth/NewLogin'
+import Login from './components/Auth/Login'
 import ResetPassword from './components/Auth/ForgotPassword'
 import Lock from './components/Auth/Lock'
 import RoleSettings from './components/Pages/Settings/RoleSettings'
@@ -23,6 +23,7 @@ import ChangePassword from './components/Pages/Settings/ChangePassword'
 import NewRequest from "./components/Pages/Requests/NewRequest";
 import Reports from './components/Pages/Reports/Index'
 import BudgetItems from "./components/Pages/Budgets/BudgetItems";
+import ProfileManager from "./components/Pages/Settings/ProfileManager";
 
 const routes = [
     {
@@ -124,6 +125,11 @@ const routes = [
         name: 'settings route',
         link: '/settings/pwd',
         component: ChangePassword
+    },
+    {
+        name: 'User Profile route',
+        link: '/profile',
+        component: ProfileManager
     },
     {
         name: 'reports route',

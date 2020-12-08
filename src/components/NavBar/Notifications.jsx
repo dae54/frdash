@@ -19,7 +19,8 @@ export default function Notifications(props) {
         // console.log(socket)
         socket.emit('subscribe', { token: sessionStorage.getItem('token') })
         socket.on('notifications', data => {
-            // console.log(data)
+            console.log('notifications received')
+            console.log(data)
 
             setNotifs(data)
             props.setNotificationCount(data.length)

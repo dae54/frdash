@@ -43,7 +43,7 @@ export default function List() {
 
     return (
         <React.Fragment>
-            <div className="card-box pl-0 pr-0 pb-0" style={{ maxHeight: '393px' }}>
+            <div className="card-box pl-0 pr-0 pb-0 border-left border-info shadow" style={{ maxHeight: '393px' }}>
                 <span className='d-inline-block pl-3'>
                     <h3 className="card-title text-muted pl-3">{requestStatusOnFocus.value} Requests</h3>
                 </span>

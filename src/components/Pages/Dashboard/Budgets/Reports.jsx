@@ -29,7 +29,7 @@ export default function Reports() {
 
     return (
         <React.Fragment>
-            <div className="card-box">
+            <div className="card-box border-left border-secondary shadow">
                 <h3 className="card-title text-muted pl-3">Reports</h3>
                 {budgets.loading ?
                     <p>

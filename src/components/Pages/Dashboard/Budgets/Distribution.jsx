@@ -98,7 +98,7 @@ export default function Distribution() {
 
     return (
         <React.Fragment>
-            <div className="card-box">
+            <div className="card-box border-left border-success shadow">
 
                 <span className='d-inline-block pl-3'>
                     <h3 className="card-title text-muted">Budget Distribution</h3>
