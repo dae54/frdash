@@ -9,12 +9,15 @@ export default function DeleteUser(props) {
 
     // const [userToDelete, setUserToDelete] = useState()
     const [loading, setLoading] = useState(false)
-    const [userName, setUserName] = useState()
+    const [userName, setUserName] = useState('')
+    const [userDeleteError, setUserDeleteError] = useState('')
     const alert = useAlert()
 
 
     async function deleteUser(userId) {
         setLoading(true)
+        setUserDeleteError('')
+
 
         await axios.delete(`/user/${userId}`, {
         }).then(response => {
@@ -32,12 +35,12 @@ export default function DeleteUser(props) {
             handleClose()
             alert.success(response.data.message)
             setUserToDelete()
-            if(!userList){
+            if (!userList) {
                 hist.goBack()
             }
         }).catch(error => {
             setLoading(false)
-            console.log(error)
+            setUserDeleteError(error.response.data.userMessage)
         })
     }
 
@@ -61,6 +64,10 @@ export default function DeleteUser(props) {
                         Please type <span className='text-dark font-weight-bold'> {userToDelete.getAttribute('username')} </span>to confirm.
                         </span>
                     <input className='form-control mt-3' type='text' value={userName} onChange={(e) => setUserName(e.target.value)} />
+                    {/* <div className="alert-warning">{userDeleteError}</div> */}
+                    {userDeleteError &&
+                        <div className="alert alert-danger mt-2">{userDeleteError}</div>
+                    }
                 </Modal.Body>
                 <Modal.Footer>
                     {loading ?
