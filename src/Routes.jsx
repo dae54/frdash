@@ -1,5 +1,5 @@
 import Dashboard from "./components/Pages/Dashboard";
-// import Error404 from "./components/Error404"
+import Error404 from "./components/Error404"
 // import Contact from "./components/Contacts"
 import User from "./components/Pages/Users"
 import NewUser from './components/Pages/Users/NewUser'
@@ -152,6 +152,11 @@ export const openRoutes = [
         name: 'resetPassword',
         link: '/resetPassword',
         component: ResetPassword
+    },
+    {
+        name: 'error',
+        link: '/404page',
+        component: Error404
     },
 ]
 
