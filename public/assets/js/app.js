@@ -3,8 +3,13 @@ Author       : Dreamguys
 Template Name: PreClinic - Medical and Hospital Admin Template
 Version      : 1.0
 */
-$(document).ready(function($) {
+// $(document).ready(
 
+function initiateSidebar($) {
+    var $wrapper = document.getElementsByClassName('main-wrapper')
+    var $pageWrapper = document.getElementsByClassName('page-wrapper');
+    var $slimScrolls = $('.slimscroll');
+    var $sidebarOverlay = $('.sidebar-overlay');
     // Variables declarations
     var $wrapper = $('.main-wrapper');
     var $pageWrapper = $('.page-wrapper');
@@ -12,13 +17,15 @@ $(document).ready(function($) {
     var $sidebarOverlay = $('.sidebar-overlay');
 
     // Sidebar
-    var Sidemenu = function() {
+    var Sidemenu = function () {
         this.$menuItem = $('#sidebar-menu a');
     };
 
     function init() {
+        console.log('initiate sidebar')
         var $this = Sidemenu;
-        $('#sidebar-menu a').on('click', function(e) {
+        $('#sidebar-menu a').on('click', function (e) {
+            // console.log('clicked')
             if ($(this).parent().hasClass('submenu')) {
                 e.preventDefault();
             }
@@ -48,7 +55,7 @@ $(document).ready(function($) {
     }
 
     // Mobile menu sidebar overlay
-    $(document).on('click', '#mobile_btn', function() {
+    $(document).on('click', '#mobile_btn', function () {
         var $target = $($(this).attr('href'));
         sidebar_overlay($target);
         $wrapper.toggleClass('slide-nav');
@@ -57,7 +64,7 @@ $(document).ready(function($) {
     });
 
     // Chat sidebar overlay
-    $(document).on('click', '#task_chat', function() {
+    $(document).on('click', '#task_chat', function () {
         var $target = $($(this).attr('href'));
         console.log($target);
         sidebar_overlay($target);
@@ -65,7 +72,7 @@ $(document).ready(function($) {
     });
 
     // Sidebar overlay reset
-    $sidebarOverlay.on('click', function() {
+    $sidebarOverlay.on('click', function () {
         var $target = $($(this).attr('data-reff'));
         if ($target.length) {
             $target.removeClass('opened');
@@ -86,7 +93,7 @@ $(document).ready(function($) {
 
     // Floating Label
     if ($('.floating').length > 0) {
-        $('.floating').on('focus blur', function(e) {
+        $('.floating').on('focus blur', function (e) {
             $(this).parents('.form-focus').toggleClass('focused', (e.type === 'focus' || this.value.length > 0));
         }).trigger('blur');
     }
@@ -105,7 +112,7 @@ $(document).ready(function($) {
         var msgHeight = $(window).height() - 124;
         $('#msg_list').height(msgHeight);
         $('.msg-sidebar .slimScrollDiv').height(msgHeight);
-        $(window).resize(function() {
+        $(window).resize(function () {
             var msgrHeight = $(window).height() - 124;
             $('#msg_list').height(msgrHeight);
             $('.msg-sidebar .slimScrollDiv').height(msgrHeight);
@@ -126,7 +133,7 @@ $(document).ready(function($) {
         var wHeight = $(window).height() - 60;
         $slimScrolls.height(wHeight);
         $('.sidebar .slimScrollDiv').height(wHeight);
-        $(window).resize(function() {
+        $(window).resize(function () {
             var rHeight = $(window).height() - 60;
             $slimScrolls.height(rHeight);
             $('.sidebar .slimScrollDiv').height(rHeight);
@@ -136,7 +143,7 @@ $(document).ready(function($) {
     // Page wrapper height
     var pHeight = $(window).height();
     $pageWrapper.css('min-height', pHeight);
-    $(window).resize(function() {
+    $(window).resize(function () {
         var prHeight = $(window).height();
         $pageWrapper.css('min-height', prHeight);
     });
@@ -161,7 +168,7 @@ $(document).ready(function($) {
     }
 
     // Mobile Menu
-    $(document).on('click', '#open_msg_box', function() {
+    $(document).on('click', '#open_msg_box', function () {
         $wrapper.toggleClass('open-msg-box');
         return false;
     });
@@ -190,13 +197,13 @@ $(document).ready(function($) {
     }
 
     // Check all email
-    $(document).on('click', '#check_all', function() {
+    $(document).on('click', '#check_all', function () {
         $('.checkmail').click();
         return false;
     });
     if ($('.checkmail').length > 0) {
-        $('.checkmail').each(function() {
-            $(this).on('click', function() {
+        $('.checkmail').each(function () {
+            $(this).on('click', function () {
                 if ($(this).closest('tr').hasClass('checked')) {
                     $(this).closest('tr').removeClass('checked');
                 } else {
@@ -207,7 +214,7 @@ $(document).ready(function($) {
     }
 
     // Mail important
-    $(document).on('click', '.mail-important', function() {
+    $(document).on('click', '.mail-important', function () {
         $(this).find('i.fa').toggleClass('fa-star').toggleClass('fa-star-o');
     });
 
@@ -215,24 +222,24 @@ $(document).ready(function($) {
     if ($('#drop-zone').length > 0) {
         var dropZone = document.getElementById('drop-zone');
         var uploadForm = document.getElementById('js-upload-form');
-        var startUpload = function(files) {
+        var startUpload = function (files) {
             console.log(files);
         };
-        uploadForm.addEventListener('submit', function(e) {
+        uploadForm.addEventListener('submit', function (e) {
             var uploadFiles = document.getElementById('js-upload-files').files;
             e.preventDefault();
             startUpload(uploadFiles);
         });
-        dropZone.ondrop = function(e) {
+        dropZone.ondrop = function (e) {
             e.preventDefault();
             this.className = 'upload-drop-zone';
             startUpload(e.dataTransfer.files);
         };
-        dropZone.ondragover = function() {
+        dropZone.ondragover = function () {
             this.className = 'upload-drop-zone drop';
             return false;
         };
-        dropZone.ondragleave = function() {
+        dropZone.ondragleave = function () {
             this.className = 'upload-drop-zone';
             return false;
         };
@@ -240,7 +247,7 @@ $(document).ready(function($) {
 
     // Small Sidebar
     if (screen.width >= 992) {
-        $(document).on('click', '#toggle_btn', function() {
+        $(document).on('click', '#toggle_btn', function () {
             if ($('body').hasClass('mini-sidebar')) {
                 $('body').removeClass('mini-sidebar');
                 $('.subdrop + ul').slideDown();
@@ -250,7 +257,7 @@ $(document).ready(function($) {
             }
             return false;
         });
-        $(document).on('mouseover', function(e) {
+        $(document).on('mouseover', function (e) {
             e.stopPropagation();
             if ($('body').hasClass('mini-sidebar') && $('#toggle_btn').is(':visible')) {
                 var targ = $(e.target).closest('.sidebar').length;
@@ -265,4 +272,6 @@ $(document).ready(function($) {
             }
         });
     }
-});
+}
+
+addEventListener('authorized', function () { initiateSidebar($) });
