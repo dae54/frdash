@@ -66,9 +66,9 @@ export default function Dashboard() {
             </div>
             <div className="row">
                 {dashboardStatistics.loading ?
-                    Array.from({ length: 4 }, () => {
+                    Array.from({ length: 4 }, (x, index) => {
                         return (
-                            <div className='col-12 col-sm-6 col-md-6 col-lg-6 col-xl-3'>
+                            <div className='col-12 col-sm-6 col-md-6 col-lg-6 col-xl-3' key={index}>
                                 <div className='jumbotron blink_me pt-5 pb-4'>
                                     <div className="spinner-border spinner-border-sm p-0" role="status">
                                         <span className="sr-only">Loading...</span>
