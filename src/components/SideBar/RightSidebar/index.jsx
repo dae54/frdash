@@ -11,8 +11,9 @@ export default function RightSidebar() {
     const rightSidebarOverlayOpened = useContext(AppContext)
     const { state, dispatch } = React.useContext(AuthContext)
 
-    let setIsAuthorized = isAuthorized => dispatch({ type: 'isAuthorized', payload: isAuthorized })
+    // let setIsAuthorized = isAuthorized => dispatch({ type: 'isAuthorized', payload: isAuthorized })
     let setIsLocked = isLocked => dispatch({ type: 'isLocked', payload: isLocked })
+    let clearToken = () => dispatch({ type: 'token', payload: null })
 
     let setOverlayOff = () => rightSidebarOverlayOpened.dispatch({ type: 'rightSidebarOverlayOpened', payload: false })
 
@@ -22,7 +23,8 @@ export default function RightSidebar() {
         if (logoutConfirm) {
             const loggedOut = logout()
             if (loggedOut) {
-                setIsAuthorized(false)
+                // setIsAuthorized(false)
+                clearToken()
                 window.location.replace('/login')
             }
         }
@@ -31,15 +33,14 @@ export default function RightSidebar() {
     function lock() {
         sessionStorage.setItem('pathname', hist.location.pathname)
         sessionStorage.setItem('state', JSON.stringify(hist.location.state || ''))
-        localStorage.removeItem('token')
+        // localStorage.removeItem('token')
 
         setIsLocked(true)
     }
 
     return (
         <React.Fragment>
-            {console.log(state)}
-            <aside class="">
+            <aside className="">
                 <div id="overlay" style={{ display: `${rightSidebarOverlayOpened.state.rightSidebarOverlayOpened ? 'block' : 'none'}` }}>
                     <div className=''>
                         <div className="jumbotron bg-white shadow mb-0 pt-4">
@@ -47,14 +48,14 @@ export default function RightSidebar() {
                                 <span className="user-img mb-4">
                                     <span className="avatar bg-default">
                                         {/* 9d7878 */}
-                                        {setAvatar(state.userDetails.firstName, state.userDetails.lastName)}
+                                        {setAvatar(state.currentUser.firstName, state.currentUser.lastName)}
                                     </span>
                                 </span><br />
-                                <span className='text-dark font-weight-bold' style={{ fontSize: '17px' }}>{state.userDetails.firstName + " " + state.userDetails.lastName}</span><br />
-                                <span className='text-dar'>{state.userDetails.email}</span><br />
+                                <span className='text-dark font-weight-bold' style={{ fontSize: '17px' }}>{state.currentUser.firstName + " " + state.currentUser.lastName}</span><br />
+                                <span className='text-dar'>{state.currentUser.email}</span><br />
 
                                 <Link to='/profile' onClick={setOverlayOff} className="btn btn-outline-info rounded-pill p-0 btn-block mt-3 mb-3" >Account Settings</Link>
-                                <span className=''>{state.userDetails.role.name}</span>
+                                <span className=''>{state.currentUser.role.name}</span>
                             </div>
                             <hr />
                             <div id="action" className='mt-'>
