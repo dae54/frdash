@@ -53,8 +53,8 @@ export default function Index() {
                             <li className='nav-item dropdown'>
                                 <span className="user-img mt-1" onClick={toggleSidebar} style={{ cursor: 'pointer' }}>
                                     <span className="avatar" data-toggle="tooltip" data-placement="bottom"
-                                        title={state.userDetails && state.userDetails.firstName + ' ' + state.userDetails.lastName}>
-                                        {setAvatar(state.userDetails.firstName, state.userDetails.lastName)}</span>
+                                        title={state.currentUser && state.currentUser.firstName + ' ' + state.currentUser.lastName}>
+                                        {setAvatar(state.currentUser.firstName, state.currentUser.lastName)}</span>
                                 </span>
                             </li>
                         </ul>
