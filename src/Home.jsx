@@ -26,7 +26,7 @@ export default function Home() {
         // sessionStorage.setItem('hist',JSON.stringify(hist))
         sessionStorage.setItem('pathname', hist.location.pathname)
         sessionStorage.setItem('state', JSON.stringify(hist.location.state || ''))
-        localStorage.removeItem('token')
+        // localStorage.removeItem('token')
     }
 
     function getIdleTime() {
@@ -40,14 +40,18 @@ export default function Home() {
                     return
                 }
                 if (error.response.status === 401) {
-                    localStorage.removeItem('token')
-                    localStorage.removeItem('userDetails')
-                    window.location.replace('login')
+                    // localStorage.removeItem('token')
+                    // localStorage.removeItem('userDetails')
+                    // window.location.replace('login')
                 }
             })
     }
 
     useEffect(() => {
+        // var res = unmountComponentAtNode(document.getElementById('#authenticator'))
+        // var res = unmountComponentAtNode(findDOMNode('authenticator'))
+        // console.log(res)
+
         getIdleTime()
     }, [])
 
@@ -75,7 +79,7 @@ export default function Home() {
                     <div className="page-wrapper">
                         <div className="row ml-4 pt-2">
                             <Breadcrumb />
-                            {state.userDetails && <RightSidebar />}
+                            {state.currentUser && <RightSidebar />}
                             {/* <RightSidebar /> */}
                         </div>
                         <div className="content">
