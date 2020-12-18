@@ -105,9 +105,9 @@ export default function Distribution() {
                 </span>
                 {budgets.loading ?
                     <p>
-                        <div className="spinner-border spinner-border-sm" role="status">
+                        <span className="spinner-border spinner-border-sm" role="status">
                             <span className="sr-only">Loading...</span>
-                        </div> &nbsp; Contacting server. Please wait
+                        </span> &nbsp; Contacting server. Please wait
                     </p>
                     :
                     <>

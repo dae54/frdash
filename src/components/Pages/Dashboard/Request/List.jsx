@@ -69,9 +69,9 @@ export default function List() {
                 <div className="card-body pb-1 mt-n2" style={{ height: requests.data.length ? '310px' : '' }}>
                     {requests.loading ?
                         <p>
-                            <div className="spinner-border spinner-border-sm" role="status">
+                            <span className="spinner-border spinner-border-sm" role="status">
                                 <span className="sr-only">Loading...</span>
-                            </div> &nbsp; Contacting server. Please wait
+                            </span> &nbsp; Contacting server. Please wait
                         </p>
                         :
                         requests.data.length ?
@@ -87,7 +87,7 @@ export default function List() {
                                 <tbody>
                                     {requests.data.map(request => {
                                         return (
-                                            <tr>
+                                            <tr key={request._id}>
                                                 <td>{`${request.userId.firstName} ${request.userId.lastName}`}</td>
                                                 <td>{request.amount.toLocaleString()}</td>
                                                 <td>{moment(request.createdAt).format('MMM DD, YYYY')}</td>

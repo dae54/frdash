@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import Chart from "react-apexcharts";
 import axios from 'axios'
-// import moment from 'moment'
 
 export default function Statistics() {
     const [allRequests, setAllRequests] = useState({ loading: true, data: [] })
@@ -18,7 +17,6 @@ export default function Statistics() {
                 select: ['amount', 'createdAt'],
             }
         }).then(response => {
-            console.log(response.data.data)
             setAllRequests({ loading: false, data: response.data.data })
         }).catch(error => {
             setAllRequests({ loading: false, data: [] })
@@ -123,9 +121,9 @@ export default function Statistics() {
                 </span>
                 {allRequests.loading ?
                     <p>
-                        <div className="spinner-border spinner-border-sm" role="status">
+                        <span className="spinner-border spinner-border-sm" role="status">
                             <span className="sr-only">Loading...</span>
-                        </div> &nbsp; Contacting server. Please wait
+                        </span> &nbsp; Contacting server. Please wait
                     </p>
                     :
                     allRequests.data.length === 0 ?
