@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import axios from 'axios'
 import { AuthContext } from './AuthContext'
 import jwt_decode from 'jwt-decode'
@@ -7,6 +7,7 @@ import jwt_decode from 'jwt-decode'
 import LeftImg from '../Assets/images/preview.png'
 
 export default function NewLogin() {
+    const hist = useHistory()
     const { state, dispatch } = React.useContext(AuthContext)
 
     const lstyle = {
@@ -19,22 +20,23 @@ export default function NewLogin() {
     const [error, setError] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
-    const [loading, setLoading] = useState(false);
-    let setIsAuthorized = isAuthorized => dispatch({ type: 'isAuthorized', payload: isAuthorized })
+    const [loading, setLoading] = useState(false)
+
+    // let setIsAuthorized = isAuthorized => dispatch({ type: 'isAuthorized', payload: isAuthorized })
+    // let setAuthState = authState => dispatch({ type: 'authState', payload: authState })
+    let setToken = token => dispatch({ type: 'token', payload: token })
     // let setUserDetails = userDetails => dispatch({ type: 'userDetails', payload: userDetails })
 
-    function submitForm(e) {
+    function handleLogin(e) {
         e.preventDefault();
         setLoading(true)
         axios.post(`/user/login`, {
             email, password
         }).then((response) => {
-            setLoading(false)
+            // setLoading(false)
             localStorage.setItem('token', response.data.data.token)
-            // localStorage.setItem('userDetails', JSON.stringify(response.data.data.user))
             localStorage.setItem('userDetails', JSON.stringify(jwt_decode(localStorage.getItem('token'))))
-            // setUserDetails(response.data.data.user)
-            setIsAuthorized(true)
+            setToken(response.data.data.token)
             return window.location.replace('/')
         }).catch((error) => {
             setLoading(false)
@@ -47,10 +49,8 @@ export default function NewLogin() {
     }
 
     useEffect(() => {
-        if (state.isAuthorized) {
-            window.location.replace('/')
-        } else {
-            localStorage.removeItem('userDetails')
+        if (state.token) {
+            return hist.replace('/')
         }
     }, [])
     return (
@@ -62,7 +62,7 @@ export default function NewLogin() {
                         <div className="jumbotron bg-white text-default" style={{ width: '70%', marginTop: '15vh' }}>
                             <h1 className='font-weight-bold'>FUND REQUEST</h1>
                             <p className='mb-5 h4 text-muted'>Welcome back! Please Login to your account</p>
-                            <form onSubmit={e => submitForm(e)}>
+                            <form onSubmit={e => handleLogin(e)}>
                                 <input type="email" placeholder='Email' className="form-control mb-4" name='email' value={email} onChange={e => setEmail(e.target.value)} required />
                                 <input type="password" placeholder='Password' className="form-control mb-4" name='password' value={password} onChange={e => setPassword(e.target.value)} required />
                                 <div className='d-flex justify-content-between mb-4'>
