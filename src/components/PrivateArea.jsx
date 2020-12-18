@@ -1,54 +1,59 @@
 import React, { useEffect } from 'react'
-import { AuthContext } from './Auth/AuthContext'
-import { Route, Redirect, } from "react-router-dom";
-import Axios from 'axios';
+import { Route, useHistory } from "react-router-dom";
+
+import axios from 'axios';
 import jwt_decode from 'jwt-decode'
+import { AuthContext } from './Auth/AuthContext';
 
 export default function PrivateArea({ component, ...rest }) {
-    const { state } = React.useContext(AuthContext)
+    const { state, dispatch } = React.useContext(AuthContext)
+    const setCurrentUser = currentUser => dispatch({ type: 'currentUser', payload: currentUser })
+    // const [loading, setLoading] = useState(true)
 
-    return (
-        state.isLocked ?
-            <Redirect to="/lock" />
-            :
-            state.isAuthorized ?
-                <Authorized {...rest} component={component} />
-                :
-                <Redirect to="/login" />
-    )
-}
+    let clearToken = () => dispatch({ type: 'token', payload: null })
+    const hist = useHistory()
 
+    function verifyToken() {
+        try {
+            jwt_decode(state.token)
+            return true
+        } catch (error) {
+            localStorage.removeItem('token')
+            // setLoading(false)
+            clearToken()
+            hist.replace('/login')
+        }
+    }
 
-function Authorized({ component, ...rest }) {
-    const { dispatch } = React.useContext(AuthContext)
-    let setUserDetails = userDetails => dispatch({ type: 'userDetails', payload: userDetails })
+    async function fetchCurrentUser() {
+        await axios.get(`user/${jwt_decode(state.token).id}`, { headers: { Authorization: `Bearer ${state.token}` } })
+            .then(({ data }) => {
+                setCurrentUser(data.data)
 
-    async function fetchUserDetails() {
-        await Axios.get(`user/${jwt_decode(localStorage.getItem('token')).id}`)
-            .then(res => {
-                setUserDetails(res.data.data)
+                // FIRE JS EVENT TO SHOW THAT USER IS AUTHORIZED
+                const event = new Event('authorized');
+                dispatchEvent(event)
             })
             .catch(error => {
                 console.log(error)
+                localStorage.removeItem('token')
+                clearToken()
+                hist.replace('/login')
+            }).finally(() => {
+                // setLoading(false)
             })
     }
+
     useEffect(() => {
-        fetchUserDetails();
-    }, [])
-    // if (initializing) {
-    //     return (
-    //         'initializing...'
-    //     )
-    // } else {
-    //     return (<Route {...rest} component={component} />)
-    // }
+        verifyToken()
+        const isTokenValid = verifyToken()
+        if (isTokenValid) {
+            fetchCurrentUser()
+        }
+    }, [state.token])
+
     return (
-        // <>
-        //     {state.userDetails === '' ?
-        //         'initializing...'
-        //         :
+        state.currentUser &&
         <Route {...rest} component={component} />
-        //     }
-        // </>
     )
 }
