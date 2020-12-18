@@ -12,7 +12,6 @@ export default function StatusRadial({ budgetItems, budgetOnFocus }) {
          * THIS FUNCTION AIMS AT GETTING THE REQUESTS WITH STATUS OF DISBURSED
          * fetch budget item distr,select amount, name, code
          */
-        console.log('called')
         await axios.get(`requests/budget/${budgetOnFocus.id}`, {
             params: {
                 select: ['amount'],
