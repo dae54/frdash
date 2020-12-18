@@ -4,7 +4,7 @@ import moment from 'moment'
 import { useHistory, Link } from 'react-router-dom'
 import StatusFormatter from '../../Gadgets/StatusFormatter'
 import { useAlert } from 'react-alert'
-import Switch from '@material-ui/core/Switch';
+// import Switch from '@material-ui/core/Switch';
 
 // import { setAvatar } from '../../AccessoryFunctions/avatarGenerator'
 // import userImg from './user.jpg'
@@ -13,7 +13,7 @@ import { AppContext } from '../../services/AppContext'
 import DeleteUser from './DeleteUser'
 
 export default function UserProfile(props) {
-    const { state, dispatch } = React.useContext(AppContext)
+    const { dispatch } = React.useContext(AppContext)
     let setBreadcrumbPath = path => dispatch({ type: 'breadcrumbPath', payload: path })
     const [loading, setLoading] = useState(false)
     const [userStatusChangeLoading, setUserStatusChangeLoading] = useState(false)
@@ -85,7 +85,9 @@ export default function UserProfile(props) {
             email: user.data.email
         }).then(response => {
             setLoading(false)
-            alert.info(response.data.data.message)
+            user.data.invited = response.data.data.invited;
+            setUser({ loading: false, data: user.data })
+            alert.info(response.data.data.response.message)
         }).catch(error => {
             setLoading(false)
             // alert.error(error.response.message)
@@ -148,7 +150,7 @@ export default function UserProfile(props) {
                                     <div className="ml-3 mt-3 mr-1 text-danger">
                                         Invitation Email not sent
                                         {loading ?
-                                            <span className="badge badge-primary rounded-pill pt-2 pb-2 pl-3 pr-3 ml-4" style={{ cursor: 'pointer' }} onClick={sendUserInvitation}>
+                                            <span className="badge badge-primary rounded-pill pt-2 pb-2 pl-3 pr-3 ml-4" >
                                                 <span className="spinner-border spinner-border-sm"></span>
                                                 &nbsp; Sending ...
                                             </span>
@@ -315,19 +317,15 @@ export default function UserProfile(props) {
                                                             <i className="fa fa-check"></i> ACTIVATE
                                                         </span>
                                                     }
-
                                                 </>
                                             }
-
                                         </div>
-
                                         <div className="tab-pane" id="activity-tab">
                                             Activity coming soon
                                         </div>
                                     </div>
                                 </div>
                             </div>
-
                         </div>
                     </div>
                 </div>
