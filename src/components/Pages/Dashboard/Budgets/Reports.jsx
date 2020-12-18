@@ -33,9 +33,9 @@ export default function Reports() {
                 <h3 className="card-title text-muted pl-3">Reports</h3>
                 {budgets.loading ?
                     <p>
-                        <div className="spinner-border spinner-border-sm" role="status">
+                        <span className="spinner-border spinner-border-sm" role="status">
                             <span className="sr-only">Loading...</span>
-                        </div> &nbsp; Contacting server. Please wait
+                        </span> &nbsp; Contacting server. Please wait
                     </p>
                     :
                     budgets.data.length === 0 ?
@@ -59,7 +59,6 @@ export default function Reports() {
 
 const Report = (props) => {
     const hist = useHistory()
-    console.log(hist)
     return (
         <span className="badge badge-primary rounded-pill pt-2 pb-2 pl-3 pr-3"
             style={{ cursor: 'pointer' }}
