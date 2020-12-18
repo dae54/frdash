@@ -60,9 +60,9 @@ export default function Requests() {
             </div>
             <div className="row">
                 {requestStats.loading ?
-                    Array.from({ length: 3 }, () => {
+                    Array.from({ length: 3 }, (x, index) => {
                         return (
-                            <div className='col-3'>
+                            <div className='col-3' key={index}>
                                 <div className='jumbotron blink_me pt-5 pb-4'>
                                     <div className="spinner-border spinner-border-sm p-0" role="status">
                                         <span className="sr-only">Loading...</span>
