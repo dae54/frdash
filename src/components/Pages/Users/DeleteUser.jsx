@@ -31,10 +31,10 @@ export default function DeleteUser(props) {
                 setUserList(newUserList)
             }
             setLoading(false)
-            setUserName()
+            setUserName('')
             handleClose()
             alert.success(response.data.message)
-            setUserToDelete()
+            setUserToDelete('')
             if (!userList) {
                 hist.goBack()
             }
