@@ -78,7 +78,7 @@ export default function Users(props) {
                         <a href="#" className="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i className="fa fa-ellipsis-v"></i></a>
                         <div className="dropdown-menu dropdown-menu-right">
                             <div className="dropdown-item" onClick={() => hist.push('user/edit', { userId: _id })} style={{ cursor: 'pointer' }}><i className="fa fa-pencil m-r-5"></i> Edit</div>
-                            <div className="dropdown-item" userId={_id} username={firstName + ' ' + lastName} style={{ cursor: 'pointer' }} onClick={(e) => promptUserDelete(e)}><i className="fa fa-trash-o m-r-5"></i> Delete</div>
+                            <div className="dropdown-item" userid={_id} username={firstName + ' ' + lastName} style={{ cursor: 'pointer' }} onClick={(e) => promptUserDelete(e)}><i className="fa fa-trash-o m-r-5"></i> Delete</div>
                         </div>
                     </div>
                     <h4 className="doctor-name text-ellipsis">
