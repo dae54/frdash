@@ -3,12 +3,19 @@ import { Link, useHistory } from 'react-router-dom'
 import axios from 'axios'
 import { AuthContext } from './AuthContext'
 import jwt_decode from 'jwt-decode'
-
+import FirstTimeLogin from './FirstTimeLogin'
 import LeftImg from '../Assets/images/preview.png'
 
 export default function NewLogin() {
     const hist = useHistory()
     const { state, dispatch } = React.useContext(AuthContext)
+
+    const [show, setShow] = useState(false);
+    const handleClose = () => {
+        setShow(false);
+        sessionStorage.removeItem('firstTimeLoginToken')
+    }
+    const handleShow = () => setShow(true);
 
     const lstyle = {
         background: `url(${LeftImg})`,
@@ -19,13 +26,11 @@ export default function NewLogin() {
 
     const [error, setError] = useState('')
     const [email, setEmail] = useState('')
+    const [tempToken, setTempToken] = useState('')
     const [password, setPassword] = useState('')
     const [loading, setLoading] = useState(false)
 
-    // let setIsAuthorized = isAuthorized => dispatch({ type: 'isAuthorized', payload: isAuthorized })
-    // let setAuthState = authState => dispatch({ type: 'authState', payload: authState })
     let setToken = token => dispatch({ type: 'token', payload: token })
-    // let setUserDetails = userDetails => dispatch({ type: 'userDetails', payload: userDetails })
 
     function handleLogin(e) {
         e.preventDefault();
@@ -33,7 +38,11 @@ export default function NewLogin() {
         axios.post(`/user/login`, {
             email, password
         }).then((response) => {
-            // setLoading(false)
+            setLoading(false)
+            if (response.data.target === 'firstTimeLoginStatus') {
+                sessionStorage.setItem('firstTimeLoginToken', response.data.data.tempToken)
+                return setShow(true)
+            }
             localStorage.setItem('token', response.data.data.token)
             localStorage.setItem('userDetails', JSON.stringify(jwt_decode(localStorage.getItem('token'))))
             setToken(response.data.data.token)
@@ -52,9 +61,18 @@ export default function NewLogin() {
         if (state.token) {
             return hist.replace('/')
         }
+        if(sessionStorage.getItem('firstTimeLoginToken')){
+            setShow(true)
+        }
     }, [])
     return (
         <React.Fragment>
+            {show &&
+                <FirstTimeLogin
+                    show={show}
+                    handleClose={handleClose}
+                    handleShow={handleShow} />
+            }
             <div className="row">
                 <div className="col-6" style={lstyle}></div>
                 <div className="col bg-white">
