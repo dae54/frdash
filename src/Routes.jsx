@@ -2,7 +2,7 @@ import Dashboard from "./components/Pages/Dashboard";
 import Error404 from "./components/Error404"
 // import Contact from "./components/Contacts"
 import User from "./components/Pages/Users"
-import NewUser from './components/Pages/Users/NewUser'
+import AddNewUser from './components/Pages/Users/AddNewUser'
 import EditUser from './components/Pages/Users/EditUser'
 import Requests from './components/Pages/Requests'
 import RequestProfile from './components/Pages/Requests/RequestProfile/'
@@ -49,7 +49,7 @@ const routes = [
     {
         name: 'new user route',
         link: '/users/add',
-        component: NewUser
+        component: AddNewUser
     },
     {
         name: 'edit user',

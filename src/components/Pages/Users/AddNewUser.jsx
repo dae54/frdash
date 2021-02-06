@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
-import SweetAlert from 'react-bootstrap-sweetalert'
+// import SweetAlert from 'react-bootstrap-sweetalert'
 import URL from '../../../URL'
 import { AppContext } from '../../services/AppContext'
 import { useAlert } from 'react-alert'
 
 
-export default function NewUser() {
+export default function AddNewUser() {
     const { dispatch } = React.useContext(AppContext)
     let setBreadcrumbPath = path => dispatch({ type: 'breadcrumbPath', payload: path })
     const alert = useAlert()
@@ -22,7 +22,7 @@ export default function NewUser() {
     const [lastName, setLastName] = useState('')
     const [email, setEmail] = useState('')
     const [phoneNumber, setPhoneNumber] = useState('')
-    const [country, setCountry] = useState('Tanzania')
+    const [country, setCountry] = useState('')
     const [region, setRegion] = useState('')
     const [district, setDistrict] = useState('')
     const [ward, setWard] = useState('')
@@ -31,7 +31,7 @@ export default function NewUser() {
 
     const [isLoading, setIsLoading] = useState(false)
     const [error, setError] = useState('')
-    const [message, setMessage] = useState({})
+    // const [message, setMessage] = useState({})
 
     const [roles, setRoles] = useState({ loading: true, data: [] })
 
@@ -47,10 +47,10 @@ export default function NewUser() {
 
         const newUser = { firstName, lastName, email, phoneNumber, country, region, district, ward, gender, role }
         axios.post(`${URL}/user/register`, {
-            headers: {
-                'Content-Type': 'application/json',
-                // 'Authorization': `Bearer ${sessionStorage.getItem('token')}`
-            },
+            // headers: {
+            //     'Content-Type': 'application/json',
+            //     // 'Authorization': `Bearer ${sessionStorage.getItem('token')}`
+            // },
             newUser
         }).then((response) => {
             setIsLoading(false)
@@ -92,23 +92,12 @@ export default function NewUser() {
     return (
         <React.Fragment>
             <div className="row">
-                {message.title &&
-                    <SweetAlert
-                        success
-                        title={`${message.title}!!`}
-                        onConfirm={() => setMessage('')}>
-                        {message.text}
-                    </SweetAlert>
-                }
                 <div className="col-lg-8 offset-lg-2">
                     <h4 className="page-title">Add User</h4>
                 </div>
             </div>
             <div className="row">
                 <div className="col-lg-8 offset-lg-2">
-                    {error &&
-                        <ErrorMessage message={error} />
-                    }
                     <form onSubmit={handleSubmit}>
                         <div className="row">
                             <div className="col-md-12 col-12 col-lg-12">
@@ -146,7 +135,7 @@ export default function NewUser() {
                                             {roles.data.length &&
                                                 roles.data.map(item => {
                                                     return (
-                                                        <option value={item._id}>{item.name} ({item.description})</option>
+                                                        <option key={item._id} value={item._id}>{item.name} ({item.description})</option>
                                                     )
                                                 })
                                             }
@@ -170,7 +159,7 @@ export default function NewUser() {
                                         <div className="row">
                                             <div className="col-md-6">
                                                 <div className="m-b-20">
-                                                    <select className="select form-control" onChange={e => setCountry(e.target.value)}>
+                                                    <select className="form-control" onChange={e => setCountry(e.target.value)}>
                                                         <option value="Tanzania">Tanzania</option>
                                                     </select>
                                                 </div>
@@ -209,13 +198,13 @@ export default function NewUser() {
 }
 
 
-const ErrorMessage = (props) => {
-    return (
-        <div className="alert alert-warning alert-dismissible fade show" role="alert">
-            <strong>Warning!</strong> {props.message}.
-            <button type="button" className="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-    )
-}
+// const ErrorMessage = (props) => {
+//     return (
+//         <div className="alert alert-warning alert-dismissible fade show" role="alert">
+//             <strong>Warning!</strong> {props.message}.
+//             <button type="button" className="close" data-dismiss="alert" aria-label="Close">
+//                 <span aria-hidden="true">&times;</span>
+//             </button>
+//         </div>
+//     )
+// }
