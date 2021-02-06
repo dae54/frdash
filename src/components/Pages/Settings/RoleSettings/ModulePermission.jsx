@@ -41,6 +41,7 @@ export default function ModulePermission() {
             .then(response => {
                 setRolePermissions(response.data.data)
                 alert.success(response.data.message)
+                window.location.replace('/settings/role')
             }).catch(error => {
                 console.log(error)
             })
