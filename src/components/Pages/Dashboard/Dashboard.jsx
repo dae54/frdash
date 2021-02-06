@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from 'react'
+import axios from 'axios';
 
-import InfoCard from '../../Gadgets/InfoCard'
+import { AppContext } from '../../services/AppContext';
+import { AuthContext } from '../../Auth/AuthContext';
 import Statistics from './Request/Statistics';
 import List from './Request/List';
 import Distribution from './Budgets/Distribution';
 import Reports from './Budgets/Reports'
-import { AppContext } from '../../services/AppContext';
-import axios from 'axios';
 
 export default function Dashboard() {
     const { dispatch } = React.useContext(AppContext)
+    const { state } = React.useContext(AuthContext)
     let setBreadcrumbPath = path => dispatch({ type: 'breadcrumbPath', payload: path })
 
 
@@ -30,6 +31,7 @@ export default function Dashboard() {
         setBreadcrumbPath([])
         fetchDashboardStatistics()
     }, [])
+
     const info = [
         {
             icon: 'user-o',
@@ -99,22 +101,28 @@ export default function Dashboard() {
                 <div className="col-12 col-xl-7">
                     <Statistics />
                 </div>
-                <div className="col-12 col-md-9 col-xl-5">
-                    <List />
-                </div>
+                {state.permissions.includes('view_all_requests') &&
+                    <div className="col-12 col-md-9 col-xl-5">
+                        <List />
+                    </div>
+                }
             </div>
             {/* END OF REQUEST SECTION */}
 
             {/* START OF BUDGET SECTION */}
-            <h3 className="card-title text-uppercase">Budgets</h3>
-            <div className="row">
-                <div className="col-12 col-sm-12 col-xl-8  d-xl-non">
-                    <Distribution />
-                </div>
-                <div className="col-12 col-sm-12 col-xl-4">
-                    <Reports />
-                </div>
-            </div>
+            {state.permissions.includes('view_all_budgets') &&
+                <>
+                    <h3 className="card-title text-uppercase">Budgets</h3>
+                    <div className="row">
+                        <div className="col-12 col-sm-12 col-xl-8  d-xl-non">
+                            <Distribution />
+                        </div>
+                        <div className="col-12 col-sm-12 col-xl-4">
+                            <Reports />
+                        </div>
+                    </div>
+                </>
+            }
         </React.Fragment>
     )
 }
