@@ -146,9 +146,10 @@ export default function UserProfile(props) {
                                             <i className="fa fa-trash"></i> DELETE</span>
                                     </div> */}
                                 </div>
-                                {!user.data.invited &&
+                                {user.data.firstTimeLoginStatus === 0 &&
                                     <div className="ml-3 mt-3 mr-1 text-danger">
-                                        Invitation Email not sent
+                                        {/* Send Invitation to User */}
+                                        User hasn't logged in
                                         {loading ?
                                             <span className="badge badge-primary rounded-pill pt-2 pb-2 pl-3 pr-3 ml-4" >
                                                 <span className="spinner-border spinner-border-sm"></span>
@@ -156,7 +157,7 @@ export default function UserProfile(props) {
                                             </span>
                                             :
                                             <span className="badge badge-primary rounded-pill pt-2 pb-2 pl-3 pr-3 ml-4" style={{ cursor: 'pointer' }} onClick={sendUserInvitation}>
-                                                <i className="fa fa-inbox"></i> SEND NOW
+                                                <i className="fa fa-inbox"></i> SEND INVITATION
                                             </span>
                                         }
                                     </div>
