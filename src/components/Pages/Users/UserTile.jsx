@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from 'react'
 import { useHistory } from 'react-router-dom';
-import SweetAlert from 'react-bootstrap-sweetalert'
-import axios from 'axios'
+// import SweetAlert from 'react-bootstrap-sweetalert'
+// import axios from 'axios'
 import { setAvatar } from '../../AccessoryFunctions/avatarGenerator'
 import { AppContext } from '../../services/AppContext';
-import { useAlert } from 'react-alert'
-import { Modal, Button } from 'react-bootstrap'
+// import { useAlert } from 'react-alert'
+// import { Modal, Button } from 'react-bootstrap'
 import DeleteUser from './DeleteUser';
-export default function Users(props) {
+export default function UserTile(props) {
     const { dispatch } = React.useContext(AppContext)
     let setBreadcrumbPath = path => dispatch({ type: 'breadcrumbPath', payload: path })
-    const alert = useAlert()
+    // const alert = useAlert()
 
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
@@ -25,31 +25,7 @@ export default function Users(props) {
     const hist = useHistory();
 
     const [userToDelete, setUserToDelete] = useState()
-    // const [userName, setUserName] = useState('')
-    // const [loading, setLoading] = useState(false)
-
-    // async function deleteUser(userId) {
-    //     setLoading(true)
-
-    //     await axios.delete(`/user/${userId}`, {
-    //     }).then(response => {
-    //         const newUserList = props.userList.filter(item => {
-    //             if (!(item._id === response.data.data._id)) {
-    //                 return item
-    //             }
-    //         })
-    //         props.setUserList(newUserList)
-    //         setUserToDelete()
-    //         setLoading(false)
-    //         setUserName()
-    //         handleClose()
-    //         alert.success(response.data.message)
-    //     }).catch(error => {
-    //         setLoading(false)
-    //         console.log(error)
-    //     })
-    // }
-
+    
     function promptUserDelete(e) {
         setUserToDelete(e.target)
         handleShow()
