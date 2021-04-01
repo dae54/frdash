@@ -4,6 +4,7 @@ import { useHistory } from 'react-router-dom'
 import StatusFormatter from '../../../Gadgets/StatusFormatter';
 import { useAlert } from 'react-alert'
 import { Modal, Button, Form } from 'react-bootstrap'
+
 export default function RequestStatusController(props) {
     let { request, setRequest, setRefreshRemarks } = props
     const hist = useHistory()

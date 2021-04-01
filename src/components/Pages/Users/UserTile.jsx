@@ -25,7 +25,7 @@ export default function UserTile(props) {
     const hist = useHistory();
 
     const [userToDelete, setUserToDelete] = useState()
-    
+
     function promptUserDelete(e) {
         setUserToDelete(e.target)
         handleShow()
@@ -51,7 +51,9 @@ export default function UserTile(props) {
                         </div>
                     </div>
                     <div className="dropdown profile-action">
-                        <a href="#" className="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i className="fa fa-ellipsis-v"></i></a>
+                        <span style={{ cursor: 'pointer' }} className="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                            <i className="fa fa-ellipsis-v"></i>
+                        </span>
                         <div className="dropdown-menu dropdown-menu-right">
                             <div className="dropdown-item" onClick={() => hist.push('user/edit', { userId: _id })} style={{ cursor: 'pointer' }}><i className="fa fa-pencil m-r-5"></i> Edit</div>
                             <div className="dropdown-item" userid={_id} username={firstName + ' ' + lastName} style={{ cursor: 'pointer' }} onClick={(e) => promptUserDelete(e)}><i className="fa fa-trash-o m-r-5"></i> Delete</div>

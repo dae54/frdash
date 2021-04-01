@@ -8,10 +8,12 @@ let initialState = {
     authIssuedAt: '',
     idleTimeDuration: 0,
     authState: '',
-    currentUser: ''
-    /**
-     * authState 'locked', 'authorized', 'unauthorized'
-     */
+    currentUser: '',
+    permissions: []
+    // permissions: {
+    //     canEditUser: false, canDeleteUser: false, canAddUser: false, canUpdateUser: false, canViewOneUser: false, canViewUsers: false,
+    //     canEditRequests: false, canDeleteRequests: false, canAddRequests: false, canUpdateRequests: false, canViewOneRequest: false, canViewURequests: false,
+    // }
 }
 let reducer = (state, action) => {
     switch (action.type) {
@@ -29,6 +31,8 @@ let reducer = (state, action) => {
             return { ...state, currentUser: state.currentUser = action.payload }
         case 'token':
             return { ...state, token: state.token = action.payload }
+        case 'permissions':
+            return { ...state, permissions: state.permissions = action.payload }
         default: return { ...state }
     }
 }

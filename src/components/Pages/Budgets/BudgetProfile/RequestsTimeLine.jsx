@@ -36,7 +36,7 @@ export default function RequestsTimeLine(props) {
         <React.Fragment>
             <div className="card-box">
                 <h3 className="card-title text-uppercase">Requests History</h3>
-                {reqHist.length == 0 ?
+                {reqHist.length === 0 ?
                     <div>Budget's sheet is clean</div>
                     :
                     <div className="experience-box timeliness" style={{ maxHeight: 412, minHeight:412, overflowY: 'auto', overflowX: 'hidden' }}>

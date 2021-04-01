@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react'
 import { NavLink } from 'react-router-dom';
 import axios from 'axios'
 
-import Users from './UserList'
+import User from './UserTile'
 
-export default function Index() {
+export default function Users() {
     const [userList, setUserList] = useState([])
     const [isLoading, setIsLoading] = useState(false);
 
@@ -49,11 +49,10 @@ export default function Index() {
                 :
                 <div className="row doctor-grid">
                     {userList.map((item, index) => {
-                        return (<Users key={index} user={item} userList={userList} setUserList={setUserList} />)
+                        return (<User key={index} user={item} userList={userList} setUserList={setUserList} />)
                     })}
                 </div>
             }
-
         </React.Fragment>
     )
 }

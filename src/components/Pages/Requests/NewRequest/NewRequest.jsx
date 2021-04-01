@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
-import { useHistory } from 'react-router-dom'
 import { AppContext } from '../../../services/AppContext'
 // import SweetAlert from 'react-bootstrap-sweetalert'
 
@@ -8,7 +7,6 @@ export default function NewRequest() {
     const { dispatch } = React.useContext(AppContext)
     let setBreadcrumbPath = path => dispatch({ type: 'breadcrumbPath', payload: path })
 
-    const history = useHistory()
 
     const [budget, setBudget] = useState([])
     const [budgetItem, setBudgetItem] = useState(0)

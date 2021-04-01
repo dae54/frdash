@@ -1,5 +1,4 @@
 import React from 'react'
-import InfoCard from '../../Gadgets/InfoCard'
 
 export default function Statistics({ statistics }) {
     const { pendingRequestsCount, pendingAmount } = statistics.pendingRequests;

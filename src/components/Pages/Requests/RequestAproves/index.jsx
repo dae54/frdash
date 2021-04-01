@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
-import { Link, useHistory } from 'react-router-dom'
-import { sortArray } from '../../../AccessoryFunctions/helperfunctions'
+import { Link } from 'react-router-dom'
+// import { sortArray } from '../../../AccessoryFunctions/helperfunctions'
 import axios from 'axios'
 import StatusFormatter from '../../../Gadgets/StatusFormatter'
 import { AppContext } from '../../../services/AppContext'

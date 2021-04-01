@@ -39,7 +39,7 @@ export default function Sidebar() {
 
 const SideComp = ({ item, index }) => {
     const [activeSubMenu, setActiveSubMenu] = useState()
-    const [display, setDisplay] = useState('none')
+    // const [display, setDisplay] = useState('none')
     // const handleOpenSubMenu = () => {
 
     // }
@@ -56,7 +56,7 @@ const SideComp = ({ item, index }) => {
                 </>
                 :
                 <>
-                    <li className='submenu' key={index} onClic={() => setDisplay(display === 'none' ? 'block' : 'none')}>
+                    <li className='submenu' key={index} >
                         {/* {item.permission ?
                     ''
                         // console.log(item.permission)

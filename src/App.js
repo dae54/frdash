@@ -10,7 +10,10 @@ import Home from './Home';
 import PrivateArea from './components/PrivateArea';
 
 // START OF AXIOS CONFIG
-axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('token')}`;
+axios.defaults.headers.common['Authorization'] =
+  `Bearer ${localStorage.getItem('token')}` ||
+  `Bearer ${sessionStorage.getItem('firstTimeLoginToken')}`;
+
 axios.defaults.timeout = 20000
 axios.defaults.baseURL = URL
 // END

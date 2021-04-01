@@ -21,6 +21,7 @@ export default function Home() {
     let setIdleTimeDuration = idleTimeDuration => dispatch({ type: 'idleTimeDuration', payload: idleTimeDuration })
     let setIsLocked = isLocked => dispatch({ type: 'isLocked', payload: isLocked })
 
+
     function _onIdle(e) {
         setIsLocked(true)
         // sessionStorage.setItem('hist',JSON.stringify(hist))
@@ -83,9 +84,26 @@ export default function Home() {
                             {/* <RightSidebar /> */}
                         </div>
                         <div className="content">
+                            {/* {console.log(state.currentUser.role.permission)} */}
 
                             <Switch>
                                 {routes.map((item, index) => {
+                                    // console.log(item.permissions)
+                                    // item.permissions &&
+                                    //     item.permissions.forEach(permission => {
+                                    //         // console.log(permission)
+                                    //         // console.log(state.currentUser.role.permission.genericName)
+
+                                    //         state.currentUser.role.permission.forEach(roleperm => {
+                                    //             if (roleperm.genericName === permission) {
+                                    //                 console.log(roleperm.genericName)
+                                    //                 return (
+                                    //                     <Route exact path={item.link} key={index} component={item.component} />
+                                    //                 )
+                                    //             }
+                                    //         })
+                                    //     })
+                                    // return (<></>)
                                     return (
                                         <Route exact path={item.link} key={index} component={item.component} />
                                     )

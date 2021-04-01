@@ -26,7 +26,6 @@ export default function NewLogin() {
 
     const [error, setError] = useState('')
     const [email, setEmail] = useState('')
-    const [tempToken, setTempToken] = useState('')
     const [password, setPassword] = useState('')
     const [loading, setLoading] = useState(false)
 

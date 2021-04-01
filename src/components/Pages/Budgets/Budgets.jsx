@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { NavLink } from 'react-router-dom'
 import axios from 'axios'
 import InfoCard from '../../Gadgets/InfoCard'
@@ -9,7 +9,7 @@ import { AppContext } from '../../services/AppContext'
 
 
 export default function Budgets() {
-    const { dispatch } = React.useContext(AppContext)
+    const { dispatch } = useContext(AppContext)
     let setBreadcrumbPath = path => dispatch({ type: 'breadcrumbPath', payload: path })
 
     useEffect(() => {

@@ -4,9 +4,7 @@ import { AppContext } from '../services/AppContext'
 
 export default function Breadcrumb() {
     const { state } = React.useContext(AppContext)
-    // console.log(state.breadcrumbPath)
-
-
+    
     return (
         <React.Fragment>
             <nav aria-label="breadcrumb">
@@ -25,7 +23,7 @@ export default function Breadcrumb() {
                                     </Link>
                                 </li>
                                 :
-                                <li className="breadcrumb-item active" aria-current="page" key={index}>{route.name}</li> 
+                                <li className="breadcrumb-item active" aria-current="page" key={index}>{route.name}</li>
 
                             // <li className="breadcrumb-item">
                             //     <Link to="" > <i className="fa fa-home"></i> Home</Link>

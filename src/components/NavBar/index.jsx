@@ -25,7 +25,7 @@ export default function Index() {
                         <span className=''>Fund Request</span>
                     </a>
                 </div>
-                <a id="toggle_btn" href=""><i className="fa fa-bars"></i></a>
+                <a id="toggle_btn" href="#a"><i className="fa fa-bars"></i></a>
                 <a id="mobile_btn" className="mobile_btn float-left" href="#sidebar"><i className="fa fa-bars"></i></a>
 
                 <div className='float-right text-dark'>

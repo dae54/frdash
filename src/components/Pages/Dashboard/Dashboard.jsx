@@ -12,13 +12,19 @@ export default function Dashboard() {
     const { dispatch } = React.useContext(AppContext)
     const { state } = React.useContext(AuthContext)
     let setBreadcrumbPath = path => dispatch({ type: 'breadcrumbPath', payload: path })
-
+    const [progress, setProgress] = useState(0)
 
 
     const [dashboardStatistics, setDashboardStatistics] = useState({ loading: true, data: {} })
 
     async function fetchDashboardStatistics() {
-        await axios.get('requests/dashboardStats')
+        await axios.get('requests/dashboardStats',{
+            onDownloadProgress:(evt)=>{
+                console.log(evt)
+
+                setProgress((evt.loaded/evt.total)*100)
+            }
+        })
             .then(({ data }) => {
                 setDashboardStatistics({ loading: false, data: data.data })
             }).catch(error => {
@@ -75,6 +81,9 @@ export default function Dashboard() {
                                     <div className="spinner-border spinner-border-sm p-0" role="status">
                                         <span className="sr-only">Loading...</span>
                                     </div>
+                                </div>
+                                <div class="progress mt-n4 p-0 mb-3" style={{ height: '3px' }}>
+                                    <div className="progress-bar" style={{ width: `${progress}%` }} ></div>
                                 </div>
                             </div>
                         )

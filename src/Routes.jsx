@@ -44,12 +44,14 @@ const routes = [
     {
         name: 'user path',
         link: '/users',
-        component: User
+        component: User,
+        permissions: ['view_all_users']
     },
     {
         name: 'new user route',
         link: '/users/add',
-        component: AddNewUser
+        component: AddNewUser,
+        permissions: ['create_user']
     },
     {
         name: 'edit user',

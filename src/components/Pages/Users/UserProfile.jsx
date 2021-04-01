@@ -217,7 +217,8 @@ export default function UserProfile(props) {
                                 <span className={`dash-widget-bg1 bg-info`}><i className={`fa fa-dollar`} aria-hidden="true"></i></span>
                                 <div className="dash-widget-info text-right">
                                     <h3 className=''>
-                                        Tsh {requestSummary.data.length !== 0 && requestSummary.data.reduce((a, b) => a + b.amount, 0).toLocaleString() || 0}
+                                        Tsh {requestSummary.data.length !== 0 &&
+                                            requestSummary.data.reduce((a, b) => a + b.amount, 0).toLocaleString() || 0}
                                     </h3>
                                     Total Amount Requested
                                 </div>
@@ -242,7 +243,7 @@ export default function UserProfile(props) {
                                                 </>
                                                 :
                                                 <>
-                                                    {requestSummary.data.length == 0 ?
+                                                    {requestSummary.data.length === 0 ?
                                                         <div className='pl-3 pt-3 pb-1 text-uppercase'>No record found</div>
                                                         :
                                                         requestSummary.data.map((item, index) => {
