@@ -1,26 +1,27 @@
-# fund-request-dash
+# IMPREST SYSTEM (Fund Request App)
 
-`I am not sure if I understood your aim by this`
-```javascript
-Profile.findOne({ user: req.user.id })
-    .populate({
-        path: ["user", ["name", "avatar"]],
-        populate: { path: "following" },
-```
+Imprest System (Fund Request App) is an internal iPF App which is designed to enhance efficiency in internal iPF fund requesting process while also ensures the funds disbursed are within the budget allocated and remove manual processing of requests
 
-But if what i understood is what you want, then we're lucky. here is what i got.
+## GETTING STARTED
 
-```javascript 
-await RequestAproves.find()
-         .populate('user', 'firstName surname email roleId')
-         .populate({
-              path: 'request',
-              populate: [
-                     { path: 'budgetItem', select: 'code name' },
-                     { path: 'user', select: 'firstName surname' },
-                   ],
-             }
-       )
-```
-`More details will come later, Sorry, I couldnt use your schema description, Incase it doesnt work out, let me know, ill try to use your schema.`
+- Clone the repository
+  - click [here](https://github.com/dae54/fund-request-api.git) to copy the link
+- Checkout develop branch, for development
+  ```
+  git checkout develop
+  ```
+- Run command
 
+  ```
+  npm install
+  ```
+
+  To install dependencies
+
+  Run command
+
+  ```
+  npm start
+  ```
+
+  To install dependencies
